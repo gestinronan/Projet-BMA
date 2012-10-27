@@ -15,6 +15,7 @@ var $ = require('jQuery');
 
 // Variable de contact pour le site de la star
 var api_star = http.createClient(80, "http://data.keolis-rennes.com/json/");
+var version = "2.0";
 var key_star = "FR6UMKCXT1TY5GJ";
 
 var app = express();
@@ -45,9 +46,9 @@ app.get('/users', user.list);
 //// HTTP Request vers le site de la star /////
 
 // TEST: Creation de l'url et appel ajax
-var url = "http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations";
+var url = "http://data.keolis-rennes.com/json/?version=" + version + "&key=" + key_star + "&cmd=getbikestations";
 getData(url);
-    
+
 // Création du serveur 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
@@ -58,11 +59,19 @@ http.createServer(app).listen(app.get('port'), function(){
 function getData(url){
 	
 	// Appel vers le serveur
-	$.get(url, function(data){
+	var xhr = $.ajax({
 		
-		//success call
-		console.log(data);
-		response = data["data"];
-		console.log(response);
-	})
+		// Parameter
+		url: url, // Url uses to make the call
+		dataType: 'json',  // Type of data we receive
+		success: function(data){
+			
+			// Function call in case of success call.
+			console.log(data);
+		},
+		error: function(){
+			
+			// Function call in case of error during the call.
+		}
+	});
 }

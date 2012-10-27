@@ -2,6 +2,13 @@
 
 Démarrer le serveur : node app.js
 
+Package a installer:
+
+express: npm install express -g
+jquery: npm install jquery
+
+Lancer une nouvelle application avec express: express --sessions --css stylus --ejs myapp
+
 Atteindre le serveur: http://localhost:3000
 
 
