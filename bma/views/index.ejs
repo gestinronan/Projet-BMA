@@ -3,9 +3,13 @@
   <head>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
+  <h1>Station de Vélos</h1>
   <body>
-	<% for(i=0; i< data.opendata.request.answer.data.station.length; i++){ %>
-		<li> <%= data.opendata.request.answer.data.station[i]%> </li>
+	<% for(i=0; i< data.opendata.answer.data.station.length; i++){ %>
+		<li> Nom: <%= data.opendata.answer.data.station[i].name%> </li>
+		<li> Longitude: <%= data.opendata.answer.data.station[i].longitude%> </li>
+		<li> Latitude: <%= data.opendata.answer.data.station[i].latitude%> </li>
+		<hr>
 	<% } %>	
 	
   </body>

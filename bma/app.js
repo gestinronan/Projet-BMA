@@ -24,7 +24,8 @@ var api_star = http.createClient(80, "http://data.keolis-rennes.com/json/");
 var version = "2.0";
 var key_star = "FR6UMKCXT1TY5GJ";
 
-
+/****** Variable ********/
+var data;
 
 /********* Configuration du serveur ***********/
 
@@ -55,10 +56,32 @@ getData(url);
 /************* Get Request ********/
 
 // This is the function which manage a get call on '/' (That's the first page which is load)
-app.get('/', getData(url),function(req, res){
-	res.render('index', {
-		data: req.opendata
-	})
+app.get('/',function(req, res){
+	
+	var xhr = $.ajax({
+		
+		// Parameter
+		url: url, // Url uses to make the call
+		dataType: 'json',  // Type of data we receive
+		success: function(data){
+			data = data;
+			// Function call in case of success call.
+			console.log(data.opendata);	
+			for (i=0; i <data.opendata.answer.data.station.length; i++){
+				console.log(data.opendata.answer.data.station[i]);
+			}	
+			
+			res.render('index', {
+				data: data
+			})
+		},
+		error: function(){
+			
+			// Function call in case of error during the call.
+		}
+	});
+	
+
 });
 
 
@@ -96,7 +119,7 @@ function getData(url){
 		url: url, // Url uses to make the call
 		dataType: 'json',  // Type of data we receive
 		success: function(data){
-			
+			data = data;
 			// Function call in case of success call.
 			console.log(data.opendata);	
 			for (i=0; i <data.opendata.answer.data.station.length; i++){
