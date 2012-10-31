@@ -40,7 +40,18 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
+// This is the function which manage a get call on '/' (That's the first page which is load)
+app.get('/', function(req, res){
+	
+	// This Select a template and fill it with the parameters
+	res.render('index', { // Index is the template which will be select
+				
+		// Here you add as parameter all the data that you want to put in the template (only for HTML usecases)
+	});
+
+});
+
+
 app.get('/users', user.list);
 
 //// HTTP Request vers le site de la star /////
