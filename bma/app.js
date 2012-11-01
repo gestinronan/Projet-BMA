@@ -49,28 +49,28 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-// TEST: Creation de l'url et appel ajax
-var url = "http://data.keolis-rennes.com/json/?version=" + version + "&key=" + key_star + "&cmd=getbikestations";
-getData(url);
-
 /************* Get Request ********/
 
 // This is the function which manage a get call on '/' (That's the first page which is load)
 app.get('/',function(req, res){
 	
+	var url = "http://data.keolis-rennes.com/json/?version=" + version + "&key=" + key_star + "&cmd=getbikestations";
 	var xhr = $.ajax({
 		
 		// Parameter
 		url: url, // Url uses to make the call
 		dataType: 'json',  // Type of data we receive
 		success: function(data){
-			data = data;
+		
 			// Function call in case of success call.
 			console.log(data.opendata);	
+			
+			//we parse the Json response
 			for (i=0; i <data.opendata.answer.data.station.length; i++){
 				console.log(data.opendata.answer.data.station[i]);
 			}	
 			
+			// Call the template index and fill it with the parameter
 			res.render('index', {
 				data: data
 			})
@@ -78,6 +78,39 @@ app.get('/',function(req, res){
 		error: function(){
 			
 			// Function call in case of error during the call.
+		}
+	});
+	
+
+});
+
+/************ Example of an other get Request *****/
+
+app.get('/android',function(req, res){
+	var url = "http://data.keolis-rennes.com/json/?version=1.0&key=" + key_star + "&cmd=getbikestations";
+	var xhr = $.ajax({
+		
+		// Parameter
+		url: url, // Url uses to make the call
+		dataType: 'json',  // Type of data we receive
+		success: function(data){
+			
+			// Function call in case of success call.
+			console.log(data.opendata);	
+			
+			// We parse the Json response
+			for (i=0; i <data.opendata.answer.data.station.length; i++){
+				console.log(data.opendata.answer.data.station[i]);
+			}	
+			
+			// Send the json data to the phone
+			res.write(data);
+		},
+		error: function(e){
+			
+			// Function call in case of error during the call.
+			res.write(JSON.stringify({ 'error': e }));
+			res.end();
 		}
 	});
 	
