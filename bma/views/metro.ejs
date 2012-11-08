@@ -3,7 +3,7 @@
   <head>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
-  <h1>Station de Vélos <a href="http://localhost:3000/bus">Bus link</a>, <a href="http://localhost:3000/metro"> Metro link</a></h1>
+  <h1>Station de Metro<a href="http://localhost:3000/">Bike station</a>, <a href="http://localhost:3000/bus"> Bus Link</a></h1>
   <body>
 	<% for(i=0; i< data.opendata.answer.data.station.length; i++){ %>
 		<li> Nom: <%= data.opendata.answer.data.station[i].name%> </li>
