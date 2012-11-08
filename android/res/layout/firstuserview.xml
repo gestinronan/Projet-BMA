@@ -5,67 +5,136 @@
     android:layout_height="fill_parent" >
 
     <EditText
-        android:id="@+id/editText1"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
-        android:ems="10" />
-
-    
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/editText1"
-        android:layout_alignBottom="@+id/editText1"
-        android:layout_alignParentLeft="true"
-        android:text="Lieu de depart"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android1:id="@+id/editText1"
+        android1:layout_width="160dp"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentRight="true"
+        android1:layout_marginTop="15dp"
+        android1:ems="10"
+        android1:inputType="textPostalAddress" />
 
     <EditText
-        android:id="@+id/editText2"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/editText1"
-        android:layout_marginTop="16dp"
-        android:ems="10" />
+        android1:id="@+id/editText2"
+        android1:layout_width="160dp"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentRight="true"
+        android1:layout_below="@+id/editText1"
+        android1:layout_marginTop="20dp"
+        android1:ems="10"
+        android1:inputType="textPostalAddress" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/editText2"
-        android:layout_alignBottom="@+id/editText2"
-        android:layout_alignParentLeft="true"
-        android:text="Lieu d&apos;arriver"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android1:id="@+id/textView1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignBaseline="@+id/editText1"
+        android1:layout_alignBottom="@+id/editText1"
+        android1:layout_alignParentLeft="true"
+        android1:text="Lieu Depart"
+        android1:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android1:id="@+id/textView2"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignBaseline="@+id/editText2"
+        android1:layout_alignBottom="@+id/editText2"
+        android1:layout_alignParentLeft="true"
+        android1:text="Lieu arrivé"
+        android1:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android1:id="@+id/textView3"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentLeft="true"
+        android1:layout_below="@+id/editText2"
+        android1:layout_marginTop="17dp"
+        android1:text="date de depart"
+        android1:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TimePicker
-        android:id="@+id/timePicker1"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText2"
-        android:layout_marginTop="38dp" />
+        android1:id="@+id/timePicker1"
+        android1:layout_width="160dp"
+        android1:layout_height="140dp"
+        android1:layout_alignParentLeft="true"
+        android1:layout_below="@+id/textView3" />
 
     <DatePicker
-        android:id="@+id/datePicker1"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/timePicker1" />
+        android1:id="@+id/datePicker1"
+        android1:layout_width="160dp"
+        android1:layout_height="140dp"
+        android1:layout_alignBottom="@+id/timePicker1"
+        android1:layout_alignParentRight="true" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText2"
-        android:text="Date de Départ"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android1:id="@+id/textView4"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentLeft="true"
+        android1:layout_below="@+id/timePicker1"
+        android1:text="choix du parcours"
+        android1:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <RadioGroup
+        android1:id="@+id/radioGroup1"
+        android1:layout_width="200dp"
+        android1:layout_height="100dp"
+        android1:layout_alignParentLeft="true"
+        android1:layout_below="@+id/textView4" >
+
+        <RadioButton
+            android1:id="@+id/radio0"
+            android1:layout_width="wrap_content"
+            android1:layout_height="33dp"
+            android1:checked="true"
+            android1:text="plus court" />
+
+        <RadioButton
+            android1:id="@+id/radio1"
+            android1:layout_width="wrap_content"
+            android1:layout_height="33dp"
+            android1:text="plus rapide" />
+
+        <RadioButton
+            android1:id="@+id/radio2"
+            android1:layout_width="wrap_content"
+            android1:layout_height="33dp"
+            android1:text="sportif" />
+    </RadioGroup>
+
+    <CheckBox
+        android1:id="@+id/checkBox1"
+        android1:layout_width="100dp"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentBottom="true"
+        android1:layout_alignParentLeft="true"
+        android1:layout_marginBottom="17dp"
+        android1:text="bus" />
+
+    <CheckBox
+        android1:id="@+id/checkBox2"
+        android1:layout_width="100dp"
+        android1:layout_height="wrap_content"
+        android1:layout_alignTop="@+id/checkBox1"
+        android1:layout_toRightOf="@+id/textView1"
+        android1:text="train" />
+
+    <CheckBox
+        android1:id="@+id/checkBox3"
+        android1:layout_width="100dp"
+        android1:layout_height="wrap_content"
+        android1:layout_alignBottom="@+id/checkBox2"
+        android1:layout_alignParentRight="true"
+        android1:text="velo" />
+
+    <TextView
+        android1:id="@+id/textView5"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_above="@+id/checkBox1"
+        android1:layout_alignParentLeft="true"
+        android1:text="choix moyen transport"
+        android1:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
