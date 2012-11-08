@@ -49,7 +49,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-/************* Get Request ********/
+/************* Get Request for the bike stations ********/
 
 // This is the function which manage a get call on '/' (That's the first page which is load)
 app.get('/',function(req, res){
@@ -57,9 +57,37 @@ app.get('/',function(req, res){
 	var url = "http://data.keolis-rennes.com/json/?version=" + version + "&key=" + key_star + "&cmd=getbikestations";
 	
 	// Call the getData function
-	getData(url, req, res);
+	getData(url, req, res, "bike");
 
 });
+
+/************* Get Request for the metro stations ********/
+
+app.get('/metro', function(req, res){
+	
+	// Url fir the call
+	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getmetrostations";
+	
+	// Call the getData function
+	getData(url, req, res, "metro");
+	
+});
+
+
+/************* Get Request for the bus stations ********/
+
+app.get('/bus', function(req, res){
+	
+	// Url fir the call
+	var url = "http://data.keolis-rennes.com/json/?version=1.0&key=" + key_star + "getstation&param[request]=all";
+	
+	// Call the getData function
+	getData(url, req, res, "bus");
+	
+});
+
+
+
 
 /************ Example of an other get Request *****/
 
@@ -130,7 +158,8 @@ http.createServer(app).listen(app.get('port'), function(){
 
 // Get Ajax call function, Maybe we will need to add an other parameter 
 // to select wether or not we are sending Json or a template.
-function getData(url, req, res){
+// Type correspond to the template we are using
+function getData(url, req, res, type){
 	
 	// Appel vers le serveur
 	var xhr = $.ajax({
@@ -142,14 +171,46 @@ function getData(url, req, res){
 			data = data;
 			// Function call in case of success call.
 			console.log(data.opendata);	
-			for (i=0; i <data.opendata.answer.data.station.length; i++){
-				console.log(data.opendata.answer.data.station[i]);
-			}	
 			
-			// Render the data on the index file (website case)
-			res.render('index', {
-				data: data
-			})
+			
+			// Case of a bike station
+			if(type == "bike"){
+				
+				// Parse the Json
+				for (i=0; i <data.opendata.answer.data.station.length; i++){
+					console.log(data.opendata.answer.data.station[i]);
+				}	
+				res.render('index', {
+					data: data
+				})	
+			} 
+			
+			// Case of metro 
+			else if(type == "metro"){
+				
+				for (i=0; i <data.opendata.answer.data.station.length; i++){
+					console.log(data.opendata.answer.data.station[i]);
+				}	
+				res.render('metro', {
+					data: data
+				})
+			} 
+			
+			// Case of bus
+			else if(type == "bus"){	
+				
+				for (i=0; i <data.opendata.answer.data.station.length; i++){
+					console.log(data.opendata.answer.data.station[i]);
+				}	
+				res.render('bus', {
+					data: data
+				})
+			}
+			
+			// Case of android
+			else if(type == "android"){
+				
+			}
 		},
 		error: function(){
 			
