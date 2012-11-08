@@ -60,13 +60,6 @@
         android1:layout_alignParentLeft="true"
         android1:layout_below="@+id/textView3" />
 
-    <DatePicker
-        android1:id="@+id/datePicker1"
-        android1:layout_width="160dp"
-        android1:layout_height="140dp"
-        android1:layout_alignBottom="@+id/timePicker1"
-        android1:layout_alignParentRight="true" />
-
     <TextView
         android1:id="@+id/textView4"
         android1:layout_width="wrap_content"
@@ -137,4 +130,13 @@
         android1:text="choix moyen transport"
         android1:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <DatePicker
+        android1:id="@+id/datePicker1"
+        android1:layout_width="140dp"
+        android1:layout_height="140dp"
+        android1:layout_alignParentRight="true"
+        android1:layout_below="@+id/textView3" />
+
 </RelativeLayout>
+
+
