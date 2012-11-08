@@ -79,7 +79,7 @@ app.get('/metro', function(req, res){
 app.get('/bus', function(req, res){
 	
 	// Url fir the call
-	var url = "http://data.keolis-rennes.com/json/?version=1.0&key=" + key_star + "getstation&param[request]=all";
+	var url = "http://data.keolis-rennes.com/json/?version=1.0&key=" + key_star + "&cmd=getstation&param[request]=all";
 	
 	// Call the getData function
 	getData(url, req, res, "bus");
@@ -92,10 +92,10 @@ app.get('/bus', function(req, res){
 /************ Example of an other get Request *****/
 
 app.get('/android',function(req, res){
-	var url = "http://data.keolis-rennes.com/json/?version=1.0&key=" + key_star + "&cmd=getbikestations";
 	
+	console.log("Android get Request");
 	
-	
+	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations";
 	var xhr = $.ajax({
 		
 		// Parameter
@@ -130,15 +130,16 @@ app.get('/android',function(req, res){
 
 
 // This is a post request (What the phone or the website will send us)
-app.post('/android', function(req, res){
+app.post('/android/data', function(req, res){
 	
 	// We first get the parameter sent in the request
-	lng = req.body.longitude; // Here we get the longitude
 	lat = req.body.latitude; // Here we get the latitude
+	lng = req.body.longitude; // Here we get the longitude
+	
 	
 	// Display the response
-	console.log("Longitude: " + longitude);
-	condole.log("Latitude: " + latitude);
+	console.log("Longitude: " + lng);
+	console.log("Latitude: " + lat);
 	
 	// Then we send what we want
 	res.write(JSON.stringify({'response': 'ok'}));
@@ -170,15 +171,14 @@ function getData(url, req, res, type){
 		success: function(data){
 			data = data;
 			// Function call in case of success call.
-			console.log(data.opendata);	
-			
+			//console.log(data.opendata);	
 			
 			// Case of a bike station
 			if(type == "bike"){
 				
 				// Parse the Json
 				for (i=0; i <data.opendata.answer.data.station.length; i++){
-					console.log(data.opendata.answer.data.station[i]);
+					//console.log(data.opendata.answer.data.station[i]);
 				}	
 				res.render('index', {
 					data: data
@@ -189,7 +189,7 @@ function getData(url, req, res, type){
 			else if(type == "metro"){
 				
 				for (i=0; i <data.opendata.answer.data.station.length; i++){
-					console.log(data.opendata.answer.data.station[i]);
+					//console.log(data.opendata.answer.data.station[i]);
 				}	
 				res.render('metro', {
 					data: data
