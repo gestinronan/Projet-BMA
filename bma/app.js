@@ -55,32 +55,9 @@ app.configure('development', function(){
 app.get('/',function(req, res){
 	
 	var url = "http://data.keolis-rennes.com/json/?version=" + version + "&key=" + key_star + "&cmd=getbikestations";
-	var xhr = $.ajax({
-		
-		// Parameter
-		url: url, // Url uses to make the call
-		dataType: 'json',  // Type of data we receive
-		success: function(data){
-		
-			// Function call in case of success call.
-			console.log(data.opendata);	
-			
-			//we parse the Json response
-			for (i=0; i <data.opendata.answer.data.station.length; i++){
-				console.log(data.opendata.answer.data.station[i]);
-			}	
-			
-			// Call the template index and fill it with the parameter
-			res.render('index', {
-				data: data
-			})
-		},
-		error: function(){
-			
-			// Function call in case of error during the call.
-		}
-	});
 	
+	// Call the getData function
+	getData(url, req, res);
 
 });
 
@@ -88,6 +65,9 @@ app.get('/',function(req, res){
 
 app.get('/android',function(req, res){
 	var url = "http://data.keolis-rennes.com/json/?version=1.0&key=" + key_star + "&cmd=getbikestations";
+	
+	
+	
 	var xhr = $.ajax({
 		
 		// Parameter
@@ -125,10 +105,16 @@ app.get('/android',function(req, res){
 app.post('/android', function(req, res){
 	
 	// We first get the parameter sent in the request
-	lng = req.body.lng; // Here we get the longitude
-	lat = req.body.lat; // Here we get the latitude
+	lng = req.body.longitude; // Here we get the longitude
+	lat = req.body.latitude; // Here we get the latitude
+	
+	// Display the response
+	console.log("Longitude: " + longitude);
+	condole.log("Latitude: " + latitude);
 	
 	// Then we send what we want
+	res.write(JSON.stringify({'response': 'ok'}));
+	res.end();
 });
 
 
@@ -142,8 +128,9 @@ http.createServer(app).listen(app.get('port'), function(){
 
 /********* Functions ***********/
 
-// Get Ajax call function
-function getData(url){
+// Get Ajax call function, Maybe we will need to add an other parameter 
+// to select wether or not we are sending Json or a template.
+function getData(url, req, res){
 	
 	// Appel vers le serveur
 	var xhr = $.ajax({
@@ -158,6 +145,11 @@ function getData(url){
 			for (i=0; i <data.opendata.answer.data.station.length; i++){
 				console.log(data.opendata.answer.data.station[i]);
 			}	
+			
+			// Render the data on the index file (website case)
+			res.render('index', {
+				data: data
+			})
 		},
 		error: function(){
 			
