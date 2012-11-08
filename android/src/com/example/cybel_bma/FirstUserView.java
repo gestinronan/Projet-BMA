@@ -14,7 +14,7 @@ public void onCreate(Bundle savedInstanceState){
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.firstuserview);
 	
-	TimePicker hourPicker= (TimePicker) findViewById(R.id.datePicker1);
+	TimePicker hourPicker= (TimePicker) findViewById(R.id.HourPicker);
 	hourPicker.setIs24HourView(true);
 	int hour=hourPicker.getCurrentHour();
 	int minut=hourPicker.getCurrentMinute();
