@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.view.Menu;
 
 
-public class FirstUserView {
+public class FirstUserView extends Activity{
 
 public void onCreate(Bundle savedInstanceState){
 	super.onCreate(savedInstanceState);
-		setContentView(R.layout.firstuserview);
+	setContentView(R.layout.firstuserview);
 		
 		
 		

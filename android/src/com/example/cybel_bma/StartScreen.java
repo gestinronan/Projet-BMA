@@ -7,7 +7,7 @@ import android.view.Menu;
 
 public class StartScreen extends Activity {
 
- protected int _ScreenTime = 3000;
+ protected int _ScreenTime = 10000;
 
  /** Called when the activity is first created. */
  @Override
