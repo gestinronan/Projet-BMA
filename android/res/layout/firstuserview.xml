@@ -96,45 +96,57 @@
             android1:text="sportif" />
     </RadioGroup>
 
-    <CheckBox
-        android1:id="@+id/checkBox1"
-        android1:layout_width="100dp"
-        android1:layout_height="wrap_content"
-        android1:layout_alignParentBottom="true"
-        android1:layout_alignParentLeft="true"
-        android1:layout_marginBottom="17dp"
-        android1:text="bus" />
-
-    <TextView
-        android1:id="@+id/textView5"
-        android1:layout_width="wrap_content"
-        android1:layout_height="wrap_content"
-        android1:layout_above="@+id/checkBox1"
-        android1:layout_alignParentLeft="true"
-        android1:text="choix moyen transport"
-        android1:textAppearance="?android:attr/textAppearanceMedium" />
-
     <DatePicker
-        android1:id="@+id/datePicker1"
+        android1:id="@+id/datePicker"
         android1:layout_width="140dp"
         android1:layout_height="140dp"
         android1:layout_alignParentRight="true"
         android1:layout_below="@+id/DateTrajet" />
 
-    <CheckBox
-        android1:id="@+id/checkBox2"
-        android1:layout_width="100dp"
+    <TextView
+        android1:id="@+id/textView5"
+        android1:layout_width="wrap_content"
         android1:layout_height="wrap_content"
-        android1:layout_alignParentBottom="true"
-        android1:layout_toRightOf="@+id/LieuDepart"
-        android1:text="train" />
+        android1:layout_alignParentLeft="true"
+        android1:layout_below="@+id/radioGroup"
+        android1:layout_marginTop="19dp"
+        android1:text="choix moyen transport"
+        android1:textAppearance="?android:attr/textAppearanceMedium" />
 
     <CheckBox
         android1:id="@+id/checkBox3"
         android1:layout_width="100dp"
         android1:layout_height="wrap_content"
-        android1:layout_alignParentBottom="true"
-        android1:layout_toRightOf="@+id/textView5"
+        android1:layout_alignParentLeft="true"
+        android1:layout_below="@+id/textView5"
+        android1:layout_marginTop="27dp"
         android1:text="velo" />
+
+    <CheckBox
+        android1:id="@+id/checkBox1"
+        android1:layout_width="100dp"
+        android1:layout_height="wrap_content"
+        android1:layout_alignBaseline="@+id/checkBox3"
+        android1:layout_alignBottom="@+id/checkBox3"
+        android1:layout_toRightOf="@+id/DateTrajet"
+        android1:text="bus" />
+
+    <ImageButton
+        android1:id="@+id/imageButton1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentBottom="true"
+        android1:layout_alignParentLeft="true"
+        android1:layout_alignParentRight="true"
+        android1:src="@android:drawable/ic_media_play" />
+
+    <CheckBox
+        android1:id="@+id/checkBox2"
+        android1:layout_width="100dp"
+        android1:layout_height="wrap_content"
+        android1:layout_alignBaseline="@+id/checkBox1"
+        android1:layout_alignBottom="@+id/checkBox1"
+        android1:layout_alignLeft="@+id/adressArrive"
+        android1:text="train" />
 
 </RelativeLayout>
