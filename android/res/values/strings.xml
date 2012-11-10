@@ -5,5 +5,7 @@
     <string name="title_activity_main">startScreen</string>
     <string name="hourPicker">HourPicker</string>
     <string name="datePicker">DatePicker</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_posibility_for_user">PosibilityForUser</string>
 
 </resources>

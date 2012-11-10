@@ -5,15 +5,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.Editable;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 public class FirstUserView extends Activity{
+// plublic variable creation
+public	Editable adressDep;
+public	Editable adressArriv;
 
 @SuppressWarnings("null")
 public void onCreate(Bundle savedInstanceState){
@@ -35,11 +41,11 @@ public void onCreate(Bundle savedInstanceState){
 	
 	// take Departure
 	EditText departure= (EditText) findViewById(R.id.adressDepart);
-	Editable adressDep= departure.getText();
+	adressDep= departure.getText();
 	
 	// take arrival
 	EditText arrival= (EditText) findViewById(R.id.adressDepart);
-	Editable adressArriv= arrival.getText();
+	adressArriv= arrival.getText();
 	
 	// get Type de parcours
 	
@@ -52,9 +58,27 @@ public void onCreate(Bundle savedInstanceState){
 	CheckBox velo=(CheckBox) findViewById(R.id.checkBox3);
 	CheckBox train=(CheckBox) findViewById(R.id.checkBox2);
 	CheckBox bus=(CheckBox) findViewById(R.id.checkBox1);
-	
-	 if()
-		
+
 	
 }
+
+// Listener creation
+private OnClickListener myListener = new OnClickListener() {
+    public void onClick(View v) {
+        
+    	if( adressArriv.length() != 0 && adressDep.length() != 0)
+    	{
+    		Intent Recherche = new Intent(getApplicationContext(), com.example.cybel_bma.PosibilityForUser.class);
+    		Recherche.putExtra("adDep", adressDep.toString());
+    		Recherche.putExtra("adArr", adressArriv.toString());
+    		startActivity(Recherche);
+    		
+    	}
+    	else
+    	{
+    		Toast WarrningInformationNoComplet=Toast.makeText(getApplicationContext(), "Information manquantes", Toast.LENGTH_LONG);
+    		WarrningInformationNoComplet.show();
+    	}
+      }
+  };
 }
