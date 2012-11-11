@@ -91,7 +91,7 @@ app.get('/bus', function(req, res){
 
 /************ Example of an other get Request *****/
 
-app.get('/android',function(req, res){
+app.post('/android',function(req, res){
 	
 	console.log("Android get Request");
 	
@@ -112,13 +112,12 @@ app.get('/android',function(req, res){
 			}	
 			
 			// Send the json data to the phone
-			res.write(data);
+			res.send(data);
 		},
 		error: function(e){
 			
 			// Function call in case of error during the call.
-			res.write(JSON.stringify({ 'error': e }));
-			res.end();
+			
 		}
 	});
 	
@@ -142,8 +141,7 @@ app.post('/android/data', function(req, res){
 	console.log("Latitude: " + lat);
 	
 	// Then we send what we want
-	res.write(JSON.stringify({'response': 'ok'}));
-	res.end();
+	res.send("ok");
 });
 
 
