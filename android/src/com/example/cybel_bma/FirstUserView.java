@@ -7,9 +7,11 @@ import android.text.Editable;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
@@ -49,8 +51,8 @@ public void onCreate(Bundle savedInstanceState){
 	
 	// get Type de parcours
 	
-	RadioGroup parcours= (RadioGroup) findViewById(R.id.choixTrajet);
-	int buttonChoice=parcours.getCheckedRadioButtonId();
+//	RadioGroup parcours= (RadioGroup) findViewById(R.id.choixTrajet);
+//	int buttonChoice=parcours.getCheckedRadioButtonId();
 	
 	
 	/// get moyen transport
@@ -58,6 +60,11 @@ public void onCreate(Bundle savedInstanceState){
 	CheckBox velo=(CheckBox) findViewById(R.id.checkBox3);
 	CheckBox train=(CheckBox) findViewById(R.id.checkBox2);
 	CheckBox bus=(CheckBox) findViewById(R.id.checkBox1);
+			
+	/// validation Listener
+			ImageButton validate=(ImageButton) findViewById( R.id.imageButton1);
+			validate.setOnClickListener(myListener);
+	
 
 	
 }
