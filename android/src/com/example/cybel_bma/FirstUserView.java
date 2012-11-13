@@ -75,10 +75,18 @@ private OnClickListener myListener = new OnClickListener() {
         
     	if( adressArriv.length() != 0 && adressDep.length() != 0)
     	{
-    		Intent Recherche = new Intent(getApplicationContext(), com.example.cybel_bma.PosibilityForUser.class);
-    		Recherche.putExtra("adDep", adressDep.toString());
-    		Recherche.putExtra("adArr", adressArriv.toString());
-    		startActivity(Recherche);
+
+Intent intent = new Intent(FirstUserView.this,com.example.cybel_bma.PosibilityForUser.class);
+//Next create the bundle and initialize it
+Bundle bundle = new Bundle();
+//Add the parameters to bundle as
+bundle.putString("adDep", adressDep.toString());
+bundle.putString("adArr", adressArriv.toString());
+//Add this bundle to the intent
+intent.putExtras(bundle);
+//Start next activity
+FirstUserView.this.startActivity(intent);
+    		
     		
     	}
     	else

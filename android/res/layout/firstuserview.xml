@@ -96,13 +96,6 @@
             android1:text="sportif" />
     </RadioGroup>
 
-    <DatePicker
-        android1:id="@+id/datePicker"
-        android1:layout_width="140dp"
-        android1:layout_height="140dp"
-        android1:layout_alignParentRight="true"
-        android1:layout_below="@+id/DateTrajet" />
-
     <TextView
         android1:id="@+id/textView5"
         android1:layout_width="wrap_content"
@@ -148,5 +141,12 @@
         android1:layout_alignBottom="@+id/checkBox1"
         android1:layout_alignLeft="@+id/adressArrive"
         android1:text="train" />
+
+    <DatePicker
+        android1:id="@+id/datePicker"
+        android1:layout_width="160dp"
+        android1:layout_height="140dp"
+        android1:layout_above="@+id/choixTrajet"
+        android1:layout_alignParentRight="true" />
 
 </RelativeLayout>
