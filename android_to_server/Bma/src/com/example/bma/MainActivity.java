@@ -33,13 +33,17 @@ import com.example.bma.R;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -47,8 +51,12 @@ public class MainActivity extends Activity {
 	TextView lng, lat;
 	static TextView log;
 	TextView alt;
-	Button locateMe, sendPosition, getRequest;
+	Button locateMe, sendPosition, getRequest, viewResult;
 
+	// Final variable
+	public final int INVISIBLE = 1;
+	public final int VISIBLE = 0;
+	
 	// Geolocation Variables
 	static String myLng;
 	static String myLat;
@@ -64,10 +72,19 @@ public class MainActivity extends Activity {
 	static URI uri = null;
 	static JSONObject dataFromServer, jArray;
 
+	// Progress bar variable
+	protected ProgressDialog mProgressDialog;
+	public static final int MSG_ERR = 0;
+	public static final int MSG_CNF = 1;
+	public static final int MSG_IND = 2;
+	public static final String TAG = "ProgressBarActivity";
+	private Context mContext;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mContext = this;
 
 		// Create the GPSlistenner
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -84,6 +101,10 @@ public class MainActivity extends Activity {
 		log = (TextView) findViewById(R.id.logTextView);
 		sendPosition = (Button) findViewById(R.id.httpRequest);
 		getRequest = (Button) findViewById(R.id.httpGet);
+		viewResult = (Button) findViewById(R.id.viewResult);
+		
+		// We hide the viewResult button
+		viewResult.setVisibility(View.INVISIBLE);
 
 		// Add a listener to the Locate Me Button
 		locateMe.setOnClickListener(new Button.OnClickListener() {
@@ -117,19 +138,28 @@ public class MainActivity extends Activity {
 		getRequest.setOnClickListener(new Button.OnClickListener(){
 
 			public void onClick(View arg0) {
-				
+
 				// We call the GET function
 				dataFromServer = getHttpResponse("http://192.168.1.12:3000/android");
 				System.out.println("Here is what we get from the server: " + dataFromServer);
 				
-				// Then we go to the list View
+			}
+
+		});
+		
+		// Add a listener on the View Result button
+		viewResult.setOnClickListener(new Button.OnClickListener(){
+
+			public void onClick(View v) {
+				
+				// This call an intent in order to change view
 				Intent intent = new Intent(MainActivity.this, ListViewClass.class); 
 				String jsonToString = dataFromServer.toString();
 				intent.putExtra("data", jsonToString);
 				startActivity(intent);
 				
 			}
-
+			
 		});
 
 	}
@@ -144,6 +174,7 @@ public class MainActivity extends Activity {
 	private void getPosition(){
 
 		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		System.out.println(location);
 		double longitude = location.getLongitude();
 		double latitude = location.getLatitude();
 		double altitude = location.getAltitude();
@@ -154,12 +185,22 @@ public class MainActivity extends Activity {
 	}
 
 	// GET method for Http request
-	public static JSONObject getHttpResponse(final String url) {
+	private JSONObject getHttpResponse(final String url) {
+
+		// Launch the progress dialog
+		mProgressDialog = ProgressDialog.show(this, "Please wait", "Long operation starts...", true);
+
 
 		// Create a new thread for the GET request
 		new Thread(new Runnable(){
 
 			public void run() {
+
+				// Launch the progress bar
+				Message msg = null;
+				String progressBarData = "Calling the server...";
+				msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData); // populates the message
+				mHandler.sendMessage(msg); // sends the message to our handler
 
 				// First we create the variable for the call
 				InputStream is = null;
@@ -178,6 +219,11 @@ public class MainActivity extends Activity {
 					System.out.println("Error in http connection " + e.toString());
 				}
 
+				// Dispaly an other message in the progress bar
+				progressBarData = "Parsing the Result...";
+	            msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData);  // populates the message
+	            mHandler.sendMessage(msg);  // sends the message to our handler
+
 				// Now we convert the response into a String
 				try{
 					BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
@@ -189,10 +235,16 @@ public class MainActivity extends Activity {
 					is.close();
 					result=sb.toString();
 					//System.out.println("Here is the server result: " + result);
-					
+
 				}catch(Exception e){
 					System.out.println("Error converting result " + e.toString());
 				}
+
+				// Dispaly an other message in the progress bar
+				progressBarData = "Building the json...";
+		          msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData);  // populates the message
+		            mHandler.sendMessage(msg);  // sends the message to our handler
+
 
 				// And we convert the String into a Json
 				try{
@@ -200,16 +252,26 @@ public class MainActivity extends Activity {
 				}catch(JSONException e){
 					System.out.println("Error parsing data " + e.toString());
 				}
-					
+
+				// Close the progress Dialog.
+				msg = mHandler.obtainMessage(MSG_CNF, "Parsing and computing ended successfully !");
+				mHandler.sendMessage(msg); // sends the message to our handler
+
 			}
 
 		}).start();
-
+		
+		if(jArray == null){
+			viewResult.setVisibility(View.INVISIBLE);
+		} else {
+			viewResult.setVisibility(View.VISIBLE);
+		}
+		
 		return jArray;
 	}
 
 	// POST method for Http Request
-	public static void postHttp(String url){
+	private void postHttp(String url){
 
 		// Create a new thread for the POST request
 		new Thread(new Runnable(){
@@ -252,4 +314,36 @@ public class MainActivity extends Activity {
 		}).start();
 
 	}
+
+	final Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			String text2display = null;
+			switch (msg.what) {
+			case MSG_IND:
+				if (mProgressDialog.isShowing()) {
+					mProgressDialog.setMessage(((String) msg.obj));
+				}
+				break;
+			case MSG_ERR:
+				text2display = (String) msg.obj;
+				Toast.makeText(mContext, "Error: " + text2display,
+						Toast.LENGTH_LONG).show();
+				if (mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
+				break;
+			case MSG_CNF:
+				text2display = (String) msg.obj;
+				Toast.makeText(mContext, "Info: " + text2display,
+						Toast.LENGTH_LONG).show();
+				if (mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
+				
+				break;
+			default: // should never happen
+				break;
+			}
+		}
+	};
 }

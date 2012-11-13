@@ -42,6 +42,7 @@ public class ListViewClass  extends Activity {
 		// We parse the String to JSON
 		try{
 			jArray = new JSONObject(data);
+			System.out.println("Data in ListViewClass: " + jArray);
 		}catch(JSONException e){
 			System.out.println("Error parsing data " + e.toString());
 		}
@@ -52,12 +53,14 @@ public class ListViewClass  extends Activity {
 		// Fill the table for the list
 		try{
 			//Get the element that holds the earthquakes ( JSONArray )
-			JSONArray  station = jArray.getJSONArray("station");
+			JSONObject openData = jArray.getJSONObject("opendata");
+			JSONObject answer = openData.getJSONObject("answer");
+			JSONObject data = answer.getJSONObject("data");
+			JSONArray  station = data.getJSONArray("station");
 			//Loop the Array
 			for(int i=0;i < station.length();i++){                      
 				HashMap<String, String> map = new HashMap<String, String>();
 				JSONObject e = station.getJSONObject(i);
-				map.put("id",  String.valueOf(i));
 				map.put("name", "Station name:" + e.getString("name"));
 				map.put("longitude", "Longitude: " +  e.getString("longitude"));
 				map.put("latitude", "Latitude: " +  e.getString("latitude"));
