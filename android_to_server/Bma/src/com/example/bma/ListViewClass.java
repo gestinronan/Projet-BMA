@@ -65,6 +65,7 @@ public class ListViewClass  extends Activity {
 				map.put("longitude", "Longitude: " +  e.getString("longitude"));
 				map.put("latitude", "Latitude: " +  e.getString("latitude"));
 				map.put("bikesavailable", "Bikes available: " +  e.getString("bikesavailable"));
+				map.put("distance", "Distance from here: " + e.getString("distance"));
 				mylist.add(map);
 			}
 		}catch(JSONException e)        {
@@ -74,8 +75,8 @@ public class ListViewClass  extends Activity {
 
 		// Display the list
 		ListAdapter adapter = new SimpleAdapter(this, mylist , R.layout.list_view_item,
-				new String[] { "name", "longitude", "latitude", "bikesavailable" },
-				new int[] { R.id.item_title, R.id.item_lng, R.id.item_lat, R.id.item_bike });
+				new String[] { "name", "longitude", "latitude", "bikesavailable", "distance" },
+				new int[] { R.id.item_title, R.id.item_lng, R.id.item_lat, R.id.item_bike, R.id.item_distance });
 		maListViewPerso.setAdapter(adapter);
 		
 		maListViewPerso.setOnItemClickListener(new OnItemClickListener() {

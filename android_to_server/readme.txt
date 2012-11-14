@@ -1,6 +1,26 @@
 Cette application anroid a pour but de tester la communication entre le téléphone
 et le serveur.
 
+
+///////////////////
+////Le 13/11/12////
+///////////////////
+
+Fichier MainClass:
+
+- Ajout d'un Handler permettant de gérer la progress bar
+- Ajout de la progress pour les fonction GET et POST
+- Ajout d'un bouton pour passer d'une vue à l'autre
+
+Fichier ListViewClass:
+
+- Meilleur traitement du Json
+
+
+///////////////////
+////Le 10/11/12////
+///////////////////
+
 Le fichier MainClass contient les méthodes suivantes:
 
 - Récupération des données de géolocalisation du téléphone

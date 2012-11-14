@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 	// Final variable
 	public final int INVISIBLE = 1;
 	public final int VISIBLE = 0;
-	
+
 	// Geolocation Variables
 	static String myLng;
 	static String myLat;
@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
 		sendPosition = (Button) findViewById(R.id.httpRequest);
 		getRequest = (Button) findViewById(R.id.httpGet);
 		viewResult = (Button) findViewById(R.id.viewResult);
-		
+
 		// We hide the viewResult button
 		viewResult.setVisibility(View.INVISIBLE);
 
@@ -125,7 +125,7 @@ public class MainActivity extends Activity {
 			public void onClick(View arg0) {
 
 				// Url use for the request
-				url = "http://192.168.1.12:3000/android"; // set the url for the call
+				url = "http://192.168.1.12:8080/android"; // set the url for the call
 				log.setText("Making request.");
 				// Call the server
 				postHttp(url);
@@ -140,26 +140,26 @@ public class MainActivity extends Activity {
 			public void onClick(View arg0) {
 
 				// We call the GET function
-				dataFromServer = getHttpResponse("http://192.168.1.12:3000/android");
+				dataFromServer = getHttpResponse("http://148.60.13.51:3000/android");
 				System.out.println("Here is what we get from the server: " + dataFromServer);
-				
+
 			}
 
 		});
-		
+
 		// Add a listener on the View Result button
 		viewResult.setOnClickListener(new Button.OnClickListener(){
 
 			public void onClick(View v) {
-				
+
 				// This call an intent in order to change view
 				Intent intent = new Intent(MainActivity.this, ListViewClass.class); 
 				String jsonToString = dataFromServer.toString();
 				intent.putExtra("data", jsonToString);
 				startActivity(intent);
-				
+
 			}
-			
+
 		});
 
 	}
@@ -189,7 +189,6 @@ public class MainActivity extends Activity {
 
 		// Launch the progress dialog
 		mProgressDialog = ProgressDialog.show(this, "Please wait", "Long operation starts...", true);
-
 
 		// Create a new thread for the GET request
 		new Thread(new Runnable(){
@@ -221,8 +220,8 @@ public class MainActivity extends Activity {
 
 				// Dispaly an other message in the progress bar
 				progressBarData = "Parsing the Result...";
-	            msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData);  // populates the message
-	            mHandler.sendMessage(msg);  // sends the message to our handler
+				msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData);  // populates the message
+				mHandler.sendMessage(msg);  // sends the message to our handler
 
 				// Now we convert the response into a String
 				try{
@@ -242,8 +241,8 @@ public class MainActivity extends Activity {
 
 				// Dispaly an other message in the progress bar
 				progressBarData = "Building the json...";
-		          msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData);  // populates the message
-		            mHandler.sendMessage(msg);  // sends the message to our handler
+				msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData);  // populates the message
+				mHandler.sendMessage(msg);  // sends the message to our handler
 
 
 				// And we convert the String into a Json
@@ -261,12 +260,10 @@ public class MainActivity extends Activity {
 
 		}).start();
 		
-		if(jArray == null){
-			viewResult.setVisibility(View.INVISIBLE);
-		} else {
-			viewResult.setVisibility(View.VISIBLE);
-		}
+		// Display the view data button
+		viewResult.setVisibility(View.VISIBLE);
 		
+		// Return the data
 		return jArray;
 	}
 
@@ -278,12 +275,13 @@ public class MainActivity extends Activity {
 			public void run() {
 
 				// Create the request
-				HttpPost httppost = new HttpPost("http://192.168.1.12:3000/android/data");
+				HttpPost httppost = new HttpPost("http://148.60.13.51:8080/android/data");
 
 				// Add the parameter
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(); 
 				nameValuePairs.add(new BasicNameValuePair("latitude", myLat));
 				nameValuePairs.add(new BasicNameValuePair("longitude", myLng));
+
 				try {
 					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -339,7 +337,7 @@ public class MainActivity extends Activity {
 				if (mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
 				}
-				
+
 				break;
 			default: // should never happen
 				break;
