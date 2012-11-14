@@ -27,11 +27,14 @@ var key_star = "FR6UMKCXT1TY5GJ";
 /****** Variable ********/
 var data;
 
+/******* Android varaible ****/
+var androidLat, androidLng;
+
 /********* Configuration du serveur ***********/
 
 // Configuration du serveur 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 8080);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
@@ -104,12 +107,20 @@ app.post('/android',function(req, res){
 		success: function(data){
 			
 			// Function call in case of success call.
-			console.log(data.opendata);	
+			var station = data.opendata.answer.data.station;
+				
+			// Edit the Json and add a field which contains the distance between you and the stations
+			for ( i=0; i < station.length; i++){
+					
+				// Call the getDistance function
+				d = getDistance(station.latitude, station.longitude, androidLat, androidLng);
+					
+				// add the field distance into the json
+				station.distance = d;
+			}
 			
-			// We parse the Json response
-			for (i=0; i <data.opendata.answer.data.station.length; i++){
-				console.log(data.opendata.answer.data.station[i]);
-			}	
+			// Display data
+			console.log(station);
 			
 			// Send the json data to the phone
 			res.send(data);
@@ -120,10 +131,7 @@ app.post('/android',function(req, res){
 			
 		}
 	});
-	
-
 });
-
 
 /******** Post request **********/
 
@@ -132,8 +140,8 @@ app.post('/android',function(req, res){
 app.post('/android/data', function(req, res){
 	
 	// We first get the parameter sent in the request
-	lat = req.body.latitude; // Here we get the latitude
-	lng = req.body.longitude; // Here we get the longitude
+	androidLat = req.body.latitude; // Here we get the latitude
+	androidLng = req.body.longitude; // Here we get the longitude
 	
 	
 	// Display the response
@@ -208,6 +216,18 @@ function getData(url, req, res, type){
 			// Case of android
 			else if(type == "android"){
 				
+				var station = data.opendata.answer.data.station;
+				
+				// Edit the Json and add a field which contains the distance between you and the stations
+				for ( i=0; i < station.length; i++){
+					
+					// Call the getDistance function
+					d = getDistance(station.latitude, station.longitude, androidLat, androidLng);
+					
+					// add the field distance into the json
+					station.distance = d;
+				}
+				
 			}
 		},
 		error: function(){
@@ -217,3 +237,23 @@ function getData(url, req, res, type){
 	});
 }
 
+/****** Function which calcul the distance between two points ******/ 
+
+function getDistance(lat, lng, mylat, mylng){
+	
+	// Conversion des variable en radian
+	lat = Math.PI * lat / 180;
+	lng = Math.PI * lng / 180;
+	mylat = Math.PI * mylat / 180;
+	mylng = Math.PI * mylng / 180;
+	
+	// Calcul de la distance
+	d = 2 * Math.sin(Math.sqrt((Math.sin((mylat-lat)/2))^2 + Math.cos(mylat) * Math.cos(lat)*(Math.sin((mylng-lng)/2))^2));
+	
+	// Display the result
+	console.log(d);
+	
+	// return the result
+	return d;
+	
+}
