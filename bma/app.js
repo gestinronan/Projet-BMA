@@ -34,7 +34,7 @@ var androidLat, androidLng;
 
 // Configuration du serveur 
 app.configure(function(){
-  app.set('port', process.env.PORT || 8080);
+  app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
@@ -99,38 +99,7 @@ app.post('/android',function(req, res){
 	console.log("Android get Request");
 	
 	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations";
-	var xhr = $.ajax({
-		
-		// Parameter
-		url: url, // Url uses to make the call
-		dataType: 'json',  // Type of data we receive
-		success: function(data){
-			
-			// Function call in case of success call.
-			var station = data.opendata.answer.data.station;
-				
-			// Edit the Json and add a field which contains the distance between you and the stations
-			for ( i=0; i < station.length; i++){
-					
-				// Call the getDistance function
-				d = getDistance(station.latitude, station.longitude, androidLat, androidLng);
-					
-				// add the field distance into the json
-				station.distance = d;
-			}
-			
-			// Display data
-			console.log(station);
-			
-			// Send the json data to the phone
-			res.send(data);
-		},
-		error: function(e){
-			
-			// Function call in case of error during the call.
-			
-		}
-	});
+	getData(url, req, res, "android");
 });
 
 /******** Post request **********/
@@ -143,15 +112,14 @@ app.post('/android/data', function(req, res){
 	androidLat = req.body.latitude; // Here we get the latitude
 	androidLng = req.body.longitude; // Here we get the longitude
 	
-	
 	// Display the response
-	console.log("Longitude: " + lng);
-	console.log("Latitude: " + lat);
+	console.log("Longitude: " + androidLng);
+	console.log("Latitude: " + androidLat);
 	
-	// Then we send what we want
-	res.send("ok");
+	// Then we get the data 
+	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations";
+	getData(url, req, res, "android/data");	
 });
-
 
 
 /******* Création du serveur ********/
@@ -213,21 +181,38 @@ function getData(url, req, res, type){
 				})
 			}
 			
-			// Case of android
+			// Case of android without data 
 			else if(type == "android"){
+				var station = data.opendata.answer.data.station;
+				
+				// Edit the Json and add a field which contains the distance between you and the stations
+				for ( i=0; i < station.length; i++){
+
+					// add the field distance into the json
+					station[i].distance = '0';
+				}
+				
+				res.send(data);
+				
+			}
+			
+			// Case of android with data
+			else if(type == "android/data"){
 				
 				var station = data.opendata.answer.data.station;
+				console.log("Longitude of the phone: " + androidLng);
+				console.log("Latitude of the phone: " + androidLat);
 				
 				// Edit the Json and add a field which contains the distance between you and the stations
 				for ( i=0; i < station.length; i++){
 					
 					// Call the getDistance function
-					d = getDistance(station.latitude, station.longitude, androidLat, androidLng);
+					d = getDistance(station[i].latitude, station[i].longitude, androidLat, androidLng);
 					
 					// add the field distance into the json
-					station.distance = d;
+					station[i].distance = d;
 				}
-				
+				res.send(data);
 			}
 		},
 		error: function(){
@@ -240,18 +225,12 @@ function getData(url, req, res, type){
 /****** Function which calcul the distance between two points ******/ 
 
 function getDistance(lat, lng, mylat, mylng){
+
+	// Variable
+	R = 6371; // Earth raduis in meters
 	
-	// Conversion des variable en radian
-	lat = Math.PI * lat / 180;
-	lng = Math.PI * lng / 180;
-	mylat = Math.PI * mylat / 180;
-	mylng = Math.PI * mylng / 180;
-	
-	// Calcul de la distance
-	d = 2 * Math.sin(Math.sqrt((Math.sin((mylat-lat)/2))^2 + Math.cos(mylat) * Math.cos(lat)*(Math.sin((mylng-lng)/2))^2));
-	
-	// Display the result
-	console.log(d);
+	// Math equation
+	d = Math.acos(Math.sin(mylat)*Math.sin(lat)+Math.cos(mylat)*Math.cos(lat)*Math.cos(lng-mylng))*R
 	
 	// return the result
 	return d;
