@@ -31,10 +31,12 @@ import org.json.JSONObject;
 
 import com.example.bma.R;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -62,8 +64,7 @@ public class MainActivity extends Activity {
 	static String myLat;
 	static String myAlt;
 	protected LocationManager locationManager;
-	private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1; // In meters
-	private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1000; // In Millisecondes
+	LocationListener locationListener;
 
 	// Http request Variable
 	static String respFromServer;
@@ -79,20 +80,14 @@ public class MainActivity extends Activity {
 	public static final int MSG_IND = 2;
 	public static final String TAG = "ProgressBarActivity";
 	private Context mContext;
+	private Handler mHandler;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		mContext = this;
-
-		// Create the GPSlistenner
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates (LocationManager.GPS_PROVIDER,
-				MINIMUM_TIME_BETWEEN_UPDATES,
-				MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
-				new MyLocationListener());
-
 		// Get the layout element
 		lng = (TextView) findViewById(R.id.longitude);
 		lat = (TextView) findViewById(R.id.lattitude);
@@ -111,10 +106,11 @@ public class MainActivity extends Activity {
 
 			// Action when clicking the button
 			public void onClick(View v) {
-				getPosition();
+				getPosition();	
 				lng.setText("Longitude: " + myLng);
 				lat.setText("Latitude: " + myLat);
 				alt.setText("Altitude: " + myAlt);
+				
 			}
 		});
 
@@ -140,7 +136,7 @@ public class MainActivity extends Activity {
 			public void onClick(View arg0) {
 
 				// We call the GET function
-				dataFromServer = getHttpResponse("http://148.60.13.51:3000/android");
+				getHttpResponse("http://192.168.1.12:3000/android");
 				System.out.println("Here is what we get from the server: " + dataFromServer);
 
 			}
@@ -162,6 +158,38 @@ public class MainActivity extends Activity {
 
 		});
 
+		// Handler which manage the progress dialog 
+		mHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				String text2display = null;
+				switch (msg.what) {
+				case MSG_IND:
+					if (mProgressDialog.isShowing()) {
+						mProgressDialog.setMessage(((String) msg.obj));
+					}
+					break;
+				case MSG_ERR:
+					text2display = (String) msg.obj;
+					Toast.makeText(mContext, "Error: " + text2display,
+							Toast.LENGTH_LONG).show();
+					if (mProgressDialog.isShowing()) {
+						mProgressDialog.dismiss();
+					}
+					break;
+				case MSG_CNF:
+					text2display = (String) msg.obj;
+					Toast.makeText(mContext, "Info: " + text2display,
+							Toast.LENGTH_LONG).show();
+					if (mProgressDialog.isShowing()) {
+						mProgressDialog.dismiss();
+					}
+
+					break;
+				default: // should never happen
+					break;
+				}
+			}
+		};
 	}
 
 	@Override
@@ -172,20 +200,35 @@ public class MainActivity extends Activity {
 
 	// Get GPS position
 	private void getPosition(){
+		// Define a listener that responds to location updates
+		
+		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);  
+        List<String> providers = lm.getProviders(true);
 
-		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		System.out.println(location);
-		double longitude = location.getLongitude();
-		double latitude = location.getLatitude();
-		double altitude = location.getAltitude();
-		myLat = "" + latitude;
-		myLng = "" + longitude;
-		myAlt = "" + altitude;
-
+        /* Loop over the array backwards, and if you get an accurate location, then break out the loop*/
+        Location l = null;
+        
+        for (int i=providers.size()-1; i>=0; i--) {
+                l = lm.getLastKnownLocation(providers.get(i));
+                if (l != null) break;
+        }
+        
+        double[] gps = new double[3];
+        if (l != null) {
+                gps[0] = l.getLatitude();
+                gps[1] = l.getLongitude();
+                gps[2] = l.getAltitude();
+        }
+        myLat = String.valueOf(gps[0]);
+        myLng = String.valueOf(gps[1]);
+        myAlt = String.valueOf(gps[2]);
+        
+       // return gps;
+		
 	}
 
 	// GET method for Http request
-	private JSONObject getHttpResponse(final String url) {
+	private void getHttpResponse(final String url) {
 
 		// Launch the progress dialog
 		mProgressDialog = ProgressDialog.show(this, "Please wait", "Long operation starts...", true);
@@ -251,31 +294,41 @@ public class MainActivity extends Activity {
 				}catch(JSONException e){
 					System.out.println("Error parsing data " + e.toString());
 				}
+				// Copy the data into the local variable
+				dataFromServer = jArray;
 
 				// Close the progress Dialog.
 				msg = mHandler.obtainMessage(MSG_CNF, "Parsing and computing ended successfully !");
 				mHandler.sendMessage(msg); // sends the message to our handler
-
 			}
-
 		}).start();
-		
+
 		// Display the view data button
 		viewResult.setVisibility(View.VISIBLE);
-		
-		// Return the data
-		return jArray;
 	}
 
 	// POST method for Http Request
 	private void postHttp(String url){
 
+		// Launch the progress dialog
+		mProgressDialog = ProgressDialog.show(this, "Please wait", "Long operation starts...", true);
+
 		// Create a new thread for the POST request
 		new Thread(new Runnable(){
 			public void run() {
 
+				// Launch the progress bar
+				Message msg = null;
+				String progressBarData = "Sending data to the server";
+				msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData); // populates the message
+				mHandler.sendMessage(msg); // sends the message to our handler
+
+				// First we create the variable for the call
+				InputStream is = null;
+				String result = "";
+
 				// Create the request
-				HttpPost httppost = new HttpPost("http://148.60.13.51:8080/android/data");
+				HttpPost httppost = new HttpPost("http://192.168.1.12:3000/android/data");
 
 				// Add the parameter
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(); 
@@ -288,60 +341,62 @@ public class MainActivity extends Activity {
 					// Then we send the request
 					HttpClient httpclient = new DefaultHttpClient();
 					httpclient.execute(httppost);
-
-					// We get the server response
-					ResponseHandler<String> responseHandler = new BasicResponseHandler();
-					String response = httpclient.execute(httppost, responseHandler);
-					System.out.println("Server response : " + response);
+					HttpResponse response = httpclient.execute(httppost);
+					HttpEntity entity = response.getEntity();
+					is = entity.getContent();
 
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					log.setText("UnsupportedEncodingException: " + e.toString());
-
 				} catch (ClientProtocolException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					log.setText("ClientProtocolException: " + e.toString());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					log.setText("IOException: " + e.toString());
 				}
+
+				// Dispaly an other message in the progress bar
+				progressBarData = "Parsing the Result...";
+				msg = mHandler.obtainMessage(MSG_IND, (Object) progressBarData);  // populates the message
+				mHandler.sendMessage(msg);  // sends the message to our handler
+
+				// Now we convert the response into a String
+				try{
+					BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+					StringBuilder sb = new StringBuilder();
+					String line = null;
+					while ((line = reader.readLine()) != null) {
+						sb.append(line + "\n");
+					}
+					is.close();
+					result=sb.toString();
+
+					// And we convert the String into a Json
+					jArray = new JSONObject(result);
+					System.out.println(jArray);
+				}catch(JSONException e){
+					System.out.println("Error parsing data " + e.toString());
+
+				}catch(Exception e){
+					System.out.println("Error converting result " + e.toString());
+				}
+				// Copy the data into the local variable
+				dataFromServer = jArray;
+
+				// Close the progress Dialog.
+				msg = mHandler.obtainMessage(MSG_CNF, "Parsing and computing ended successfully !");
+				mHandler.sendMessage(msg); // sends the message to our handler
 			}
 		}).start();
 
+		// Display the view data button
+		viewResult.setVisibility(View.VISIBLE);
 	}
 
-	final Handler mHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			String text2display = null;
-			switch (msg.what) {
-			case MSG_IND:
-				if (mProgressDialog.isShowing()) {
-					mProgressDialog.setMessage(((String) msg.obj));
-				}
-				break;
-			case MSG_ERR:
-				text2display = (String) msg.obj;
-				Toast.makeText(mContext, "Error: " + text2display,
-						Toast.LENGTH_LONG).show();
-				if (mProgressDialog.isShowing()) {
-					mProgressDialog.dismiss();
-				}
-				break;
-			case MSG_CNF:
-				text2display = (String) msg.obj;
-				Toast.makeText(mContext, "Info: " + text2display,
-						Toast.LENGTH_LONG).show();
-				if (mProgressDialog.isShowing()) {
-					mProgressDialog.dismiss();
-				}
+	public void NullPointerException(String s) {
+		System.out.println("NullPointerException: " + s);
 
-				break;
-			default: // should never happen
-				break;
-			}
-		}
-	};
+	}
+
 }
