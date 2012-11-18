@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@null" >
+
+       
+
+        <com.google.android.maps.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mapview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:apiKey="0zINsybdq9J7CB6ueoe1ABLcPNOzFEPGqJmPcBQ"
+            android:clickable="true" />
+
+        <ImageButton
+            android:id="@+id/locateMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_mylocation" />
+
+         <RelativeLayout
+             android:id="@+id/linearLayout1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentLeft="true"
+             android:layout_alignParentRight="true"
+             android:layout_alignParentTop="true"
+             android:alpha="0.8"
+             android:background="#FFFFFF" >
+
+             <Button
+                 android:id="@+id/busButton"
+                 style="?android:attr/buttonStyleSmall"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_alignParentTop="true"
+                 android:layout_marginRight="64dp"
+                 android:alpha="1"
+                 android:text="Bus Stops" />
+
+             <Button
+                 android:id="@+id/bikeButton"
+                 style="?android:attr/buttonStyleSmall"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentTop="true"
+                 android:layout_marginRight="32dp"
+                 android:layout_toLeftOf="@+id/busButton"
+                 android:alpha="1"
+                 android:text="Bike stations" />
+
+         </RelativeLayout>
+
+    </RelativeLayout>
