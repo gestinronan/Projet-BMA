@@ -47,13 +47,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements LocationListener{
+	
+	/************** Global Variable Declaration *********************/
 	// Layout Variables
 	TextView lng, lat;
 	static TextView log;
 	TextView alt;
-	Button locateMe, sendPosition, getRequest, viewResult;
+	Button locateMe, sendPosition, getRequest, viewResult, mapView;
 
 	// Final variable
 	public final int INVISIBLE = 1;
@@ -63,8 +64,9 @@ public class MainActivity extends Activity {
 	static String myLng;
 	static String myLat;
 	static String myAlt;
-	protected LocationManager locationManager;
-	LocationListener locationListener;
+	
+	// Location listener
+	private LocationManager lm;
 
 	// Http request Variable
 	static String respFromServer;
@@ -81,13 +83,25 @@ public class MainActivity extends Activity {
 	public static final String TAG = "ProgressBarActivity";
 	private Context mContext;
 	private Handler mHandler;
-
+	/*****************************************************/
+	/**************** First Fonction call ****************/
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// Location listner
+		lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+		if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0,
+					this);
+		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0,
+				this);
+
 		mContext = this;
+		
+		
 		// Get the layout element
 		lng = (TextView) findViewById(R.id.longitude);
 		lat = (TextView) findViewById(R.id.lattitude);
@@ -97,11 +111,12 @@ public class MainActivity extends Activity {
 		sendPosition = (Button) findViewById(R.id.httpRequest);
 		getRequest = (Button) findViewById(R.id.httpGet);
 		viewResult = (Button) findViewById(R.id.viewResult);
+		mapView = (Button) findViewById(R.id.viewMap);
 
 		// We hide the viewResult button
 		viewResult.setVisibility(View.INVISIBLE);
-
-		// Add a listener to the Locate Me Button
+		
+		/*****Add a listener to the Locate Me Button *******/
 		locateMe.setOnClickListener(new Button.OnClickListener() {
 
 			// Action when clicking the button
@@ -110,11 +125,11 @@ public class MainActivity extends Activity {
 				lng.setText("Longitude: " + myLng);
 				lat.setText("Latitude: " + myLat);
 				alt.setText("Altitude: " + myAlt);
-				
+
 			}
 		});
-
-		// Add a Listener to the Send Position Button
+		/*****************************************************/
+		/*****Add a Listener to the Send Position Button******/
 		sendPosition.setOnClickListener(new Button.OnClickListener() {
 
 			// Action when clicking the button
@@ -129,8 +144,8 @@ public class MainActivity extends Activity {
 				// Display the response
 				log.setText(respFromServer);
 			}});
-
-		// add a listener to the Get Data button
+		/*****************************************************/
+		/*****add a listener to the Get Data button***********/
 		getRequest.setOnClickListener(new Button.OnClickListener(){
 
 			public void onClick(View arg0) {
@@ -142,8 +157,8 @@ public class MainActivity extends Activity {
 			}
 
 		});
-
-		// Add a listener on the View Result button
+		/*****************************************************/
+		/*******Add a listener on the View Result button******/
 		viewResult.setOnClickListener(new Button.OnClickListener(){
 
 			public void onClick(View v) {
@@ -157,8 +172,24 @@ public class MainActivity extends Activity {
 			}
 
 		});
+		/*****************************************************/
+		/*******Add a listener to the Map View button ********/
+		mapView.setOnClickListener(new Button.OnClickListener(){
 
-		// Handler which manage the progress dialog 
+			@Override
+			public void onClick(View arg0) {
+
+				// This call an intent in order to change view
+				Intent intent = new Intent(MainActivity.this, MapViewClass.class); 
+				intent.putExtra("latitude", myLat);
+				intent.putExtra("longitude", myLng);
+				startActivity(intent);
+
+			}
+
+		});
+		/*****************************************************/
+		/******Handler which manage the progress dialog************/ 
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {
 				String text2display = null;
@@ -190,44 +221,22 @@ public class MainActivity extends Activity {
 				}
 			}
 		};
+		/*****************************************************/
 	}
-
-	@Override
+	/*****************************************************/
+	/****** Method which creat the action bar ************/
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-
-	// Get GPS position
+	/*****************************************************/
+	/************* Get GPS position *********************/
 	private void getPosition(){
-		// Define a listener that responds to location updates
-		
-		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);  
-        List<String> providers = lm.getProviders(true);
 
-        /* Loop over the array backwards, and if you get an accurate location, then break out the loop*/
-        Location l = null;
-        
-        for (int i=providers.size()-1; i>=0; i--) {
-                l = lm.getLastKnownLocation(providers.get(i));
-                if (l != null) break;
-        }
-        
-        double[] gps = new double[3];
-        if (l != null) {
-                gps[0] = l.getLatitude();
-                gps[1] = l.getLongitude();
-                gps[2] = l.getAltitude();
-        }
-        myLat = String.valueOf(gps[0]);
-        myLng = String.valueOf(gps[1]);
-        myAlt = String.valueOf(gps[2]);
-        
-       // return gps;
-		
+
 	}
-
-	// GET method for Http request
+	/*****************************************************/
+	/********* GET method for Http request ***************/
 	private void getHttpResponse(final String url) {
 
 		// Launch the progress dialog
@@ -306,8 +315,8 @@ public class MainActivity extends Activity {
 		// Display the view data button
 		viewResult.setVisibility(View.VISIBLE);
 	}
-
-	// POST method for Http Request
+	/*****************************************************/
+	/****** POST method for Http Request *****************/
 	private void postHttp(String url){
 
 		// Launch the progress dialog
@@ -393,10 +402,38 @@ public class MainActivity extends Activity {
 		// Display the view data button
 		viewResult.setVisibility(View.VISIBLE);
 	}
-
-	public void NullPointerException(String s) {
-		System.out.println("NullPointerException: " + s);
+	/*****************************************************/
+	
+	/**************Location Listener********************/
+	
+	/******** Called when the location change***********/
+	public void onLocationChanged(Location location) {
+		
+		// Copy the longitude and latitude in global variable
+		double lat = location.getLatitude();
+		double lng = location.getLongitude();
+		myLat = String.valueOf(lat);
+		myLng = String.valueOf(lng);
 
 	}
+	/*****************************************************/
+	/***********Called when the GPS is Disable************/
+	@Override
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
 
+	}
+	/*****************************************************/
+	/***********Called when the GPS is Enable ************/
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+
+	}
+	/*****************************************************/
+	/*******Called when the GPS status change ************/
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+
+	}
+	/*****************************************************/
 }

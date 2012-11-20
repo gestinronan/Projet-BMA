@@ -90,8 +90,6 @@ app.get('/bus', function(req, res){
 });
 
 
-
-
 /************ Example of an other get Request *****/
 
 app.post('/android',function(req, res){
@@ -228,6 +226,13 @@ function getDistance(lat, lng, mylat, mylng){
 
 	// Variable
 	R = 6371; // Earth raduis in meters
+	
+	// Conversion to Radian
+	lat = (lat * Math.pi) / 180;
+	lng = (lng * Math.pi) / 180;
+	mylat = (mylat * Math.pi) / 180;
+	mylat = (mylat * Math.pi) / 180;
+	
 	
 	// Math equation
 	d = Math.acos(Math.sin(mylat)*Math.sin(lat)+Math.cos(mylat)*Math.cos(lat)*Math.cos(lng-mylng))*R

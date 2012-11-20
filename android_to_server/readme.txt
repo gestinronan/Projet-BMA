@@ -3,6 +3,20 @@ et le serveur.
 
 
 ///////////////////
+////Le 15/11/12////
+///////////////////
+
+Fichier MainClass:
+
+- Récuperation des data dans le méthode post
+- Fix of some bug
+- Si la position est envoyé la résultat contient la distance 
+
+Fichier ListViewClass:
+
+- Management de la Distance
+
+///////////////////
 ////Le 13/11/12////
 ///////////////////
 
