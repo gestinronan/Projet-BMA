@@ -32,9 +32,21 @@ public class MainActivity extends Activity {
 		// Create an intent
 		Intent intent = new Intent(MainActivity.this, MapViewClass.class); 
 		
+		
+		/******** Get raid of the http request ****/
+		
+		String dataBus = "";
+		String dataBike = "";
+		intent.putExtra("busData", dataBus);
+		intent.putExtra("bikeData", dataBike);
+		
+		// Start the other Activity
+		startActivity(intent);
+		/*******************************************/
+		
 		// Create an object of the call HttpRequest
-		HttpRequestClass request = new HttpRequestClass(context, intent);
-		request.execute();
+		//HttpRequestClass request = new HttpRequestClass(context, intent);
+		//request.execute();
 
 	}
 

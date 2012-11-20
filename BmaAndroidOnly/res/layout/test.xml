@@ -1,0 +1,117 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <EditText
+        android1:id="@+id/editText1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentLeft="true"
+        android1:layout_alignParentTop="true"
+        android1:layout_marginLeft="20dp"
+        android1:layout_marginTop="20dp"
+        android1:ems="10"
+        android1:hint="Départ" />
+
+    <EditText
+        android1:id="@+id/editText2"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignLeft="@+id/editText1"
+        android1:layout_below="@+id/editText1"
+        android1:layout_marginTop="19dp"
+        android1:ems="10"
+        android1:hint="Départ" />
+
+    <Switch
+        android1:id="@+id/switch1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignLeft="@+id/editText2"
+        android1:layout_below="@+id/editText2"
+        android1:layout_marginTop="30dp"
+        android1:text="Bus" />
+
+    <Switch
+        android1:id="@+id/switch2"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignLeft="@+id/switch1"
+        android1:layout_below="@+id/switch1"
+        android1:layout_marginTop="21dp"
+        android1:text="Vélo" />
+
+    <Switch
+        android1:id="@+id/switch3"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignRight="@+id/switch2"
+        android1:layout_below="@+id/switch2"
+        android1:layout_marginTop="19dp"
+        android1:text="Voiture" />
+
+    <RadioGroup
+        android1:id="@+id/radioGroup1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignLeft="@+id/switch2"
+        android1:layout_below="@+id/switch3"
+        android1:layout_marginTop="24dp" >
+
+        <RadioButton
+            android1:id="@+id/radio0"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:checked="true"
+            android1:text="Le plus court" />
+
+        <RadioButton
+            android1:id="@+id/radio1"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:text="Le plus rapide" />
+
+        <RadioButton
+            android1:id="@+id/radio2"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:text="Sportif" />
+    </RadioGroup>
+
+    <Button
+        android1:id="@+id/button1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_below="@+id/radioGroup1"
+        android1:layout_toRightOf="@+id/editText2"
+        android1:text="Valider" />
+
+    <ImageButton
+        android1:id="@+id/imageButton2"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignLeft="@+id/button1"
+        android1:layout_alignTop="@+id/editText2"
+        android1:layout_marginLeft="23dp"
+        android1:background="@android:color/transparent"
+        android1:src="@android:drawable/ic_menu_mylocation" />
+
+    <ImageButton
+        android1:id="@+id/imageButton1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_above="@+id/editText2"
+        android1:layout_alignLeft="@+id/imageButton2"
+        android1:background="@android:color/transparent"
+        android1:src="@android:drawable/ic_menu_mylocation" />
+
+    <ImageView
+        android1:id="@+id/imageView1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignBottom="@+id/button1"
+        android1:layout_alignRight="@+id/switch1"
+        android1:src="@drawable/downarrow" />
+
+</RelativeLayout>

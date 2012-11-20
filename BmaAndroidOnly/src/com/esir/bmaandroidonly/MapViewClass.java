@@ -4,8 +4,6 @@ package com.esir.bmaandroidonly;
 
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -14,11 +12,16 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.SlidingDrawer;
+import android.widget.SlidingDrawer.OnDrawerCloseListener;
+import android.widget.SlidingDrawer.OnDrawerOpenListener;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -53,8 +56,9 @@ public class MapViewClass extends MapActivity implements LocationListener{
 
 	// Layout element
 	ImageButton locateMe;
-	Button busStop, bikeStop;
-	LinearLayout settingLayout;
+	Button valider, handle;
+	SlidingDrawer slidingMenu;
+	
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,13 +75,13 @@ public class MapViewClass extends MapActivity implements LocationListener{
 		// We get the layout element
 		mapView = (MapView) findViewById(R.id.mapview);
 		locateMe = (ImageButton) findViewById(R.id.locateMe);
-		busStop = (Button) findViewById(R.id.busButton);
-		bikeStop = (Button) findViewById(R.id.bikeButton);
+		slidingMenu = (SlidingDrawer) findViewById(R.id.drawer);
+		valider = (Button) findViewById(R.id.valider);
+		handle = (Button) findViewById(R.id.slideButton);
 
 		// Add the Listener to the Button
 		locateMe.setOnClickListener(locateMeListener);
-		busStop.setOnClickListener(busStopListener);
-		bikeStop.setOnClickListener(bikeStopListener);
+		valider.setOnClickListener(valideListener);
 
 		// Marker on the map
 		mapOverlays = mapView.getOverlays();
@@ -90,7 +94,7 @@ public class MapViewClass extends MapActivity implements LocationListener{
 		myPositionOverlay = new MapOverlayBma(myPositionLogo, this); // This instance of the marker class is made for the current position
 
 		// Set the Map
-		mapView.setBuiltInZoomControls(true);
+		mapView.setBuiltInZoomControls(true); // enable the Zoom option
 		mc = mapView.getController();
 		mc.setZoom(13);
 
@@ -98,7 +102,50 @@ public class MapViewClass extends MapActivity implements LocationListener{
 		Intent intent = getIntent();
 		busResult = intent.getStringExtra("busData");
 		bikeResult = intent.getStringExtra("bikeData");
+		
+		// Set the sliding drawer
+		handle.setBackgroundResource(R.drawable.downarrow);
 
+		// Listener on open and close event of sliding drawer
+		slidingMenu.setOnDrawerOpenListener(new OnDrawerOpenListener() {
+            @Override
+            public void onDrawerOpened() {
+                handle.setBackgroundResource(R.drawable.uparrow);
+            }
+        });
+ 
+        slidingMenu.setOnDrawerCloseListener(new OnDrawerCloseListener() {
+            @Override
+            public void onDrawerClosed() {
+                handle.setBackgroundResource(R.drawable.downarrow);
+            }
+        });
+		
+	}
+
+	// Create the Action Bar
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_menu, menu);
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowHomeEnabled(false);
+		return true;
+	}
+
+	// Manage the tap on each item of the menu
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_search:
+			
+			// Comportement du bouton "Recherche"
+			return true;
+		case R.id.menu_settings:
+			
+			// Change activity to settings menu
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -165,15 +212,28 @@ public class MapViewClass extends MapActivity implements LocationListener{
 		}
 
 	};
+	
+	// Listener for the valide button
+	private OnClickListener valideListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			
+			// Close the sliding drawer
+			slidingMenu.close();
+			
+			// Then send data to the server
+		}
+	};
 
 	// Listener for the bus Stop button
-	private OnClickListener busStopListener = new OnClickListener() {
+	/*private OnClickListener busStopListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View arg0) {
 
 			// If the bike list is display, we remove it
-			/*if(bikeOverlays != null){
+			if(bikeOverlays != null){
 				Iterator i = bikeOverlays.iterator();
 
 				// Go over the list
@@ -184,7 +244,7 @@ public class MapViewClass extends MapActivity implements LocationListener{
 					mapView.getOverlays().remove(overlay);
 				}
 				bikeOverlays = null;
-			}*/
+			}
 
 
 			// First we convert the data into a JSON Object
@@ -193,7 +253,7 @@ public class MapViewClass extends MapActivity implements LocationListener{
 			}catch(JSONException e){
 				System.out.println("Error parsing data " + e.toString());
 			}
-			
+
 			// Check if the data are convert
 			System.out.println("JSONObject: " + busData);
 
@@ -254,7 +314,7 @@ public class MapViewClass extends MapActivity implements LocationListener{
 		public void onClick(View arg0) {
 
 			// If the bus list is display, we remove it
-			/*if(busOverlays != null){
+			if(busOverlays != null){
 				Iterator i = busOverlays.iterator();
 
 				// Go over the list
@@ -265,7 +325,7 @@ public class MapViewClass extends MapActivity implements LocationListener{
 					mapView.getOverlays().remove(overlay);
 				}
 				busOverlays = null;
-			}*/
+			}
 
 
 			// First we convert the data into a JSON Object
@@ -321,6 +381,6 @@ public class MapViewClass extends MapActivity implements LocationListener{
 			}
 
 		}
-	};
+	};*/
 }
 
