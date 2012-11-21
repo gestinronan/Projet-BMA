@@ -1,12 +1,22 @@
 package com.example.bma;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.ScaleBarOverlay;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +33,9 @@ public class MapViewClass extends Activity{
 
 	/************** Global variable declaration *********/
 	
+	// 
+	Context mcontext;  
+
 	// Map Variable
 	private MapController mapController;
 	private MapView mapView;
@@ -34,31 +47,58 @@ public class MapViewClass extends Activity{
 
 	// Geolocation variable
 	double myLat, myLng;
-	
+
+	// Marker variable
+	ArrayList<OverlayItem> anotherOverlayItemArray;
+	ArrayList<OverlayItem> bikeOverlayItemArray;
+	ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
+	Drawable bikeMarker;
+
+	// Intent value
+	JSONObject bikeData;
+	String bikeIntent;
+
 	/*****************************************************/
 	/********* On create Mehtod First launch *************/
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_view);
-
+		
+		// Initiate the mcontext variable
+		mcontext = this;
+		
 		// We get the data from the intent
 		Intent intent = getIntent();
 		String lng = intent.getStringExtra("longitude");
 		String lat = intent.getStringExtra("latitude");
+		bikeIntent = intent.getStringExtra("bikedata");
 
 		// We parse the String into double
 		myLat = new Double(lat);
 		myLng = new Double(lng);
+
+		// And the String into Json 
+		try{
+			bikeData = new JSONObject(bikeIntent);
+		}catch(JSONException e){
+			System.out.println("Error parsing data " + e.toString());
+		}
 
 		// We get the layout elements
 		mapView = (MapView) findViewById(R.id.mapview);
 		handle = (Button) findViewById(R.id.slideButton);
 		slidingMenu = (SlidingDrawer) findViewById(R.id.drawer);
 		locateMe = (ImageButton) findViewById(R.id.locateMe);
+		valider = (Button) findViewById(R.id.valider);
+		
+		// Define the marker
+		bikeMarker = this.getResources().getDrawable(R.drawable.greenpoint);
 
 		// Set listener on the layout elements
 		locateMe.setOnClickListener(locateMeListener);
+		valider.setOnClickListener(validerListener);
 
+		/*************** Sliding Drawer Listener ***************/
 		// Set the sliding drawer
 		handle.setBackgroundResource(R.drawable.downarrow);
 
@@ -77,14 +117,34 @@ public class MapViewClass extends Activity{
 				handle.setBackgroundResource(R.drawable.downarrow);
 			}
 		});
+		/*****************************************************/
 
-
+		// Controle the map
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
-		mapController.setZoom(15);
+		mapController.setZoom(13);
 		GeoPoint point2 = new GeoPoint(myLat, myLng);
 		mapController.setCenter(point2);
+
+		/*************** This is an example *******************/
+		// Create a geopoint marker
+		anotherOverlayItemArray = new ArrayList<OverlayItem>();
+		anotherOverlayItemArray.add(new OverlayItem("Hello", "Here I am", new GeoPoint(myLat, myLng)));
+
+		// Copy the marker array into another table
+		ItemizedIconOverlay<OverlayItem> anotherItemizedIconOverlay 
+		= new ItemizedIconOverlay<OverlayItem>(
+				this, anotherOverlayItemArray, null);
+
+		// Add the overlays on the map
+		mapView.getOverlays().add(anotherItemizedIconOverlay);
+		/*****************************************************/
+
+
+		//Add Scale Bar
+		ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(this);
+		mapView.getOverlays().add(myScaleBarOverlay);
 	}
 	/*****************************************************/
 	/************** Is route display method **************/
@@ -118,7 +178,7 @@ public class MapViewClass extends Activity{
 		}
 	}
 	/*****************************************************/
-	
+
 	/******************** Listener ************************/
 
 	/********* Listener for the Locate me Button **********/
@@ -148,5 +208,85 @@ public class MapViewClass extends Activity{
 		}
 	};
 	/******************************************************/
-}
 
+	/************Listener fir the valider button************/
+	private OnClickListener validerListener= new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			
+			// Close the sliding drawer
+			slidingMenu.close();
+			
+			/********* This display all the bike station *********/
+			// Call the method that create a item array
+			bikeOverlayItemArray = displayPoint(bikeData);
+
+			// Add the array into another array with some parameters
+			bikeItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, bikeOverlayItemArray, null);
+
+			// Add the overlays into the map
+			mapView.getOverlays().add(bikeItemizedIconOverlay);
+			/******************************************************/
+			
+		}
+
+	};
+	/******************************************************/
+	/********** Display a list of point into marker *******/
+	public ArrayList<OverlayItem> displayPoint(JSONObject dataJson){
+
+		// Declare variables
+		JSONObject openData;
+		JSONArray  station = null;
+
+		// Then we get the part of the JSON that we want
+		try {
+			openData = dataJson.getJSONObject("opendata");
+			JSONObject answer = openData.getJSONObject("answer");
+			JSONObject data = answer.getJSONObject("data");
+			station = data.getJSONArray("station");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//Loop the Array
+		for(int i=0;i < station.length();i++){  
+
+			// We get the data we want 
+			JSONObject e;
+			String name = null, bikeAvailable = null;
+			double lng = 0, lat = 0;
+
+			// Initiate the variable we need
+			try {
+				e = station.getJSONObject(i);
+				// get the value
+				lng = e.getDouble("longitude");
+				lat = e.getDouble("latitude");
+				name = e.getString("name");
+				bikeAvailable = String.valueOf(e.getDouble("bikesavailable"));
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			//Create the overlay and add it to the array
+			anotherOverlayItemArray = new ArrayList<OverlayItem>();
+			
+			// Create a overlay for a special position
+			OverlayItem marker = new OverlayItem(name, bikeAvailable, new GeoPoint(lat, lng));
+			
+			// Add the graphics to the marker
+			marker.setMarker(bikeMarker);
+			
+			// Add the marker into the list
+			anotherOverlayItemArray.add(marker);
+		}
+		return anotherOverlayItemArray;
+
+	}
+
+	/*******************************************************/
+}

@@ -201,11 +201,23 @@ function getData(url, req, res, type){
 				console.log("Longitude of the phone: " + androidLng);
 				console.log("Latitude of the phone: " + androidLat);
 				
+				// We create a point with our coordinate
+				//var myPos = Point(androidLat, androidLng);
+				
 				// Edit the Json and add a field which contains the distance between you and the stations
 				for ( i=0; i < station.length; i++){
 					
 					// Call the getDistance function
 					d = getDistance(station[i].latitude, station[i].longitude, androidLat, androidLng);
+					
+					/******* Use the node-module where *********/
+					
+					// Create the Geopoint of the stop
+					//var bikeStation = Point(station[i].latitude, station[i].longitude);
+					
+					// then we calcul
+					//myPos.distanceTo(bikeStation);
+					/*******************************************/
 					
 					// add the field distance into the json
 					station[i].distance = d;

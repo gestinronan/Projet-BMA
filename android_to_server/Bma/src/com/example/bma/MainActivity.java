@@ -136,7 +136,7 @@ public class MainActivity extends Activity implements LocationListener{
 			public void onClick(View arg0) {
 
 				// Url use for the request
-				url = "http://192.168.1.12:8080/android"; // set the url for the call
+				url = "http://192.168.1.12:3000/android"; // set the url for the call
 				log.setText("Making request.");
 				// Call the server
 				postHttp(url);
@@ -151,7 +151,7 @@ public class MainActivity extends Activity implements LocationListener{
 			public void onClick(View arg0) {
 
 				// We call the GET function
-				getHttpResponse("http://192.168.1.12:3000/android");
+				getHttpResponse("http://192.168.1.12:3000/android/data");
 				System.out.println("Here is what we get from the server: " + dataFromServer);
 
 			}
@@ -181,8 +181,11 @@ public class MainActivity extends Activity implements LocationListener{
 
 				// This call an intent in order to change view
 				Intent intent = new Intent(MainActivity.this, MapViewClass.class); 
+				
+				// This add data into the intent as latitude longitude
+				intent.putExtra("bikedata", dataFromServer.toString());
 				intent.putExtra("latitude", myLat);
-				intent.putExtra("longitude", myLng);
+				intent.putExtra("longitude", myLng); 
 				startActivity(intent);
 
 			}
