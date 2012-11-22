@@ -29,6 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.android_prod.MapView"
+            android:label="@string/title_activity_map_view" >
+        </activity>
     </application>
 
 </manifest>
