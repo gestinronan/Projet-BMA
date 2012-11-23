@@ -22,11 +22,11 @@ public class FirstView extends Activity {
 			Intent intent = new Intent(FirstView.this, MapViewClass.class); 
 			
 			
-			
 			// Create an object of the call HttpRequest
 		HttpRequestClass request = new HttpRequestClass(context, intent);
 		request.execute();
 	     
+		
 	     
 	 }
 	

@@ -1,6 +1,10 @@
 package com.android_prod;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -13,6 +17,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
+
+import java.lang.Object;
+import java.nio.Buffer;
 
 public class HttpRequestClass extends AsyncTask<Void, Integer, Void>{
 
@@ -27,8 +35,11 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void>{
 		intent = i;
 	}
 
+	@SuppressWarnings("null")
 	protected Void doInBackground(Void... arg0) {
 
+		
+		
 		/***** Get the bike data *****/
 
 		// First we create the variable for the call
@@ -67,9 +78,27 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void>{
 		dataBike = resultBike;
 		
 		/*********** Get the bus Data ********/
+		// Creation of the file to took it in the internal storage
+		String FILENAME = "Bus_Metro_data.json";
+		Context  fileContext = null;
+		FileOutputStream WriteStream = null;
+		@SuppressWarnings("unused")
+		FileInputStream ReadStream=null;
+		
+		try {
+			//if the file found
+			ReadStream=fileContext.openFileInput(FILENAME);
+			byte[] buffer = null;
+			ReadStream.read(buffer);
+			dataBus=buffer.toString();
+			
+		} catch (FileNotFoundException e1) {
+			
+	
+		// If File Not found
 
 		try{
-
+			
 			HttpClient httpclient = new DefaultHttpClient();
 
 			HttpPost httppost = new HttpPost("http://data.keolis-rennes.com/json/?version=1.0&key=FR6UMKCXT1TY5GJ&cmd=getstation&param[request]=all");
@@ -95,10 +124,29 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void>{
 		}catch(Exception e){
 			System.out.println("Error converting result " + e.toString());
 		}
-
+		
 		dataBus = resultBus;
+		
+		try {
+			WriteStream = fileContext.getApplicationContext().openFileOutput(FILENAME, Context.MODE_WORLD_WRITEABLE);
+			WriteStream.write(dataBus.getBytes());
+			WriteStream.close();
+		} catch (IOException e) {
+			// Error during wrinting File
+			Toast error=Toast.makeText(fileContext, "File Bus information Not Write", Toast.LENGTH_LONG);
+			error.show();
+		}
+		
 
+				} catch (Exception e) {
+			// Error during reading file
+					Toast error=Toast.makeText(fileContext, "Erreur a la lecture du fichier", Toast.LENGTH_LONG);
+					error.show();
+		}
+		
+		
 		return null;
+		
 	}
 
 	
