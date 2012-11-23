@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android_prod.MapView"
+            android:name="com.android_prod.MapViewClass"
             android:label="@string/title_activity_map_view" >
         </activity>
     </application>
