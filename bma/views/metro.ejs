@@ -5,10 +5,10 @@
   </head>
   <h1>Station de Metro<a href="http://localhost:3000/">Bike station</a>, <a href="http://localhost:3000/bus"> Bus Link</a></h1>
   <body>
-	<% for(i=0; i< data.opendata.answer.data.station.length; i++){ %>
-		<li> Nom: <%= data.opendata.answer.data.station[i].name%> </li>
-		<li> Longitude: <%= data.opendata.answer.data.station[i].longitude%> </li>
-		<li> Latitude: <%= data.opendata.answer.data.station[i].latitude%> </li>
+	<% for(i=0; i< data.length; i++){ %>
+		<li> Nom: <%= data[i].name%> </li>
+		<li> Longitude: <%= data[i].longitude%> </li>
+		<li> Latitude: <%= data[i].latitude%> </li>
 		<hr>
 	<% } %>	
 	

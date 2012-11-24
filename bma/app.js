@@ -1,7 +1,11 @@
 
-/**
+/***************************
  * Fichier Serveur projet BMA
- */
+ * Date: 24/11/12
+ * Version: 1.0
+ * Author: Guillaume Le Floch
+ * Contact: glfloch@gmail.com
+ ***************************/
 
 /********* Variable utilisé par le serveur *********/
 
@@ -29,6 +33,12 @@ var data;
 
 /******* Android varaible ****/
 var androidLat, androidLng;
+
+/********* Connection to the Database *********/
+
+var databaseUrl = "stops"; // "username:password@example.com/mydb"
+var collections = ["bikeStations", "busStations", "metroStations", "reports"];
+var db = require("mongojs").connect(databaseUrl, collections);
 
 /********* Configuration du serveur ***********/
 
@@ -68,11 +78,15 @@ app.get('/',function(req, res){
 
 app.get('/metro', function(req, res){
 	
-	// Url fir the call
-	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getmetrostations";
+	// Get the metroStation Collection into the database and return it
+	db.metroStations.find().toArray(function(err, data) {
+	    
+		// Pass the data to the 'metro' template
+		res.render('metro', {
+			data: data
+	    })
+	  })
 	
-	// Call the getData function
-	getData(url, req, res, "metro");
 	
 });
 
@@ -81,11 +95,15 @@ app.get('/metro', function(req, res){
 
 app.get('/bus', function(req, res){
 	
-	// Url fir the call
-	var url = "http://data.keolis-rennes.com/json/?version=1.0&key=" + key_star + "&cmd=getstation&param[request]=all";
+	// Get the busStation Collection into the database and return it
+	db.busStations.find().toArray(function(err, data) {
+	    
+		// Pass the data to the 'bus' template
+		res.render('bus', {
+			data: data
+	    })
+	  })
 	
-	// Call the getData function
-	getData(url, req, res, "bus");
 	
 });
 
@@ -156,28 +174,6 @@ function getData(url, req, res, type){
 					data: data
 				})	
 			} 
-			
-			// Case of metro 
-			else if(type == "metro"){
-				
-				for (i=0; i <data.opendata.answer.data.station.length; i++){
-					//console.log(data.opendata.answer.data.station[i]);
-				}	
-				res.render('metro', {
-					data: data
-				})
-			} 
-			
-			// Case of bus
-			else if(type == "bus"){	
-				
-				for (i=0; i <data.opendata.answer.data.station.length; i++){
-					console.log(data.opendata.answer.data.station[i]);
-				}	
-				res.render('bus', {
-					data: data
-				})
-			}
 			
 			// Case of android without data 
 			else if(type == "android"){
