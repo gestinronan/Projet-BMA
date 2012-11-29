@@ -133,15 +133,15 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void>{
 			WriteStream.close();
 		} catch (IOException e) {
 			// Error during wrinting File
-			Toast error=Toast.makeText(fileContext, "File Bus information Not Write", Toast.LENGTH_LONG);
-			error.show();
+			//Toast error=Toast.makeText(fileContext, "File Bus information Not Write", Toast.LENGTH_LONG);
+			//error.show();
 		}
 		
 
 				} catch (Exception e) {
 			// Error during reading file
-					Toast error=Toast.makeText(fileContext, "Erreur a la lecture du fichier", Toast.LENGTH_LONG);
-					error.show();
+					//Toast error=Toast.makeText(fileContext, "Erreur a la lecture du fichier", Toast.LENGTH_LONG);
+					//error.show();
 		}
 		
 		
