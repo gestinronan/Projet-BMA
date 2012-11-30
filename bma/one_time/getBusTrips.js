@@ -1,17 +1,17 @@
 /******************
-* filename: getBusStation.js
-* data: 24/11/12
+* filename: getBusTrips.js
+* data: 29/11/12
 * author: Guillaume Le Floch
 * version: 1.0
 ******************/
 
 ///////////////////////////////////////////////////////////////////////////
-///// This Script Is only to save the bus stations into the database //////
+////// This Script Is only to save the bus trips into the database ////////
 ///////////////////////////////////////////////////////////////////////////
 
 // Connection to the database
 var databaseUrl = "stops"; // "username:password@example.com/mydb"
-var collections = ["busStations", "reports"]
+var collections = ["busTrips", "reports"]
 var db = require("mongojs").connect(databaseUrl, collections);
 
 // Jquery variable
@@ -21,10 +21,10 @@ var $ = require('jQuery');
 var fs = require('fs');
 
 // Path of the file
-var path = '/Users/guigui2287/Sites/bma/bma/gtfsData/stops.txt';
+var path = '/Users/guigui2287/Sites/bma/bma/gtfsData/trips.txt';
 
 // Remove the data in the collection before adding some new data
-db.busStations.remove({});
+db.busTrips.remove({});
 
 // Load the CSV file
 fs.readFile(path, function (err, data) {
@@ -39,7 +39,6 @@ fs.readFile(path, function (err, data) {
  	 console.log(data.toString());
 	 processData(data.toString());
 });
-
 
 // Function which parse the CSV file and create a JSON Array
 function processData(allText) {
@@ -56,13 +55,24 @@ function processData(allText) {
         if (data.length == headers.length) {
 			
 			// Get the data of the line
-			stop_id = data[0];
-			stop_name = data[2];
-			stop_lat = data[4];
-			stop_lon = data[5];
+			route_id = data[2];
+			service_id = data[1];
+			trip_id = data[0];
+			direction_id = data[4];
 			
+			console.log(direction_id);
+			
+			// Remove the simple quotes from the data
+			route_id.replace(/\"/g, "");
+			service_id.replace(/\"/g, "");
+			trip_id.replace(/\"/g, ""); 
+			direction_id.replace(/\"/g, "");		
+			
+			console.log(direction_id);
+						
 			// Save the data into the database
-			db.busStations.save({'stop_id': stop_id, 'stop_name': stop_name, 'stop_lat': stop_lat, 'stop_lon': stop_lon}, // This confirm if the stop is saved
+			db.busTrips.save({'trip_id': trip_id, 'service_id': service_id, 'route_id': route_id, 'direction_id': direction_id}, 
+			
 			// Callback function
 			function(err, saved){
 				
@@ -74,10 +84,9 @@ function processData(allText) {
 				else console.log("Stop saved: ");
 			});
         }
-    }
+    }	
 	
 	// Leave the script
 	console.log("Script Done");	
 	process.exit(code=0);
-		
 }

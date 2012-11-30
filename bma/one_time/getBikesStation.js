@@ -20,6 +20,9 @@ var $ = require('jQuery');
 // Key for the API
 var key_star = "FR6UMKCXT1TY5GJ";
 
+// Remove the data in the collection before adding some new data
+db.bikeStations.remove({});
+
 $.ajax({
 	url: "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations",
 	dataType: 'json',
@@ -42,8 +45,14 @@ $.ajax({
 				else console.log("Stop saved");
 			});
 		}
+		
+		// Leave the script
+		console.log("Script Done");	
+		process.exit(code=0);
+		
 	},
 	error: function(e){
-		
+		console.log("Script Failed");	
+		process.exit(code=0)
 	}
 })
