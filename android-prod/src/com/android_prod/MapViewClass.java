@@ -90,7 +90,7 @@ public class MapViewClass extends Activity {
 		
 		}catch(JSONException e){
 			Toast.makeText(getApplicationContext(), "Error json" + e.toString(), Toast.LENGTH_LONG).show();
-			System.out.println("Error parsing data " + e.toString());
+		
 	}
 
 		// We get the layout elements
@@ -150,10 +150,6 @@ public class MapViewClass extends Activity {
 	mapView.getOverlays().add(anotherItemizedIconOverlay);
 		/*****************************************************/
 
-
-		//Add Scale Bar
-		ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(this);
-		mapView.getOverlays().add(myScaleBarOverlay);
 	}
 	/*****************************************************/
 	/************** Is route display method **************/
