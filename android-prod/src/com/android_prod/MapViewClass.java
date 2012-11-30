@@ -17,6 +17,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,8 +30,9 @@ import android.widget.ImageButton;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import android.widget.Toast;
 
-public class MapViewClass extends Activity {
+public class MapViewClass extends Activity implements LocationListener{
 
 
 	/************** Global variable declaration *********/
@@ -48,15 +52,18 @@ public class MapViewClass extends Activity {
 	// Geolocation variable
 	double myLat, myLng;
 
+	// Location listener
+		private LocationManager lm;
+
 	// Marker variable
-	ArrayList<OverlayItem> anotherOverlayItemArray;
-	ArrayList<OverlayItem> bikeOverlayItemArray;
-	ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
-	Drawable bikeMarker;
+	public ArrayList<OverlayItem> anotherOverlayItemArray;
+	private ArrayList<OverlayItem> bikeOverlayItemArray;
+	private ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
+	private Drawable bikeMarker;
 
 	// Intent value
-	JSONObject bikeData;
-	String bikeIntent;
+	private JSONObject bikeData;
+	private String bikeIntent;
 
 	/*****************************************************/
 	/********* On create Mehtod First launch *************/
@@ -68,10 +75,11 @@ public class MapViewClass extends Activity {
 		mcontext = this;
 		
 		// We get the data from the intent
+		// dynamic informations
 		Intent intent = getIntent();
 		String lng = intent.getStringExtra("longitude");
 		String lat = intent.getStringExtra("latitude");
-		bikeIntent = intent.getStringExtra("bikedata");
+		bikeIntent = intent.getStringExtra("bikeData");
 		
 		// We parse the String into double
 //		if (!lat.equals(null) && !lng.equals(null))
@@ -79,13 +87,28 @@ public class MapViewClass extends Activity {
 //		myLat = new Double(lat);
 //		myLng = new Double(lng);
 //		}
+		// Location listner
+				lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+				if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+					lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0,
+							(LocationListener) this);
+				lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0,
+						(LocationListener) this);
 
+				
+				
+			
+				
+				
+	
 		// And the String into Json 
 		try{
 			bikeData = new JSONObject(bikeIntent);
+		
 		}catch(JSONException e){
-			System.out.println("Error parsing data " + e.toString());
-		}
+			Toast.makeText(getApplicationContext(), "Error json" + e.toString(), Toast.LENGTH_LONG).show();
+		
+	}
 
 		// We get the layout elements
 		mapView = (MapView) findViewById(R.id.mapview);
@@ -133,6 +156,7 @@ public class MapViewClass extends Activity {
 		/*************** This is an example *******************/
 		// Create a geopoint marker
 		anotherOverlayItemArray = new ArrayList<OverlayItem>();
+		
 		anotherOverlayItemArray.add(new OverlayItem("Hello", "Here I am", new GeoPoint(myLat, myLng)));
 
 		// Copy the marker array into another table
@@ -144,10 +168,6 @@ public class MapViewClass extends Activity {
 	mapView.getOverlays().add(anotherItemizedIconOverlay);
 		/*****************************************************/
 
-
-		//Add Scale Bar
-		ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(this);
-		mapView.getOverlays().add(myScaleBarOverlay);
 	}
 	/*****************************************************/
 	/************** Is route display method **************/
@@ -190,23 +210,8 @@ public class MapViewClass extends Activity {
 		@Override
 		public void onClick(View arg0) {
 
-			// Create the GeoPoint
-			GeoPoint p = new GeoPoint((int) (myLat * 1E6), (int) (myLng * 1E6));
-
-			// If there already is a marker we remove it
-			/*if(myPosition != null){
-				mapView.getOverlays().remove(myPosition);
-			}
-
-			// Create the marker
-			myPosition = new OverlayItem(p, "Position Actuel", "Where you are");
-
-			// Add it to the map 
-			myPositionOverlay.addOverlay(myPosition);
-			mapOverlays.add(myPositionOverlay);
-
-			mc.animateTo(p);
-			mc.setCenter(p);*/
+			
+			/// Maj Geopoint
 
 		}
 	};
@@ -290,7 +295,42 @@ public class MapViewClass extends Activity {
 		return anotherOverlayItemArray;
 
 	}
+	/*****************************************************/
+	
+	/**************Location Listener********************/
+	
+	/******** Called when the location change***********/
+	public void onLocationChanged(Location location) {
+		
+		// Copy the longitude and latitude in global variable
+		myLat = location.getLatitude();
+		myLng = location.getLongitude();
+		Toast.makeText(getApplicationContext(), "LATTitude    :   " +myLat +"  Longitue   :   "+myLng, Toast.LENGTH_LONG).show();
+		anotherOverlayItemArray.add(new OverlayItem("Hello", "Here I am", new GeoPoint(myLat, myLng)));
 
-	/*******************************************************/
+		
+
+	}
+	/*****************************************************/
+	/***********Called when the GPS is Disable************/
+	@Override
+	public void onProviderDisabled(String arg0) {
+		Toast.makeText(getApplicationContext(), "Please turn On the GPS", Toast.LENGTH_LONG).show();
+
+	}
+	/*****************************************************/
+	/***********Called when the GPS is Enable ************/
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+
+	}
+	/*****************************************************/
+	/*******Called when the GPS status change ************/
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+
+	}
+	/*****************************************************/
+
 
 }
