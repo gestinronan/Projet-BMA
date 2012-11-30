@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import android.widget.Toast;
 
 public class MapViewClass extends Activity {
 
@@ -68,10 +69,11 @@ public class MapViewClass extends Activity {
 		mcontext = this;
 		
 		// We get the data from the intent
+		// dynamic informations
 		Intent intent = getIntent();
 		String lng = intent.getStringExtra("longitude");
 		String lat = intent.getStringExtra("latitude");
-		bikeIntent = intent.getStringExtra("bikedata");
+		bikeIntent = intent.getStringExtra("bikeData");
 		
 		// We parse the String into double
 //		if (!lat.equals(null) && !lng.equals(null))
@@ -79,13 +81,17 @@ public class MapViewClass extends Activity {
 //		myLat = new Double(lat);
 //		myLng = new Double(lng);
 //		}
-
+	
+			
+	
 		// And the String into Json 
 		try{
 			bikeData = new JSONObject(bikeIntent);
+		
 		}catch(JSONException e){
+			Toast.makeText(getApplicationContext(), "Error json" + e.toString(), Toast.LENGTH_LONG).show();
 			System.out.println("Error parsing data " + e.toString());
-		}
+	}
 
 		// We get the layout elements
 		mapView = (MapView) findViewById(R.id.mapview);
