@@ -65,22 +65,18 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
             mapController.setCenter(point2);
 
-            /** ************* This is an example ***************** */
+            /** ************* this overlay  présent your location ***************** */
 
             // Create a geopoint marker
+            myLocationOverlayItemArray = new ArrayList<OverlayItem>();
+            myLocationOverlayItemArray.add(new OverlayItem("Hello", "Here I am", point2));
 
-            /*
-             *       anotherOverlayItemArray = new ArrayList<OverlayItem>();
-             *
-             *       anotherOverlayItemArray.add(new OverlayItem("Hello", "Here I am", point2));
-             *
-             *       // Copy the marker array into another table
-             *        anotherItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(
-             *                       this, anotherOverlayItemArray, null);
-             *
-             *       // Add the overlays on the map
-             * mapView.getOverlays().add(anotherItemizedIconOverlay);
-             */
+            // Copy the marker array into another table
+            myLocationItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(getApplicationContext(),
+                    myLocationOverlayItemArray, null);
+
+            // Add the overlays on the map
+            mapView.getOverlays().add(myLocationItemizedIconOverlay);
         }
     };
 
@@ -97,8 +93,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             /** ******* This display all the bike station ******* */
 
             // Call the method that create a item array
-            bikeOverlayItemArray = displayPoint(bikeData);
-
+            // bikeOverlayItemArray = displayPoint(bikeData);
             // Add the array into another array with some parameters
             bikeItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, bikeOverlayItemArray, null);
 
@@ -108,10 +103,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             /** ************************************************** */
         }
     };
-    
-    /********************************************/
-    //handler use when GPS was not enable 
-    /*******************************************/
+
+    /** **************************************** */
+
+    // handler use when GPS was not enable
+
+    /** *************************************** */
     private final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             if (msg.arg1 == 1) {
@@ -162,7 +159,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private LocationManager lm;
 
     // Marker variable
-    public ArrayList<OverlayItem>            anotherOverlayItemArray;
+    public ArrayList<OverlayItem>            myLocationOverlayItemArray;
     private ArrayList<OverlayItem>           bikeOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
     private Drawable                         bikeMarker;
@@ -170,7 +167,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     // Intent value
     private JSONObject                      bikeData;
     private String                          bikeIntent;
-    public ItemizedIconOverlay<OverlayItem> anotherItemizedIconOverlay;
+    public ItemizedIconOverlay<OverlayItem> myLocationItemizedIconOverlay;
 
     /** ************************************************* */
 
@@ -299,66 +296,69 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     /** ************************************************** */
 
     /** ******** Display a list of point into marker ***** */
-    public ArrayList<OverlayItem> displayPoint(JSONObject dataJson) {
 
-        // Declare variables
-        JSONObject openData;
-        JSONArray  station = null;
-
-        // Then we get the part of the JSON that we want
-        try {
-            openData = dataJson.getJSONObject("opendata");
-
-            JSONObject answer = openData.getJSONObject("answer");
-            JSONObject data   = answer.getJSONObject("data");
-
-            station = data.getJSONArray("station");
-        } catch (JSONException e) {
-
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        // Loop the Array
-        for (int i = 0; i < station.length(); i++) {
-
-            // We get the data we want
-            JSONObject e;
-            String     name          = null,
-                       bikeAvailable = null;
-            double     lng           = 0,
-                       lat           = 0;
-
-            // Initiate the variable we need
-            try {
-                e = station.getJSONObject(i);
-
-                // get the value
-                lng           = e.getDouble("longitude");
-                lat           = e.getDouble("latitude");
-                name          = e.getString("name");
-                bikeAvailable = String.valueOf(e.getDouble("bikesavailable"));
-            } catch (JSONException e1) {
-
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-
-            // Create the overlay and add it to the array
-            anotherOverlayItemArray = new ArrayList<OverlayItem>();
-
-            // Create a overlay for a special position
-            OverlayItem marker = new OverlayItem(name, bikeAvailable, new GeoPoint(lat, lng));
-
-            // Add the graphics to the marker
-            marker.setMarker(bikeMarker);
-
-            // Add the marker into the list
-            anotherOverlayItemArray.add(marker);
-        }
-
-        return anotherOverlayItemArray;
-    }
+    /**
+     * public ArrayList<OverlayItem> displayPoint(JSONObject dataJson) {
+     *
+     *   // Declare variables
+     *   JSONObject openData;
+     *   JSONArray  station = null;
+     *
+     *   // Then we get the part of the JSON that we want
+     *   try {
+     *       openData = dataJson.getJSONObject("opendata");
+     *
+     *       JSONObject answer = openData.getJSONObject("answer");
+     *       JSONObject data   = answer.getJSONObject("data");
+     *
+     *       station = data.getJSONArray("station");
+     *   } catch (JSONException e) {
+     *
+     *       // TODO Auto-generated catch block
+     *       e.printStackTrace();
+     *   }
+     *
+     *   // Loop the Array
+     *   for (int i = 0; i < station.length(); i++) {
+     *
+     *       // We get the data we want
+     *       JSONObject e;
+     *       String     name          = null,
+     *                  bikeAvailable = null;
+     *       double     lng           = 0,
+     *                  lat           = 0;
+     *
+     *       // Initiate the variable we need
+     *       try {
+     *           e = station.getJSONObject(i);
+     *
+     *           // get the value
+     *           lng           = e.getDouble("longitude");
+     *           lat           = e.getDouble("latitude");
+     *           name          = e.getString("name");
+     *           bikeAvailable = String.valueOf(e.getDouble("bikesavailable"));
+     *       } catch (JSONException e1) {
+     *
+     *           // TODO Auto-generated catch block
+     *           e1.printStackTrace();
+     *       }
+     *
+     *       // Create the overlay and add it to the array
+     *       myLocationOverlayItemArray = new ArrayList<OverlayItem>();
+     *
+     *       // Create a overlay for a special position
+     *       OverlayItem marker = new OverlayItem(name, bikeAvailable, new GeoPoint(lat, lng));
+     *
+     *       // Add the graphics to the marker
+     *       marker.setMarker(bikeMarker);
+     *
+     *       // Add the marker into the list
+     *       myLocationOverlayItemArray.add(marker);
+     *   }
+     *
+     *   return myLocationOverlayItemArray;
+     * }
+     */
 
     /** ************************************************* */
 
@@ -382,7 +382,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     /** *********Called when the GPS is Disable********** */
     @Override
     public void onProviderDisabled(String arg0) {
-        
         Message msg = handler.obtainMessage();
 
         msg.arg1 = 1;
@@ -408,3 +407,5 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     /** ************************************************* */
 }
 
+
+//~ Formatted by Jindent --- http://www.jindent.com
