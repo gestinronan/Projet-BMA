@@ -95,24 +95,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             // Close the sliding drawer
             slidingMenu.close();
 
-            /** ******* This display all the bike station ******* */
-
-            // Call the method that create a item array
-            // displayPoint(bikeData);
-            // Add the array into another array with some parameters
-            bikeItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, bikeOverlayItemArray, null);
-
-            // Add the overlays into the map
-            mapView.getOverlays().add(bikeItemizedIconOverlay);
-
-            /** ************************************************** */
+       
         }
     };
 
     /** **************************************** */
-
-    // handler use when GPS was not enable
-
+    /** handler use when GPS was not enable*/
     /** *************************************** */
     private final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -145,7 +133,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     /** ************ Global variable declaration ******* */
 
-    //
+    //context
     Context mcontext;
 
     // Map Variable
@@ -256,6 +244,15 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         mapController.setCenter(point2);
 
         /** ************************************************* */
+        
+        
+        /** ******* This display all the bike station ******* */
+
+        // Call the method that create a item array
+         displayPoint(bikeData);
+       
+
+        /** ************************************************** */
     }
 
     /** ************************************************* */
@@ -302,68 +299,72 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     /** ******** Display a list of point into marker ***** */
 
-    /**
-     * private void displayPoint(JSONObject dataJson) {
-     *
-     *   // Declare variables
-     *   JSONObject openData;
-     *   JSONArray  station = null;
-     *
-     *   // Then we get the part of the JSON that we want
-     *   try {
-     *       openData = dataJson.getJSONObject("opendata");
-     *
-     *       JSONObject answer = openData.getJSONObject("answer");
-     *       JSONObject data   = answer.getJSONObject("data");
-     *
-     *       station = data.getJSONArray("station");
-     *   } catch (JSONException e) {
-     *
-     *       // TODO Auto-generated catch block
-     *       e.printStackTrace();
-     *   }
-     *
-     *   // Loop the Array
-     *   for (int i = 0; i < station.length(); i++) {
-     *
-     *       // We get the data we want
-     *       JSONObject e;
-     *       String     name          = null,
-     *                  bikeAvailable = null;
-     *       double     lng           = 0,
-     *                  lat           = 0;
-     *
-     *       // Initiate the variable we need
-     *       try {
-     *           e = station.getJSONObject(i);
-     *
-     *           // get the value
-     *           lng           = e.getDouble("longitude");
-     *           lat           = e.getDouble("latitude");
-     *           name          = e.getString("name");
-     *           bikeAvailable = String.valueOf(e.getDouble("bikesavailable"));
-     *       } catch (JSONException e1) {
-     *
-     *           // TODO Auto-generated catch block
-     *           e1.printStackTrace();
-     *       }
-     *
-     *       // Create the overlay and add it to the array
-     *       bikeOverlayItemArray = new ArrayList<OverlayItem>();
-     *
-     *       // Create a overlay for a special position
-     *       OverlayItem marker = new OverlayItem(name, bikeAvailable, new GeoPoint(lat, lng));
-     *
-     *       // Add the graphics to the marker
-     *       marker.setMarker(bikeMarker);
-     *
-     *       // Add the marker into the list
-     *       bikeOverlayItemArray.add(marker);
-     *   }
-     *
-     *   
-     * }
-     */
+    
+     @SuppressWarnings("unused")
+	private void displayPoint(JSONObject dataJson) {
+    	 try {
+        // Declare variables
+        JSONObject openData;
+        JSONArray  station = null;
+        OverlayItem marker=null;
+        // Create the overlay and add it to the array
+        bikeOverlayItemArray = new ArrayList<OverlayItem>();
+     
+        // Then we get the part of the JSON that we want
+       
+            openData = dataJson.getJSONObject("opendata");
+     
+            JSONObject answer = openData.getJSONObject("answer");
+            JSONObject data   = answer.getJSONObject("data");
+     
+            station = data.getJSONArray("station");
+     
+     
+        // Loop the Array
+        for (int i = 0; i < station.length(); i++) {
+     
+            // We get the data we want
+            JSONObject tmpStation;
+            String     name          = null,
+                       bikeAvailable = null;
+            double     lng           = 0,
+                      lat           = 0;
+     
+            // Initiate the variable we need
+           
+            	tmpStation = station.getJSONObject(i);
+     
+                // get the value
+                lng           = tmpStation.getDouble("longitude");
+                lat           = tmpStation.getDouble("latitude");
+                name          = tmpStation.getString("name");
+                bikeAvailable = String.valueOf(tmpStation.getDouble("bikesavailable"));
+                
+                // Create a overlay for a special position
+                 marker = new OverlayItem(name, bikeAvailable, new GeoPoint(lat, lng));
+                 
+                 // Add the graphics to the marker
+                 marker.setMarker(bikeMarker);
+          
+                 // Add the marker into the list
+                 bikeOverlayItemArray.add(marker);
+                 
+     
+     		}
+        
+     // Add the array into another array with some parameters
+        bikeItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, bikeOverlayItemArray, null);
+
+        // Add the overlays into the map
+        mapView.getOverlays().add(bikeItemizedIconOverlay);
+    	   } catch (JSONException e) {
+    		     
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+           }
+        
+      }
+     
 
     /** ************************************************* */
 
