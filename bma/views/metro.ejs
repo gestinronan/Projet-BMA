@@ -6,9 +6,9 @@
   <h1>Station de Metro<a href="http://localhost:3000/">Bike station</a>, <a href="http://localhost:3000/bus"> Bus Link</a></h1>
   <body>
 	<% for(i=0; i< data.length; i++){ %>
-		<li> Nom: <%= data[i].name%> </li>
-		<li> Longitude: <%= data[i].longitude%> </li>
-		<li> Latitude: <%= data[i].latitude%> </li>
+		<li> Nom: <%= data[i].MetroStop_name%> </li>
+		<li> Longitude: <%= data[i].MetroStop_lon%> </li>
+		<li> Latitude: <%= data[i].MetroStop_lat%> </li>
 		<hr>
 	<% } %>	
 	

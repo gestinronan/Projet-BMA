@@ -34,11 +34,27 @@ var data;
 /******* Android varaible ****/
 var androidLat, androidLng;
 
-/********* Connection to the Database *********/
+/********* Connection to the  mongodb Database *********/
 
 var databaseUrl = "stops"; // "username:password@example.com/mydb"
 var collections = ["bikeStations", "busStations", "metroStations", "reports"];
-var db = require("mongojs").connect(databaseUrl, collections);
+//var db = require("mongojs").connect(databaseUrl, collections);
+
+/*********** Connection to the mysql Database ***********/
+
+// Variables needed for the database connection
+var mysql      = require('mysql');
+var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=true');
+
+// Connection to the database
+connection.connect(function(err){
+	
+	// Case there is an error during the connection
+	if(err){
+		console.log("Connection problem : " + err);
+	} else
+	console.log("Connection ok");	
+});
 
 /********* Configuration du serveur ***********/
 
@@ -74,37 +90,19 @@ app.get('/',function(req, res){
 
 });
 
-/************* Get Request for the metro stations ********/
+
+/************* Get Request for the bus stations from mysql database ********/
 
 app.get('/metro', function(req, res){
 	
-	// Get the metroStation Collection into the database and return it
-	db.metroStations.find().toArray(function(err, data) {
-	    
-		// Pass the data to the 'metro' template
+	// Get the data from the table Metro_Stop
+	connection.query('SELECT * FROM Metro_Stops', function(err, result){
+		
+		// Pass the data to the metro template
 		res.render('metro', {
-			data: data
-	    })
-	  })
-	
-	
-});
-
-
-/************* Get Request for the bus stations ********/
-
-app.get('/bus', function(req, res){
-	
-	// Get the busStation Collection into the database and return it
-	db.busStations.find().toArray(function(err, data) {
-	    
-		// Pass the data to the 'bus' template
-		res.render('bus', {
-			data: data
-	    })
-	  })
-	
-	
+			data: result
+		})
+	});
 });
 
 
