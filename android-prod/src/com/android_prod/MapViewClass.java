@@ -408,5 +408,3 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     /** ************************************************* */
 }
 
-
-//~ Formatted by Jindent --- http://www.jindent.com
