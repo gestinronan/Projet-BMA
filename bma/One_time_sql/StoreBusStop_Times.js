@@ -58,29 +58,41 @@ function processData(data){
 	// Get the header
 	var headers = allTextLines[0].split(',');
 		
-	// Parse the data except the first line (header)
-    for (var i=1; i<allTextLines.length; i++) {
+	// Parse the half of the data except the first line (header)
+    for (var i=1; i<allTextLines.length / 2; i++) {
         
 		// Split the line
 		var data = allTextLines[i].split(',');
         if (data.length == headers.length) {
-			
-			// Get the data to save
-			var trip_id = data[0];
-			var stop_id = data[1];
-			var stop_sequence = data[2];
-			var arrival_time = data[3];
-			var departure_time = data[4];
-			var stop_headsign = data[5];
-			var pickup_type = data[6];
-			var drop_off_type = data[7];
-			var shape_dist_traveled = data[8];
 				
 			// Save the data into the BusStops table
-			var query = connection.query("INSERT INTO test.BusStop_times SET ?", {Trip_id: trip_id, Stop_id: stop_id, Stop_sequence: stop_sequence, Arrival_time: arrival_time, 
-				Departure_time: departure_time, Stop_headsign: stop_headsign, Pickup_type: pickup_type, Drop_off_type: drop_off_type, 
-				Shape_dist_traveled: shape_dist_traveled}, function(err, result) {
-			  	
+			var query = connection.query("INSERT INTO test.BusStop_times SET ?", {Trip_id: data[0], Stop_id: data[1], Arrival_time: data[3], 
+				Departure_time: data[4], Stop_headsign: data[5]}, 
+				function(err, result) {
+			  
+					// Case there is an error
+					if(err || !data){
+						console.log("An error occured: " + err);
+					} else {
+						console.log("Bus stop time saved");
+					}
+				});
+			//console.log(query);	
+		}
+	}
+	
+	// Parse the rest of the data except the first line (header)
+    for (var i=allTextLines/2 ; i<allTextLines.length; i++) {
+        
+		// Split the line
+		var data = allTextLines[i].split(',');
+        if (data.length == headers.length) {
+				
+			// Save the data into the BusStops table
+			var query = connection.query("INSERT INTO test.BusStop_times SET ?", {Trip_id: data[0], Stop_id: data[1], Arrival_time: data[3], 
+				Departure_time: data[4], Stop_headsign: data[5]}, 
+				function(err, result) {
+			  
 					// Case there is an error
 					if(err || !data){
 						console.log("An error occured: " + err);
