@@ -204,7 +204,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         valider     = (Button) findViewById(R.id.valider);
 
         // Define the marker
-        bikeMarker = this.getResources().getDrawable(R.drawable.greenpoint);
+        bikeMarker = this.getResources().getDrawable(R.drawable.buublemarke);
 
         // Set listener on the layout elements
         locateMe.setOnClickListener(locateMeListener);
@@ -238,7 +238,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         mapView.setBuiltInZoomControls(true);
         mapController = mapView.getController();
         mapController.setZoom(13);
-
+      //coordonne mairie de rennes
+    	myLat=48.1115579;
+    	myLng=-1.6799608999999691;
         GeoPoint point2 = new GeoPoint(myLat, myLng);
 
         mapController.setCenter(point2);
@@ -342,9 +344,10 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                 
                 // Create a overlay for a special position
                  marker = new OverlayItem(name, bikeAvailable, new GeoPoint(lat, lng));
-                 
+          
                  // Add the graphics to the marker
                  marker.setMarker(bikeMarker);
+                 
           
                  // Add the marker into the list
                  bikeOverlayItemArray.add(marker);
@@ -376,11 +379,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         // Copy the longitude and latitude in global variable
         myLat = location.getLatitude();
         myLng = location.getLongitude();
-
-        // Map centrelize in your place.
-        GeoPoint point3 = new GeoPoint(myLat, myLng);
-
-        mapController.setCenter(point3);
+ 
     }
 
     /** ************************************************* */
