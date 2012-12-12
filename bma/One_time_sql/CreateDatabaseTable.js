@@ -50,6 +50,8 @@ connection.query('CREATE TABLE BusStops (Stop_id VARCHAR(100),'+
 										 'Parent_station VARCHAR(100),' +
 										 'Stop_timezone VARCHAR(100),' +
 										 'Wheelchair_boarding,' +
+										 'Line_short_name VARCHAR(150),' +
+										 'Line_long_name VARCAHR(150),' +
 										 'PRIMARY KEY(Stop_id))',
 function(err, result){
     // Case there is an error during the creation

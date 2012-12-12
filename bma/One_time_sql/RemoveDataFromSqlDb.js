@@ -9,9 +9,27 @@
 /// This Script remove all the data in each table of the database /////////
 ///////////////////////////////////////////////////////////////////////////
 
+/**
+*
+*
+*			WARNING this will remove all database data!!!!!!!!!
+*
+*/
+
 // Variables needed for the database connection
 var mysql      = require('mysql');
 var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=true');
+
+// Before executing this script we ask the user to confirm
+/*console.log('This script will remove All the data from the database!');
+ask('Are you Sure you want to execute this script? (yes/no)', /.+/, function(response){
+	if(response == "yes"){
+		return;
+	}
+	else{
+		process.exit(0);
+	}
+});*/
 
 // Truncate the Bike_Stops Table
 connection.query('Truncate Bike_Stops', function(err, result){
