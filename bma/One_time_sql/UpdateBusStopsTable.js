@@ -84,8 +84,6 @@ connection.query("SELECT BusStops.Stop_id, BusTrips.Trip_id, BusTrips.Route_id, 
 							 // Var which define if we add the data or not
 						 	 var saveData = false; 
 							 
-							 console.log(result[j].Route_id);
-							 
 							 // If the line_id is in the array we don't add it 
 							 for(k=0; k < line_id.length; k++){
 								 
@@ -96,7 +94,7 @@ connection.query("SELECT BusStops.Stop_id, BusTrips.Trip_id, BusTrips.Route_id, 
 							 }
 							 
 							 // if the data aren't in the database, we add them to the array
-							 if(saveData === false){
+							 if(saveData === false || line_id.length === 0){
 							 	
 								 // We add the line informations to the array
 								 line_id[line_id.length] = result[j].Route_id;
@@ -110,18 +108,21 @@ connection.query("SELECT BusStops.Stop_id, BusTrips.Trip_id, BusTrips.Route_id, 
 						 
 						 if(line_id.length != 0){
 						 	
+							//
+							console.log(line_short_name);
+							
 							// Once we parsed the response, we save the array in the BusStops table
-						 	connection.query("UPDATE BusStops SET Line_id = '" + line_id.join('; ') + "' " +
-						 				  	", SET Line_short_name = '" + line_short_name.join('; ') + "' " +
-									      	", SET Line_long_name =  '"+ line_long_name.join('; ') + "' " +
+						 	connection.query("UPDATE BusStops SET Line_id = '" + line_id.join(';') + "' " +
+						 				  	", Line_short_name = '" + line_short_name.join(';') + "' " +
+									      	", Line_long_name =  '"+ line_long_name.join(';') + "' " +
 									  	  	" WHERE BusStops.Stop_id = '" + result[0].Stop_id + "' ", 
 											  function(err, result){
 									  	  	
-												  // Case there is an error 
-												  if(err){
-												  	console.log(err);	  
-												  }
-										  });
+											  // Case there is an error 
+											  if(err){
+											  	console.log(err);	  
+											  }
+								});
 						}
 					 }
 					 
