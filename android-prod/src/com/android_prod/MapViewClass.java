@@ -40,6 +40,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.MinimapOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
@@ -204,7 +205,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         valider     = (Button) findViewById(R.id.valider);
 
         // Define the marker
-        bikeMarker = this.getResources().getDrawable(R.drawable.buublemarke);
+        bikeMarker = this.getResources().getDrawable(R.drawable.bikeicon);
+      
 
         // Set listener on the layout elements
         locateMe.setOnClickListener(locateMeListener);
@@ -328,7 +330,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             // We get the data we want
             JSONObject tmpStation;
             String     name          = null,
-                       bikeAvailable = null;
+            			bikeAvailable = null,
+                       slotAvailable = null;
             double     lng           = 0,
                       lat           = 0;
      
@@ -340,10 +343,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                 lng           = tmpStation.getDouble("longitude");
                 lat           = tmpStation.getDouble("latitude");
                 name          = tmpStation.getString("name");
-                bikeAvailable = String.valueOf(tmpStation.getDouble("bikesavailable"));
+                bikeAvailable = tmpStation.getString("bikesavailable");
+                slotAvailable = tmpStation.getString("slotsavailable");
                 
                 // Create a overlay for a special position
-                 marker = new OverlayItem(name, bikeAvailable, new GeoPoint(lat, lng));
+                 marker = new OverlayItem(name, "Velo Dispo :"+bikeAvailable+"\nEmplacement Dispo :"+slotAvailable, new GeoPoint(lat, lng));
           
                  // Add the graphics to the marker
                  marker.setMarker(bikeMarker);
@@ -355,9 +359,38 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
      
      		}
         
-     // Add the array into another array with some parameters
-        bikeItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, bikeOverlayItemArray, null);
+        
+      /// overlays gestion for bike
+        
+        OnItemGestureListener<OverlayItem> myOnItemGestureListener
+            = new OnItemGestureListener<OverlayItem>(){
 
+          // dsiplay  bike information when  user click
+          @Override
+          public boolean onItemSingleTapUp(int index, OverlayItem item) {
+           Toast.makeText(MapViewClass.this, 
+             item.mTitle + "\n"
+             + item.mDescription,
+             Toast.LENGTH_LONG).show();
+           return true;
+          }
+          	// none used
+		@Override
+		public boolean onItemLongPress(int arg0, OverlayItem arg1) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+             
+            };
+        
+     // Add the array into another array with some parameters
+       
+        
+        bikeItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, bikeOverlayItemArray, myOnItemGestureListener);
+       
+
+       
+    	
         // Add the overlays into the map
         mapView.getOverlays().add(bikeItemizedIconOverlay);
     	   } catch (JSONException e) {
