@@ -112,8 +112,7 @@ app.post('/android',function(req, res){
 	
 	console.log("Android get Request");
 	
-	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations";
-	getData(url, req, res, "android");
+	
 });
 
 /******** Post request **********/
@@ -134,6 +133,39 @@ app.post('/android/data', function(req, res){
 	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations";
 	getData(url, req, res, "android/data");	
 });
+
+
+
+/********** Android get Request ***********/
+
+// This send the bike data to the android app
+app.post('/android/data/bike', function(req, res){
+	
+	// Url to get the bike data
+	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations";
+	
+	// Make an ajax request to the Keolis API
+	getData(url, req, res, "android/data/bike");
+	
+});
+
+// This send the bus data to the android app
+app.post('/android/data/bus', function(req, res){
+	
+	// Get the data from the BusStops table
+	connection.query('SELECT * FROM BusStops', function(err, result){
+		
+		// Write the data in the output
+		res.send(result);
+	});
+});
+
+// This send the train data to the android app
+app.post('/android/data/train', function(req, res){
+	
+});
+
+
 
 
 /******* Création du serveur ********/
@@ -174,7 +206,7 @@ function getData(url, req, res, type){
 			} 
 			
 			// Case of android without data 
-			else if(type == "android"){
+			else if(type == "android/data/bike"){
 				var station = data.opendata.answer.data.station;
 				
 				// Edit the Json and add a field which contains the distance between you and the stations
