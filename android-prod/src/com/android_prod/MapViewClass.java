@@ -274,7 +274,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);    // Get the action Bar from the menu
         getActionBar().setDisplayShowTitleEnabled(false);         // Hide the Title of the app in the action bar
-        getActionBar().setDisplayShowHomeEnabled(false);          // Hide the Icon of the app in the action bar
+        getActionBar().setDisplayShowHomeEnabled(true);          // display the Icon of the app in the action bar
 
         return true;
     }
@@ -286,12 +286,16 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         switch (item.getItemId()) {
         case R.id.menu_search :
 
-            // Comportement du bouton "Recherche"
+            // behaviour of reserch menu
             return true;
 
         case R.id.menu_settings :
-
             // Change activity to settings menu
+        case R.id.userLevel :
+        	// if the user is trained
+        case R.id.layers :
+        	// layers autorisation
+        
             return true;
 
         default :

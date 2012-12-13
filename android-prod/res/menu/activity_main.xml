@@ -9,6 +9,15 @@
         android:id="@+id/menu_settings"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="ifRoom|withText"
-        android:title="Paramètre"/>
+        android:title="Paramètre" >
+          <menu android:id="@+id/sousSetting">
+				 <item android:id="@+id/layers"
+				       android:title="Favoris"   />	
+			 
+				 <item android:id="@+id/userLevel"
+				       android:title="Stats"  />
+     		</menu>
+        
+        </item>
 
 </menu>
