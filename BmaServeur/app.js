@@ -78,6 +78,13 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+/******* Création du serveur ********/
+
+http.createServer(app).listen(app.get('port'), function(){
+  console.log("Express server listening on port " + app.get('port'));
+});
+
+
 /************* Get Request for the bike stations ********/
 
 // This is the function which manage a get call on '/' (That's the first page which is load)
@@ -165,14 +172,6 @@ app.post('/android/data/train', function(req, res){
 	
 });
 
-
-
-
-/******* Création du serveur ********/
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
 
 
 /********* Functions ***********/

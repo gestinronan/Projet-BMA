@@ -24,7 +24,7 @@ connection.connect(function(err){
 });
 
 // Jquery variable
-var $ = require('jQuery');
+var $ = require('jquery');
 
 // Key for the API
 var key_star = "FR6UMKCXT1TY5GJ";
