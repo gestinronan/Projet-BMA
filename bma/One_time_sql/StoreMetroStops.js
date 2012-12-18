@@ -45,7 +45,7 @@ $.ajax({
 			var lon = station[i].longitude;
 			var name = station[i].name;
 			
-			connection.query("INSERT INTO test.Metro_Stops SET ?",{MetroStop_id: stop_id, MetroStop_name: name, MetroStop_lat: lat, MetroStop_lon: lon},function(err, result){
+			connection.query("INSERT INTO test.MetroStops SET ?",{MetroStop_id: stop_id, MetroStop_name: name, MetroStop_lat: lat, MetroStop_lon: lon},function(err, result){
 				// Case there is an error
 				if(err || !data){
 					console.log("An error occured: " + err);

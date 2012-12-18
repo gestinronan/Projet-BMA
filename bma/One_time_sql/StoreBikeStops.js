@@ -45,7 +45,7 @@ $.ajax({
 			var lon = station[i].longitude;
 			var name = station[i].name;
 			
-			connection.query("INSERT INTO test.Bike_Stops SET ?",{BikeStop_id: stop_id, BikeStop_name: name, BikeStop_lat: lat, BikeStop_lon: lon},function(err, result){
+			connection.query("INSERT INTO test.BikeStops SET ?",{BikeStop_id: stop_id, BikeStop_name: name, BikeStop_lat: lat, BikeStop_lon: lon},function(err, result){
 				// Case there is an error
 				if(err || !data){
 					console.log("An error occured: " + err);

@@ -30,7 +30,7 @@ var $ = require('jQuery');
 var fs = require('fs');
 
 // Path to GTFS file containing the bus stops value (stops.txt)
-var pathToData = "/Users/guigui2287/Documents/workspace/Projet-BMA/bma/gtfsData_STAR/stop_times.txt";
+var pathToData = "/Users/guillaumelefloch/Documents/workspace/Projet-BMA/bma/gtfsData_STAR/stop_times.txt";
 
 // Load the text file
 fs.readFile(pathToData, function (err, data) {
@@ -59,7 +59,7 @@ function processData(data){
 	var headers = allTextLines[0].split(',');
 		
 	// Parse the half of the data except the first line (header)
-    for (var i=1; i<allTextLines.length / 2; i++) {
+    for (var i=1; i<allTextLines.length ; i++) {
         
 		// Split the line
 		var data = allTextLines[i].split(',');
@@ -82,7 +82,7 @@ function processData(data){
 	}
 	
 	// Parse the rest of the data except the first line (header)
-    for (var i=allTextLines/2 ; i<allTextLines.length; i++) {
+    /*for (var i=allTextLines/2 ; i<allTextLines.length; i++) {
         
 		// Split the line
 		var data = allTextLines[i].split(',');
@@ -102,7 +102,7 @@ function processData(data){
 				});
 			//console.log(query);	
 		}
-	}
+	}*/
 }
 
 
