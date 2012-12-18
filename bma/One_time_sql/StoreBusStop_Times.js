@@ -24,7 +24,7 @@ connection.connect(function(err){
 });
 
 // Jquery variable
-var $ = require('jQuery');
+var $ = require('jquery');
 
 // Useful to load the file
 var fs = require('fs');
