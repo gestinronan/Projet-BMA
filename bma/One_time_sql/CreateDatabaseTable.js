@@ -38,20 +38,20 @@ function(err, result){
 });
 
 // Create the BusStops Table
-connection.query('CREATE TABLE BusStops (Stop_id VARCHAR(100),'+
-		 								 'Stop_name VARCHAR(100),' +
-                 						 'Stop_lat VARCHAR(100),' +
-										 'Stop_lon VARCHAR(100),' +
-										 'Stop_code VARCHAR(100),' +
-		          						 'Stop_desc VARCHAR(100),' +
-										 'Zone_id VARCHAR(100),' +
-										 'Stop_url VARCHAR(100),' +
-										 'Location_type VARCHAR(100),' +
-										 'Parent_station VARCHAR(100),' +
-										 'Stop_timezone VARCHAR(100),' +
-										 'Wheelchair_boarding,' +
-										 'Line_short_name VARCHAR(150),' +
-										 'Line_long_name VARCAHR(150),' +
+connection.query('CREATE TABLE BusStops (Stop_id VARCHAR(100), '+
+		 								 'Stop_name VARCHAR(100), ' +
+                 						 'Stop_lat VARCHAR(100), ' +
+										 'Stop_lon VARCHAR(100), ' +
+										 'Stop_code VARCHAR(100), ' +
+		          						 'Stop_desc VARCHAR(100), ' +
+										 'Zone_id VARCHAR(100), ' +
+										 'Stop_url VARCHAR(100), ' +
+										 'Location_type VARCHAR(100), ' +
+										 'Parent_station VARCHAR(100), ' +
+										 'Stop_timezone VARCHAR(100), ' +
+										 'Wheelchair_boarding VARCHAR(100), ' +
+										 'Line_short_name VARCHAR(150), ' +
+										 'Line_long_name VARCHAR(150), ' +
 										 'PRIMARY KEY(Stop_id))',
 function(err, result){
     // Case there is an error during the creation
