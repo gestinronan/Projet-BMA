@@ -205,7 +205,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         valider     = (Button) findViewById(R.id.valider);
 
         // Define the marker
-        bikeMarker = this.getResources().getDrawable(R.drawable.bikeicon);
+        bikeMarker = this.getResources().getDrawable(R.drawable.velo);
       
 
         // Set listener on the layout elements
