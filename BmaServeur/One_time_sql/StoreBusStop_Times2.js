@@ -30,7 +30,7 @@ var $ = require('jquery');
 var fs = require('fs');
 
 // Path to GTFS file containing the bus stops value (stops.txt)
-var pathToData = "/Users/guillaumelefloch/Documents/workspace/Projet-BMA/bma/gtfsData_STAR/stop_times.txt";
+var pathToData = "/Users/guillaumelefloch/Documents/workspace/Projet-BMA/BmaServeur/gtfsData_STAR/stop_times.txt";
 
 // Global Variable
 var allTextLines = null;
@@ -45,7 +45,6 @@ fs.readFile(pathToData, function (err, data) {
 	// Case there is an error
   	if (err) {
 	 	 console.log("File not load");
-      	throw err; 
  	}
 	 
 
@@ -55,16 +54,22 @@ fs.readFile(pathToData, function (err, data) {
 	// Now we can cut the array into three array
 
 	// Fill the firstTier array
+	var h = 0;
 	for(i=1; i < allTextLines.length / 3; i++){
-		firstTier[i] = allTextLines[i];
+		firstTier[h] = allTextLines[i];
+		h++;
 	}
+
+	console.log("FirstTier array filled: " + firstTier.length);
 
 	// Fill the secondTier array
 	var j = 0;
-	for(i= allTextLines.length / 3; i < allTextLines.length * 2 /3 ; i++){
+	for(i= allTextLines.length / 3; i < allTextLines.length * 2 / 3 ; i++){
 		secondTier[j] = allTextLines[i];
 		j ++;
 	}
+
+	console.log("SecondTier array filled: " + secondTier.length);
 
 	// Fill the thirdTer array
 	var k = 0;
@@ -73,10 +78,17 @@ fs.readFile(pathToData, function (err, data) {
 		k ++;
 	}
 
+	console.log("ThirdTier array filled: " + thirdTier.length);
+	
 	// Once all arrays are fill, we call the process data function which will add the data into our database
 	processData(firstTier);
-	processData(secondTier);
-	processData(thirdTier);
+	process.nextTick(function () {
+    	processData(secondTier);
+    });
+	process.nextTick(function(){
+		processData(thirdTier);
+	});
+	
 });
 
 
@@ -87,27 +99,30 @@ fs.readFile(pathToData, function (err, data) {
 */
 
 function processData(array){
-		
+
 	// Parse the half of the data except the first line (header)
     for (var i=0; i < array.length ; i++) {
-        
+  
 		// Split the line
-		var data = array[i].split(',');
-        if (data.length == headers.length) {
+		// Case there is no data in the row
+		if(array[i] != undefined){
+			var data = array[i].split(',');
+    	    if (data.length == headers.length) {
 				
-			// Save the data into the BusStops table
-			var query = connection.query("INSERT INTO test.BusStop_times SET ?", {Trip_id: data[0], Stop_id: data[1], Arrival_time: data[3], 
-				Departure_time: data[4], Stop_headsign: data[5]}, 
-				function(err, result) {
+				// Save the data into the BusStops table
+				var query = connection.query("INSERT INTO test.BusStop_times SET ?", {Trip_id: data[0], Stop_id: data[1], Arrival_time: data[3], 
+					Departure_time: data[4], Stop_headsign: data[5]}, 
+					function(err, result) {
 			  
-					// Case there is an error
-					if(err || !data){
-						console.log("An error occured: " + err);
-					} else {
-						console.log("Bus stop time saved");
-					}
-				});
-			//console.log(query);	
+						// Case there is an error
+						if(err || !data){
+							console.log("An error occured: " + err);
+						} else {
+							console.log("Bus stop time saved");
+						}
+					});
+				//console.log(query);	
+			}
 		}
 	}	
 }
