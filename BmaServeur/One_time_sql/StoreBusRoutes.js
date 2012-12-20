@@ -24,13 +24,13 @@ connection.connect(function(err){
 });
 
 // Jquery variable
-var $ = require('jQuery');
+var $ = require('jquery');
 
 // Useful to load the file
 var fs = require('fs');
 
 // Path to GTFS file containing the bus stops value (routes.txt)
-var pathToData = "/Users/guillaumelefloch/Documents/workspace/Projet-BMA/bma/gtfsData_STAR/routes.txt";
+var pathToData = "../gtfsData_STAR/routes.txt";
 
 // Load the text file
 fs.readFile(pathToData, function (err, data) {
