@@ -12,10 +12,10 @@
         android:title="Paramètre" >
           <menu android:id="@+id/sousSetting">
 				 <item android:id="@+id/layers"
-				       android:title="Favoris"   />	
+				       android:title="LayersLevel"   />	
 			 
 				 <item android:id="@+id/userLevel"
-				       android:title="Stats"  />
+				       android:title="UserLevel"  />
      		</menu>
         
         </item>

@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -162,6 +163,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private JSONObject                      bikeData;
     private String                          bikeIntent;
     private ItemizedIconOverlay<OverlayItem> myLocationItemizedIconOverlay;
+    
+    // for layers
+    
+    final CharSequence[] items = {"Bus", "metro", "velo"};
+    private boolean[] states = {true, true, true};
 
     /** ************************************************* */
 
@@ -289,14 +295,59 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             // behaviour of reserch menu
             return true;
 
-        case R.id.menu_settings :
+       // case R.id.menu_settings : // not usfull
             // Change activity to settings menu
         case R.id.userLevel :
         	// if the user is trained
         case R.id.layers :
-        	// layers autorisation
-        
-            return true;
+        {
+        	final boolean velo =states[2];
+        	final boolean metro =states[1];
+        	final boolean bus =states[0];
+        	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	    builder.setTitle("Quel layer vous intreresse?");
+        	    builder.setMultiChoiceItems(items, states, new DialogInterface.OnMultiChoiceClickListener(){
+        	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
+        	        }
+        	    });
+        	    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        	        public void onClick(DialogInterface dialog, int id) {
+        	            SparseBooleanArray CheCked = ((AlertDialog)dialog).getListView().getCheckedItemPositions();
+        	            if(CheCked.get(CheCked.keyAt(0)) == true){
+        	                
+        	            }
+        	            if(CheCked.get(CheCked.keyAt(1)) == true){
+        	                
+        	            }
+        	            if(CheCked.get(CheCked.keyAt(2)) == true){
+        	            	if(!mapView.getOverlays().contains(bikeItemizedIconOverlay))
+        	            	{
+        	            		 // Call the method that create a item array
+        	                    displayPoint(bikeData);
+        	                    mapView.
+        	            	}
+
+        	            		
+        	            }else
+        	            {
+        	            	if(mapView.getOverlays().contains(bikeItemizedIconOverlay))
+        	            	{
+        	            		mapView.getOverlays().remove(bikeItemizedIconOverlay);
+        	            	}
+        	            }
+        	        }
+        	    }
+        	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        	        public void onClick(DialogInterface dialog, int id) {
+        	             // cache gestion
+        	        	states[2]=velo;
+        	        	states[1]=metro;
+        	        	states[0]=bus;
+        	        	dialog.cancel();
+        	        }
+        	    });
+        	    builder.create().show();
+        }
 
         default :
             return super.onOptionsItemSelected(item);
