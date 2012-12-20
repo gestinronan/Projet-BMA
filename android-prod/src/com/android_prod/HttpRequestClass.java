@@ -18,6 +18,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 //~--- JDK imports ------------------------------------------------------------
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,6 +37,12 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     Intent  intent;
     String  dataBike;    // dataBus;
 
+	 String FILENAME = "bus.json";
+    
+    FileOutputStream fos;
+    FileInputStream fis;
+    byte[] toto=null;
+
     // Constuctor
     public HttpRequestClass(Context context, Intent i) {
         mContext = context;
@@ -44,6 +51,19 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
 
     @SuppressWarnings("null")
     protected Void doInBackground(Void... arg0) {
+    	
+    	
+         
+ 		try {
+ 			
+ 			
+ 			
+ 			File file = mContext.getFileStreamPath(FILENAME);
+ 			if(file.exists())
+ 			{
+ 				
+ 				 
+ 		
 
         /** *** Get the bike data *** */
 
@@ -85,6 +105,27 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
         }
 
         dataBike = resultBike;
+        
+        fos = mContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+			fos.write(dataBike.getBytes());	
+			 fos.close();
+        
+ 			}
+ 			else
+ 			{	
+ 				
+ 				fis=mContext.openFileInput(FILENAME);
+ 				fis.read(toto);
+ 				intent.putExtra("bikeData",toto );
+ 		
+ 				fis.close();
+ 			}
+        
+ 		} catch (Exception e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+
 
         return null;
     }
