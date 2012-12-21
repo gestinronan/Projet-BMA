@@ -2,12 +2,18 @@ package com.android_prod;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 import android.app.Activity;
 
 import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 public class FirstView extends Activity {
     private Context context;
@@ -27,7 +33,10 @@ public class FirstView extends Activity {
         // Create an object of the call HttpRequest
         HttpRequestClass request = new HttpRequestClass(context, intent);
 
-        request.execute();
+       request.execute();
+        
+        
+    
     }
 }
 
