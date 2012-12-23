@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import android.os.AsyncTask;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
@@ -58,9 +59,9 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  			
  			
  			
- 			File file = mContext.getFileStreamPath(FILENAME);
+ 			/*File file = mContext.getFileStreamPath(FILENAME);
  			if(file.exists())
- 			{
+ 			{*/
  				
  				 
  		
@@ -107,19 +108,19 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
         dataBike = resultBike;
         
         fos = mContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-			fos.write(dataBike.getBytes());	
-			 fos.close();
+		fos.write(dataBike.getBytes());	
+		fos.close();
         
- 			}
+ 			/*}
  			else
  			{	
  				
- 				fis=mContext.openFileInput(FILENAME);
+ 				/*fis=mContext.openFileInput(FILENAME);
  				fis.read(toto);
- 				intent.putExtra("bikeData",toto );
+ 				dataBike = toto.toString();
  		
  				fis.close();
- 			}
+ 			}*/
         
  		} catch (Exception e) {
  			// TODO Auto-generated catch block
@@ -132,6 +133,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
 
     // Executed once the calls are done
     protected void onPostExecute(Void result) {
+    	
 
         // Then put data in the intent
         intent.putExtra("bikeData", dataBike);

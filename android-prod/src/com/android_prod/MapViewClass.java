@@ -299,8 +299,10 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             // Change activity to settings menu
         case R.id.userLevel :
         	// if the user is trained
+        {}
         case R.id.layers :
         {
+        
         	final boolean velo =states[2];
         	final boolean metro =states[1];
         	final boolean bus =states[0];
@@ -314,9 +316,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	        public void onClick(DialogInterface dialog, int id) {
         	            SparseBooleanArray CheCked = ((AlertDialog)dialog).getListView().getCheckedItemPositions();
         	            if(CheCked.get(CheCked.keyAt(0)) == true){
+        	            	
         	                
         	            }
         	            if(CheCked.get(CheCked.keyAt(1)) == true){
+        	            	
         	                
         	            }
         	            if(CheCked.get(CheCked.keyAt(2)) == true){
@@ -324,7 +328,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            	{
         	            		 // Call the method that create a item array
         	                    displayPoint(bikeData);
-        	                    mapView.
+        	                    mapView.invalidate(); // refresh map
+        	                   
         	            	}
 
         	            		
@@ -333,10 +338,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            	if(mapView.getOverlays().contains(bikeItemizedIconOverlay))
         	            	{
         	            		mapView.getOverlays().remove(bikeItemizedIconOverlay);
+        	            		 mapView.invalidate(); // refresh mapp
         	            	}
         	            }
         	        }
-        	    }
+        	    });
         	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
         	        public void onClick(DialogInterface dialog, int id) {
         	             // cache gestion
@@ -347,8 +353,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	        }
         	    });
         	    builder.create().show();
+        
         }
-
         default :
             return super.onOptionsItemSelected(item);
         }
