@@ -57,20 +57,14 @@ fs.readFile(pathToData, function (err, data) {
 	var h = 0;
 
     // VAlue loop
-    var apartir = allTextLines.length / 3;
-    var jusqua = allTextLines.length *2 / 3;
-	
-    apartir = Math.round(apartir);
-    jusqua = Math.round(jusqua);
+    var apartir = allTextLines.length *2/ 3;
+    var jusqua = allTextLines.length;
 
-    console.log(allTextLines.length);
-    console.log(apartir);
-    console.log(jusqua);
-    
+    // Make a int from a float
+    apartir = Math.round(apartir);
+
     for(i= apartir; i < jusqua; i++){
-		//console.log(allTextLines[i]);
-        
-        firstTier[h] = allTextLines[i];
+		firstTier[h] = allTextLines[i];
 		h++;
 	}
 
@@ -118,8 +112,7 @@ function processData(array){
 
 	// Parse the half of the data except the first line (header)
     for (var i=0; i < array.length ; i++) {
-    
-        console.log(array[i]);  
+  
 		// Split the line
 		// Case there is no data in the row
 		if(array[i] != undefined){
@@ -141,7 +134,8 @@ function processData(array){
 				//console.log(query);	
 			}
 		}
-	}	
+	}
+    //process.exit(0);    
 }
 
 

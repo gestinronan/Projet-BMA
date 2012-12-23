@@ -26,8 +26,8 @@ function(err, result){
 });
 
 // Create the Metro_Stop Table
-connection.query('CREATE TABLE MetroStops (MetroStop_id int, MetroStop_name VARCHAR(100),' +
-                 'MetroStop_lat VARCHAR(100),MetroStop_lon VARCHAR(100), PRIMARY KEY(MetroStop_id))',
+connection.query('CREATE TABLE MetroStops (MetroStop_id VARCHAR(100), MetroStop_name VARCHAR(100),' +
+                 'MetroStop_lat VARCHAR(100),MetroStop_lon VARCHAR(100))',
 function(err, result){
     // Case there is an error during the creation
     if(err) {

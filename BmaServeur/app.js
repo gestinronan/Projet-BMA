@@ -44,7 +44,7 @@ var collections = ["bikeStations", "busStations", "metroStations", "reports"];
 
 // Variables needed for the database connection
 var mysql      = require('mysql');
-var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=true');
+var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
 
 // Connection to the database
 connection.connect(function(err){
@@ -98,12 +98,12 @@ app.get('/',function(req, res){
 });
 
 
-/************* Get Request for the bus stations from mysql database ********/
+/************* Get Request for the metro stations from mysql database ********/
 
 app.get('/metro', function(req, res){
 	
 	// Get the data from the table Metro_Stop
-	connection.query('SELECT * FROM Metro_Stops', function(err, result){
+	connection.query('SELECT * FROM MetroStops', function(err, result){
 		
 		// Pass the data to the metro template
 		res.render('metro', {
@@ -112,7 +112,18 @@ app.get('/metro', function(req, res){
 	});
 });
 
+/*********** Get request for the bus Stations from the mysql database ***/
+app.get('/bus', function(req, res){
 
+    // Get the data from the BusStops table
+    connection.query('SELECT * FROM BusStops', function(err, result){
+    
+        // Pass the data to the template
+        res.render('bus', {
+            data: result
+        })
+    });
+});
 /************ Example of an other get Request *****/
 
 app.post('/android',function(req, res){

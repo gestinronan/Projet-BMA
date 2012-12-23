@@ -30,7 +30,7 @@ var $ = require('jquery');
 var fs = require('fs');
 
 // Path to GTFS file containing the bus stops value (stops.txt)
-var pathToData = "/Users/guillaumelefloch/Documents/workspace/Projet-BMA/bma/gtfsData_STAR/trips.txt";
+var pathToData = "../gtfsData_STAR/trips.txt";
 
 // Load the text file
 fs.readFile(pathToData, function (err, data) {

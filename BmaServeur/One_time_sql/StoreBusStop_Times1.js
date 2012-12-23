@@ -55,44 +55,30 @@ fs.readFile(pathToData, function (err, data) {
 
 	// Fill the firstTier array
 	var h = 0;
-
-    // VAlue loop
-    var apartir = allTextLines.length / 3;
-    var jusqua = allTextLines.length *2 / 3;
-	
-    apartir = Math.round(apartir);
-    jusqua = Math.round(jusqua);
-
-    console.log(allTextLines.length);
-    console.log(apartir);
-    console.log(jusqua);
-    
-    for(i= apartir; i < jusqua; i++){
-		//console.log(allTextLines[i]);
-        
-        firstTier[h] = allTextLines[i];
+	for(i=1; i < allTextLines.length /3; i++){
+		firstTier[h] = allTextLines[i];
 		h++;
 	}
 
 	console.log("FirstTier array filled: " + firstTier.length);
 
 	// Fill the secondTier array
-/*	var j = 0;
-	for(i= allTextLines.length / 3; i < allTextLines.length * 2 / 3 ; i++){
+	var j = 0;
+	for(i= allTextLines.length / 3 ; i < allTextLines.length * 2 / 3 ; i++){
 		secondTier[j] = allTextLines[i];
 		j ++;
-	}*/
+	}
 
-/*	console.log("SecondTier array filled: " + secondTier.length);
+	console.log("SecondTier array filled: " + secondTier.length);
 
 	// Fill the thirdTer array
 	var k = 0;
 	for(i= allTextLines.length * 2 / 3; i < allTextLines.length; i++){
 		thirdTier[k] = allTextLines[i];
 		k ++;
-	}*/
+	}
 
-	//console.log("ThirdTier array filled: " + thirdTier.length);
+	console.log("ThirdTier array filled: " + thirdTier.length);
 	
 	// Once all arrays are fill, we call the process data function which will add the data into our database
     process.nextTick(function(){
@@ -118,8 +104,7 @@ function processData(array){
 
 	// Parse the half of the data except the first line (header)
     for (var i=0; i < array.length ; i++) {
-    
-        console.log(array[i]);  
+  
 		// Split the line
 		// Case there is no data in the row
 		if(array[i] != undefined){
