@@ -167,6 +167,9 @@ function createAllRelation(){
   createTrainMetroFootRelation();  // Create relations between train stops and metro stops by foot
   createTrainBusFootRelation();    // Create relations between train stops and bus stops by foot
   createTrainBikeFootRelation();   // Create relations between train stops and bike stops by foot
+  upDateBusStopsTable();           // Update the BusStops table by adding the NodeId columns
+  upDateBikeStopsTable();          // Update the BikeStops table by adding the NodeId columns
+  upDateMetroStopsTable();         // Update the MetroStops table by adding the NodeId columns
 
 }
 
@@ -439,4 +442,81 @@ function createRelation(dist, time, pointA, pointB, type){
         // Output relationship end_node_id.
         console.log(relationship.end_node_id);
   });
+}
+
+/**
+* This function add the columns NodeId to the BusStops Table. Each Bus Stop will have its NodeId
+*/
+
+function upDateBusStopsTable(){
+
+  // We parse the BusNode array
+  for(i=0; i<BusNode.length; i++){
+    connection.query('UPDATE test.BusStops '+
+                     'SET NodeId = ' + BuseNode[i].id + ' ' +
+                     'WHERE Stop_id = ' + BusNode[i].idStop, 
+
+                     // Callback
+                     function(err, result){
+
+                      // Case of error
+                      if(err){
+                        console.log("Bus Stop not updated " + err);
+                      } else {
+                        console.log("Bus Stop updated");
+                      }
+
+    });
+  }
+}
+
+/** 
+* This function add the columns NodeId to the BikeStops Table
+*/
+function upDateBikeStopsTable(){
+
+  // We parse the BikeNode array
+  for(i = 0; i < BikeNode.length; i++){
+    connection.query('UPDATE test.BikeStops ' + 
+                     'SET NodeId = ' + BikeNode[i].id + ' ' +
+                     'WHERE BikeStop_id = ' + BikeNode[i].idStop,
+                    // callback
+                    function(err, result){
+
+                      // Case of error
+                      if(err){
+                        console.log('Bike stop not updated ' + err);
+                      } else {
+                        console.log('Bike stop updated');
+                      }
+                    }
+    );
+  }
+}
+
+/**
+* This function add the columns NodeId to the MetroStops Table
+*/
+
+function upDateMetroStopsTable(){
+
+  // We parse the MetroNode aray
+  for(i=0; i < MetroNode.length; i ++){
+    connection.query('UPDATE test.MetroStops ' + 
+                     'SET NodeId = ' + MetroNode[i].id + ' ' + 
+                     'WHERE MetroStop_id = ' + MetroNode[i].idStop,
+
+                    // Callback
+                    function(err, result){
+
+                      // Case of error
+                      if(err){
+                        console.log('Metro stop not updated ' + err);
+                      } else {
+                        console.log('Metro stop updated');
+                      }
+                    }
+    );
+  }
+
 }
