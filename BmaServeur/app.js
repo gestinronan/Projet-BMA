@@ -152,7 +152,15 @@ app.post('/android/data', function(req, res){
 	getData(url, req, res, "android/data");	
 });
 
+// This is a post request from the phone to get the next departure for a bus
+app.post('/android/nextdeparture', function(req, res){
 
+	// Get the bus ID from the post request
+	stopId = req.body.stopId;
+
+	// Url to get the next departure 
+	var url = "http://data.keolis-rennes.com/json/?cmd=getbikestations&version=2.1&key=" + key_star + "&param%5Bmode%5D=stop&param%5Bstop%5D%5B%5D=" + stopId;
+});
 
 /********** Android get Request ***********/
 
@@ -228,6 +236,11 @@ function getData(url, req, res, type){
 				
 				res.send(data);
 				
+			}
+
+			// Case the app request the next departure for a busStop
+			else if(type == "android/nextdeparture"){
+				res.send(data);
 			}
 			
 			// Case of android with data
