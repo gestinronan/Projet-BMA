@@ -39,9 +39,10 @@ getBusStop();
 */
 
 function getBusStop(){
-var i= 0;
-var query = connection.query('SELECT * FROM BusStops');
-query
+
+  var i= 0;
+  var query = connection.query('SELECT * FROM BusStops');
+  query
   .on('error', function(err) {
     // Handle error, an 'end' event will be emitted after this as well
   })
@@ -49,10 +50,10 @@ query
     // the field packets for the rows to follow
   })
   .on('result', function(row) {
-  
+
   // Create the node
-	BusNode[i] = db.insertNode({Name: row.Stop_name, id: row.Stop_id, Lat: row.Stop_lat, Lng: row.Stop_lon, type:"Bus"},
-			 
+  BusNode[i] = db.insertNode({Name: row.Stop_name, idStop: row.Stop_id, Lat: row.Stop_lat, Lng: row.Stop_lon, type:"Bus"},
+
 			 	// Callback (function which callend when the insertNode function is done)
 			 	function(err, node){
 
@@ -62,10 +63,10 @@ query
 			 		} else
 			 		console.log("BusNode created : " + node.id);
 			 	});
-    i++;
+  i++;
   })
   .on('end', function() {
-    
+
     // When it's done we add the bike stop into our graph
     getBikeStop();
   });
@@ -76,9 +77,9 @@ query
 * the BikeNode Array
 */
 function getBikeStop(){
-var j = 0;
-var query = connection.query('SELECT * FROM BikeStops');
-query
+  var j = 0;
+  var query = connection.query('SELECT * FROM BikeStops');
+  query
   .on('error', function(err) {
     // Handle error, an 'end' event will be emitted after this as well
   })
@@ -88,8 +89,8 @@ query
   .on('result', function(row) {
   	
    // Create the node
-	BikeNode[j] = db.insertNode({Name: row.BikeStop_name, id: row.BikeStop_id, Lat: row.BikeStop_lat, Lng: row.BikeStop_lon, type: "Bike"}, 
-			 	
+   BikeNode[j] = db.insertNode({Name: row.BikeStop_name, idStop: row.BikeStop_id, Lat: row.BikeStop_lat, Lng: row.BikeStop_lon, type: "Bike"}, 
+
 			 	// Callback (function which callend when the insertNode function is done)
 			 	function(err, node){
 
@@ -99,7 +100,7 @@ query
 			 		} else
 			 		console.log("BikeNode created : " + node.id);
 			 	});
-    j++;
+   j++;
   })
   .on('end', function() {
 
@@ -119,7 +120,7 @@ function getMetroStop(){
 	var k = 0;
 
 	var query = connection.query('SELECT * FROM MetroStops');
-query
+  query
   .on('error', function(err) {
     // Handle error, an 'end' event will be emitted after this as well
   })
@@ -127,8 +128,8 @@ query
     // the field packets for the rows to follow
   })
   .on('result', function(row) {
-  	 MetroNode[k] = db.insertNode({Name: row.MetroStop_name, id: row.MetroStop_id, Lat: row.MetroStop_lat, Lng: row.MetroStop_lon, type:"Metro"},
-			 	
+    MetroNode[k] = db.insertNode({Name: row.MetroStop_name, idStop: row.MetroStop_id, Lat: row.MetroStop_lat, Lng: row.MetroStop_lon, type:"Metro"},
+
 			 	// Callback (function which callend when the insertNode function is done)
 			 	function(err, node){
 
@@ -143,8 +144,29 @@ query
   .on('end', function() {
 
     // Once it's done, we parse the node arrays and create the relationships into our graph
-    createBikeRelation();
-  });
+    createAllRelation();
+});
+
+}
+
+/**
+* This function call all others function to create every relation between each node
+*/
+function createAllRelation(){
+
+  
+  createBikeRelation();            // Create relations between bike stops
+  createMetroRelation();           // Create relations between metro stops
+  createBusRelation();             // Create relations between bus stops
+  createTrainRelation();           // Create relations between train stops
+  createBusFootRelation();         // Create relations between bus stops by foot
+  createBikeMetroFootRelation();   // Create relations between bike stops and metro stops by foot
+  createBusMetroFootRelation();    // Create relations between bus stops and metro stops by foot
+  createBikeMetroFootRelation();   // Creata relations between bike stops and metro stops by foot
+  createBikeBusFootRelation();     // Create relations between bike stops and bus stops by foot
+  createTrainMetroFootRelation();  // Create relations between train stops and metro stops by foot
+  createTrainBusFootRelation();    // Create relations between train stops and bus stops by foot
+  createTrainBikeFootRelation();   // Create relations between train stops and bike stops by foot
 
 }
 
@@ -168,57 +190,6 @@ function createBikeRelation(){
       }
     }
   }
-
-}
-
-
-/**
-* This function parse the BusNode array and create all the relation between each busStop by foot
-*/
-function createBusFootRelation(){
-
-}
-
-/**
-* This function create the relations between the bike stop and the metro stop by foot
-*/
-function createBikeMetroFootRelation(){
-
-}
-
-/**
-* This function create the relations between the bus stop and the metro stop by foot
-*/
-function createBusMetroFootRelation(){
-
-}
-
-/**
-* This function create the relations between the bus stop and the bike stop by foot
-*/
-function createBikeBusFootRelation(){
-
-}
-
-/**
-* This create the relations between the train stop and the metro stop by foot 
-*/
-function createTrainMetroFootRelation(){
-
-}
-
-/**
-* This create the relation between the train stops and the bus stops by foot
-*/
-function createTrainBusFootRelation(){
-
-}
-
-/**
-* This create the relation between the train stops and the bike stop by foot
-*/
-function createTrainBikeFootRelation(){
-
 }
 
 /**
@@ -241,6 +212,132 @@ function createMetroRelation(){
 function createTrainRelation(){
 
 }
+
+/**
+* This function parse the BusNode array and create all the relation between each busStop by foot
+*/
+function createBusFootRelation(){
+
+  // In order to calculate all the distance between each bus stop by foot, we parse the BusNode array
+  for(i=0; i<BusNode.length; i++){
+
+    //For each bus stop we create a relation with all other busStop execpt itself
+    for(j=0; j<BusNode.length; j ++){
+
+      // We check if BusNode[j] is different from BusNode[i]
+      if(BusNode[i] != BusNode[j]){
+
+        // In This case we create the relation
+        getFootDistance(BusNode[i], BusNode[j]);
+      }
+    }
+  }
+}
+
+/**
+* This function create the relations between the bike stop and the metro stop by foot
+*/
+function createBikeMetroFootRelation(){
+
+  // Parse the bikeNode array 
+  for(i=0; i< BikeNode.length; i++){
+
+    // For each metroNode we create the relationship between them
+    for(j=0; j<MetroNode.length; j++){
+
+      // Get the distance between the bikeStop and the metro stop
+      getFootDistance(BikeNode[i], MetroNode[j]);
+    }
+  }
+}
+
+/**
+* This function create the relations between the bus stop and the metro stop by foot
+*/
+function createBusMetroFootRelation(){
+
+  // Parse the BusNode array
+  for(i=0; i<BusNode.length; i++){
+
+    // For each metroNode, we get the distance and time from the busStop to the metrostops
+    for(j=0; j<MetroNode.length; j++){
+
+      // Get the data (distance and time)
+      getFootDistance(BusNode[i], MetroNode[j]);
+
+    }
+  }
+}
+
+/**
+* This function create the relations between the bus stop and the bike stop by foot
+*/
+function createBikeBusFootRelation(){
+
+  // Parse the BikeNode array
+  for(i=0; i < BikeNode.length; i++){
+
+    // For each busNode, we get the distance and time from the bike stop to the bus stop
+    for(j=0; i<BusNode.length; j++){
+
+      // Get the distance and the time between BikeNode[i] and BusNode[j]
+      getFootDistance(BikeNode[i], BusNode[j]);
+    }
+  }
+}
+
+/**
+* This create the relations between the train stop and the metro stop by foot 
+*/
+function createTrainMetroFootRelation(){
+
+  // Parse the TrainNode array
+  for(i=0; TrainNode.length; i++){
+
+    // Parse the MetroNode Array
+    for(j=0; j<MetroNode.length; j++){
+
+      // Get the distance and the time between the two points
+      getFootDistance(TrainNode[i], MetroNode[j]);
+    }
+  }
+}
+
+/**
+* This create the relation between the train stops and the bus stops by foot
+*/
+function createTrainBusFootRelation(){
+
+  // Parse the TrainNode array
+  for(i=0; i<TrainNode.length; i++){
+
+    // Parse the BusNode array
+    for(j=0; j<BusNode.length; j++){
+
+      // Get the distance and the time between the train stop and the bus stop
+      getFootDistance(TrainNode[i], BusNode[j]);
+    }
+  }
+}
+
+/**
+* This create the relation between the train stops and the bike stop by foot
+*/
+function createTrainBikeFootRelation(){
+
+  // Parse the TrainNode array
+  for(i=0; i<TrainNode.length; i++){
+
+    // Parse the bike array
+    for(j=0; j<BikeNode.length; j++){
+
+      // Get the distance and the time between the train stop anf the bike stop
+      getFootDistance(TrainNode[i], BikeNode[j]);
+    }
+  }
+
+}
+
 
 /**
 * This function get the distance and the time needed to go from a point A to a point B by bike
@@ -270,15 +367,15 @@ function getBikeDistance(pointA, pointB){
       var time = data.route_summary.total_time; // Estimated times in seconds
 
       // Then we create the graph relationship between the two points
-      createRelation(dist, time, pointA, pointB);
-    },
+      createRelation(dist, time, pointA, pointB, "Bike");
+  },
 
     // Case of fail during the call
     error: function(err){
 
     }
-  });
-  }
+});
+}
 
 /**
 * This function get the distance and the time needed to go from a point A to a point B by foot
@@ -308,21 +405,38 @@ function getFootDistance(pointA, pointB){
       var time = data.route_summary.total_time; // Estimated times in seconds
 
       // Then we create the graph relationship between the two points
-      createRelation(dist, time, pointA, pointB);
-    },
+      createRelation(dist, time, pointA, pointB, "Foot");
+  },
 
     // Case of fail during the call
     error: function(err){
-
+      console.log('An error occured');
     }
-  });
+});
 }
 
 /**
 * This function add the relation into the graph 
 */
 
-function createRelation(dist, time, pointA, pointB){
+function createRelation(dist, time, pointA, pointB, type){
 
+  db.insertRelationship(pointA.id, pointB.id, type, {
+    distance: dist,
+    time: time
+   }, function(err, relationship){
+        if(err) throw err;
 
+        // Output relationship properties.
+        console.log(relationship.data);
+
+        // Output relationship id.
+        console.log(relationship.id);
+
+        // Output relationship start_node_id.
+        console.log(relationship.start_node_id);
+
+        // Output relationship end_node_id.
+        console.log(relationship.end_node_id);
+  });
 }
