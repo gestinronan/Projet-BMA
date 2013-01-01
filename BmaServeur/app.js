@@ -7,14 +7,14 @@
  * Contact: glfloch@gmail.com
  ***************************/
 
-/********* Variable utilisé par le serveur *********/
+ /********* Variable utilisé par le serveur *********/
 
 // Variable nécéssaire a la création du serveur
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
+, routes = require('./routes')
+, user = require('./routes/user')
+, http = require('http')
+, path = require('path');
 
 // Jquery variable
 var $ = require('jquery');
@@ -60,28 +60,28 @@ connection.connect(function(err){
 
 // Configuration du serveur 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.cookieParser('your secret here'));
-  app.use(express.session());
-  app.use(app.router);
-  app.use(require('stylus').middleware(__dirname + '/public'));
-  app.use(express.static(path.join(__dirname, 'public')));
+	app.set('port', process.env.PORT || 3000);
+	app.set('views', __dirname + '/views');
+	app.set('view engine', 'ejs');
+	app.use(express.favicon());
+	app.use(express.logger('dev'));
+	app.use(express.bodyParser());
+	app.use(express.methodOverride());
+	app.use(express.cookieParser('your secret here'));
+	app.use(express.session());
+	app.use(app.router);
+	app.use(require('stylus').middleware(__dirname + '/public'));
+	app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 });
 
 /******* Création du serveur ********/
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+	console.log("Express server listening on port " + app.get('port'));
 });
 
 
@@ -117,10 +117,10 @@ app.get('/bus', function(req, res){
 
     // Get the data from the BusStops table
     connection.query('SELECT * FROM BusStops', function(err, result){
-    
+
         // Pass the data to the template
         res.render('bus', {
-            data: result
+        	data: result
         })
     });
 });
@@ -301,4 +301,46 @@ function getDistance(lat, lng, mylat, mylng){
 	// return the result
 	return d;
 	
+}
+
+/**
+* Function which update the bike node in the graph.
+*/
+function upDateBikeNode(){
+
+	// Variable
+	var idArray; // Variable to store nodeID and BikeID
+	var i = 0; // Iterator
+
+	// We get the nodeId from the sql database
+	var query = query.connection('SELECT * FROM test.BusStops');
+	query
+	.on('error', function(err) {
+    // Handle error, an 'end' event will be emitted after this as well
+	})
+	.on('fields', function(fields) {
+    // the field packets for the rows to follow
+	})
+	.on('result', function(row) {
+
+  		// Store data from the database into idArray variable (store the BikeSotp_id and the NodeId)
+  		idArray[i] = {BikeStop_id: row.BikeStop_id, NodeId: NodeId};
+
+    })
+	.on('end', function() {
+
+		// We get the bike data from the keolis API
+		var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations"
+		$.ajax({
+			url: url,
+			dataType: "json",
+			success: function(data){
+
+				// We update the bike node by adding the number of slot and bike available
+			},
+			error: function(err){
+
+			}
+		});
+	});
 }

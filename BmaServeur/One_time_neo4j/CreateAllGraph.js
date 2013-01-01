@@ -154,11 +154,13 @@ function getMetroStop(){
 */
 function createAllRelation(){
 
-  
+  // Create relationship between stop of same sort
   createBikeRelation();            // Create relations between bike stops
   createMetroRelation();           // Create relations between metro stops
   createBusRelation();             // Create relations between bus stops
   createTrainRelation();           // Create relations between train stops
+  
+  // Create relationship between different kind of stop
   createBusFootRelation();         // Create relations between bus stops by foot
   createBikeMetroFootRelation();   // Create relations between bike stops and metro stops by foot
   createBusMetroFootRelation();    // Create relations between bus stops and metro stops by foot
@@ -167,6 +169,8 @@ function createAllRelation(){
   createTrainMetroFootRelation();  // Create relations between train stops and metro stops by foot
   createTrainBusFootRelation();    // Create relations between train stops and bus stops by foot
   createTrainBikeFootRelation();   // Create relations between train stops and bike stops by foot
+  
+  // SQL Database update
   upDateBusStopsTable();           // Update the BusStops table by adding the NodeId columns
   upDateBikeStopsTable();          // Update the BikeStops table by adding the NodeId columns
   upDateMetroStopsTable();         // Update the MetroStops table by adding the NodeId columns
