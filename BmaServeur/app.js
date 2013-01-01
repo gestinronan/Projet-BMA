@@ -34,27 +34,15 @@ var data;
 /******* Android varaible ****/
 var androidLat, androidLng;
 
-/********* Connection to the  mongodb Database *********/
-
-var databaseUrl = "stops"; // "username:password@example.com/mydb"
-var collections = ["bikeStations", "busStations", "metroStations", "reports"];
-//var db = require("mongojs").connect(databaseUrl, collections);
-
-/*********** Connection to the mysql Database ***********/
+/*********** Connection to Databases ***********/
 
 // Variables needed for the database connection
 var mysql      = require('mysql');
 var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
 
-// Connection to the database
-connection.connect(function(err){
-	
-	// Case there is an error during the connection
-	if(err){
-		console.log("Connection problem : " + err);
-	} else
-	console.log("Connection ok");	
-});
+// Connection Neo4j database
+var neo4j = require('node-neo4j');
+db = new neo4j('http://localhost:7474');
 
 /********* Configuration du serveur ***********/
 
@@ -323,7 +311,7 @@ function upDateBikeNode(){
 	})
 	.on('result', function(row) {
 
-  		// Store data from the database into idArray variable (store the BikeSotp_id and the NodeId)
+  		// Store data from the database into idArray variable (store the BikeStop_id and the NodeId)
   		idArray[i] = {BikeStop_id: row.BikeStop_id, NodeId: NodeId};
 
     })
@@ -337,9 +325,40 @@ function upDateBikeNode(){
 			success: function(data){
 
 				// We update the bike node by adding the number of slot and bike available
+
+				// First parse the idArray
+				for(j=0; j<idArray.length; j++){
+
+					// We parse the response
+					var station = data.opendata.answer.data.station;
+					for(k=0; k < station.length; k++){
+						
+						// We check if the bike stop of our if the same as the one in the response. 
+						// if it's the case we update the node
+						if(idArray[j].BikeStop_id == station[k].number){
+
+							// In this case we update neo4j node
+							db.updateNode(idArray[j].NodeId, {BikesAvailable: station[k].bikesavailable, SlotsAvailable: station[k].slotsavailable},
+
+								// Callback
+								function(err, node){
+
+									// Case of error when updating the node
+									if(err){
+										console.log('An error occured: ' + err);
+									} else {
+										console.log('BikeStops updated!');
+									}
+								});
+
+						}
+					}
+				}
 			},
 			error: function(err){
-
+				
+				// Case of error 
+				console.log('An error occured during the ajax call');
 			}
 		});
 	});
