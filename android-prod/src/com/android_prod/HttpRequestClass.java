@@ -36,9 +36,11 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     // Variable
     Context mContext;
     Intent  intent;
-    String  dataBike;    // dataBus;
+    String  dataBike;    // dataBike;
+    String  dataBus;    // dataBus;
 
-	 String FILENAME = "bus.json";
+	 String FILENAME_BIKE = "bike.json";
+	 String FILENAME_BUS = "bus.json";
     
     FileOutputStream fos;
     FileInputStream fis;
@@ -53,15 +55,15 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     @SuppressWarnings("null")
     protected Void doInBackground(Void... arg0) {
     	
-    	
+    	/**FOR Bike*/
          
  		try {
  			
  			
  			
- 			File file = mContext.getFileStreamPath(FILENAME);
+ 			File file = mContext.getFileStreamPath(FILENAME_BIKE);
  			System.out.println(file.getPath());
- 			if(!file.exists() && file.lastModified() >5000) // if the file do not excite and is to hold
+ 			if(!file.exists() || file.lastModified() >5000) // if the file do not excite and is to hold
  			{
  				
  				 
@@ -108,7 +110,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
 
         dataBike = resultBike;
         // wirte in data cache file
-        fos = mContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+        fos = mContext.openFileOutput(FILENAME_BIKE, Context.MODE_PRIVATE);
 		fos.write(dataBike.getBytes());	
 		fos.close();
         
@@ -117,7 +119,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  			{	
  			
  				// read in the data cache file
- 				fis=mContext.openFileInput(FILENAME);
+ 				fis=mContext.openFileInput(FILENAME_BIKE);
  				InputStreamReader isr = new InputStreamReader(fis);
  		        BufferedReader br = new BufferedReader(isr);
  		        dataBike = br.readLine();
@@ -128,6 +130,86 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  		} catch (Exception e) {
  			Log.i(" Exception :", e.toString()); // Exception traces
  		}
+ 		
+ 		
+ 		
+ 		/** FOR BUS 148.60.11.208:3000/android/data/bus*/
+ 		
+ 		
+try {
+ 			
+ 			
+ 			
+ 			File file = mContext.getFileStreamPath(FILENAME_BUS);
+ 			System.out.println(file.getPath());
+ 			if(!file.exists()) // if the file do not excite 
+ 			{
+ 				
+ 				 
+ 		
+
+        /** *** Get the bus data *** */
+
+        // First we create the variable for the call
+        InputStream is         = null;
+        String      resultBus = "";
+
+        // String resultBus = "";
+
+        // First let's get the bus
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost   httppost   =
+                new HttpPost("http://148.60.11.208:3000/android/data/bus");
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity   entity   = response.getEntity();
+
+            is = entity.getContent();
+        } catch (Exception e) {
+            System.out.println("Error in http connection " + e.toString());
+        }
+
+        // Now we convert the response into a String
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+            StringBuilder  sb     = new StringBuilder();
+            String         line   = null;
+
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+
+            is.close();
+            resultBus = sb.toString();
+
+            // System.out.println("Here is the server result: " + result);
+        } catch (Exception e) {
+            System.out.println("Error converting result " + e.toString());
+        }
+
+        dataBus = resultBus;
+        // wirte in data cache file
+        fos = mContext.openFileOutput(FILENAME_BUS, Context.MODE_PRIVATE);
+		fos.write(dataBike.getBytes());	
+		fos.close();
+        
+ 			}
+ 			else
+ 			{	
+ 			
+ 				// read in the data cache file
+ 				fis=mContext.openFileInput(FILENAME_BUS);
+ 				InputStreamReader isr = new InputStreamReader(fis);
+ 		        BufferedReader br = new BufferedReader(isr);
+ 		        dataBike = br.readLine();
+ 		        Log.i("Reading file" , dataBus); // log info
+ 				fis.close();
+ 			}
+        
+ 		} catch (Exception e) {
+ 			Log.i(" Exception :", e.toString()); // Exception traces
+ 		}
+ 		
 
 
         return null;
@@ -139,7 +221,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
 
         // Then put data in the intent
         intent.putExtra("bikeData", dataBike);
-
+        intent.putExtra("busData", dataBus);
         // Start the other Activity
         mContext.startActivity(intent);
     }
