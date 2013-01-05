@@ -61,7 +61,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  			
  			File file = mContext.getFileStreamPath(FILENAME);
  			System.out.println(file.getPath());
- 			if(!file.exists())
+ 			if(!file.exists() && file.lastModified() >5000) // if the file do not excite and is to hold
  			{
  				
  				 
