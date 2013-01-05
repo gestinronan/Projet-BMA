@@ -42,7 +42,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     
     FileOutputStream fos;
     FileInputStream fis;
-    byte[] toto=new byte [1000];
+   
 
     // Constuctor
     public HttpRequestClass(Context context, Intent i) {
@@ -107,7 +107,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
         }
 
         dataBike = resultBike;
-        
+        // wirte in data cache file
         fos = mContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
 		fos.write(dataBike.getBytes());	
 		fos.close();
@@ -115,17 +115,18 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  			}
  			else
  			{	
- 				
+ 			
+ 				// read in the data cache file
  				fis=mContext.openFileInput(FILENAME);
- 				fis.read(toto, 0 , 1000);
- 				dataBike = toto.toString();
- 		
+ 				InputStreamReader isr = new InputStreamReader(fis);
+ 		        BufferedReader br = new BufferedReader(isr);
+ 		        dataBike = br.readLine();
+ 		        Log.i("Reading file" , dataBike); // log info
  				fis.close();
  			}
         
  		} catch (Exception e) {
- 			// TODO Auto-generated catch block
- 			e.printStackTrace();
+ 			Log.i(" Exception :", e.toString()); // Exception traces
  		}
 
 
