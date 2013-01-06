@@ -190,7 +190,7 @@ try {
         dataBus = resultBus;
         // wirte in data cache file
         fos = mContext.openFileOutput(FILENAME_BUS, Context.MODE_PRIVATE);
-		fos.write(dataBike.getBytes());	
+		fos.write(dataBus.getBytes());	
 		fos.close();
         
  			}
@@ -201,7 +201,7 @@ try {
  				fis=mContext.openFileInput(FILENAME_BUS);
  				InputStreamReader isr = new InputStreamReader(fis);
  		        BufferedReader br = new BufferedReader(isr);
- 		        dataBike = br.readLine();
+ 		        dataBus = br.readLine();
  		        Log.i("Reading file" , dataBus); // log info
  				fis.close();
  			}
@@ -218,7 +218,6 @@ try {
     // Executed once the calls are done
     protected void onPostExecute(Void result) {
     	
-
         // Then put data in the intent
         intent.putExtra("bikeData", dataBike);
         intent.putExtra("busData", dataBus);
