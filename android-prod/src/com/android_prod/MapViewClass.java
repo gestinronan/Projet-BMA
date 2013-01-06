@@ -211,6 +211,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), "Error json" + e.toString(), Toast.LENGTH_LONG).show();
         }
+        Log.i("json Object", busIntent);
 
         // We get the layout elements
         mapView     = (MapView) findViewById(R.id.mapview);
@@ -269,7 +270,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         // Call the method that create a item array
          displayBikePoint(bikeData);
-         displayBikePoint(busData);
+         displayBusPoint(busData);
        
 
         /** ************************************************** */
