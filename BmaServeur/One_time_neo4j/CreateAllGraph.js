@@ -144,7 +144,8 @@ function getMetroStop(){
   .on('end', function() {
 
     // Once it's done, we parse the node arrays and create the relationships into our graph
-    createAllRelation();
+    //createAllRelation();
+    createBikeRelation();            // Create relations between bike stops
 });
 
 }
@@ -155,25 +156,25 @@ function getMetroStop(){
 function createAllRelation(){
 
   // Create relationship between stop of same sort
-  createBikeRelation();            // Create relations between bike stops
-  createMetroRelation();           // Create relations between metro stops
-  createBusRelation();             // Create relations between bus stops
-  createTrainRelation();           // Create relations between train stops
+  //createBikeRelation();            // Create relations between bike stops
+  //createMetroRelation();           // Create relations between metro stops
+  //createBusRelation();             // Create relations between bus stops
+  //createTrainRelation();           // Create relations between train stops
   
   // Create relationship between different kind of stop
-  createBusFootRelation();         // Create relations between bus stops by foot
-  createBikeMetroFootRelation();   // Create relations between bike stops and metro stops by foot
-  createBusMetroFootRelation();    // Create relations between bus stops and metro stops by foot
-  createBikeMetroFootRelation();   // Creata relations between bike stops and metro stops by foot
-  createBikeBusFootRelation();     // Create relations between bike stops and bus stops by foot
-  createTrainMetroFootRelation();  // Create relations between train stops and metro stops by foot
-  createTrainBusFootRelation();    // Create relations between train stops and bus stops by foot
-  createTrainBikeFootRelation();   // Create relations between train stops and bike stops by foot
+  //createBusFootRelation();         // Create relations between bus stops by foot
+  //createBikeMetroFootRelation();   // Create relations between bike stops and metro stops by foot
+  //createBusMetroFootRelation();    // Create relations between bus stops and metro stops by foot
+  //createBikeMetroFootRelation();   // Creata relations between bike stops and metro stops by foot
+  //createBikeBusFootRelation();     // Create relations between bike stops and bus stops by foot
+  //createTrainMetroFootRelation();  // Create relations between train stops and metro stops by foot
+  //createTrainBusFootRelation();    // Create relations between train stops and bus stops by foot
+  //createTrainBikeFootRelation();   // Create relations between train stops and bike stops by foot
   
   // SQL Database update
-  upDateBusStopsTable();           // Update the BusStops table by adding the NodeId columns
-  upDateBikeStopsTable();          // Update the BikeStops table by adding the NodeId columns
-  upDateMetroStopsTable();         // Update the MetroStops table by adding the NodeId columns
+  //upDateBusStopsTable();           // Update the BusStops table by adding the NodeId columns
+  //upDateBikeStopsTable();          // Update the BikeStops table by adding the NodeId columns
+  //upDateMetroStopsTable();         // Update the MetroStops table by adding the NodeId columns
 
 }
 
@@ -182,6 +183,8 @@ function createAllRelation(){
 */
 
 function createBikeRelation(){
+
+  console.log("in create Bike Relation");
 
   // In order to calculate all the distance between each bike stop, we parse the BikeNode array
   for(i=0; i<BikeNode.length; i++){
@@ -203,6 +206,23 @@ function createBikeRelation(){
 * This create all the realtion between each busStop using the busStop_Time table
 */
 function createBusRelation(){
+
+// To create the bus relation ship, we first get each route_id
+// Sql query: SELECT * FROM BusRoutes;
+
+// Then we parse the array containing all the buroutes data
+
+// For each BusRoutes, we query the data to get the time of arrival and the time of departure of the at each bus stops
+// Sql query: SELECT BusStops.*, BusStop_times.*, BusTrips.*, BusRoutes.*
+//            FROM BusStops, BusStop_times, BusTrips, BusRoutes
+//            WHERE BusRoutes.Route_id = '"0053"'
+//            AND BusRoutes.Route_id = BusTrips.Route_id
+//            AND BusTrips.Trip_id = BusStop_times.Trip_id
+//            AND BusStop_times.Stop_id = BusStops.Stop_id;
+
+// We convert the String into data format: h:MM:ss TT (http://blog.stevenlevithan.com/archives/date-time-format)
+// We get the difference between the two time, this will be the relation
+
 
 }
 
@@ -361,6 +381,9 @@ function getBikeDistance(pointA, pointB){
   // Construct the url
   var urlFinal = url + '/' + api_key + '/api/0.3/' + pointA.Lat + ',' + pointA.Lng + ',' + pointB.Lat + ',' + pointB.Lng + 'bicycle.js';
 
+  // Debug
+  console.log("getBikeDistance");
+
   // Make th http request
   $.ajax({
     url : urlFinal,
@@ -368,6 +391,8 @@ function getBikeDistance(pointA, pointB){
     
     // Case of success call
     success: function(data){
+
+      console.log(data);
 
       // Once we have the distance and the time between A and B
       var dist = data.route_summary.total_distance; // Distance in meters
