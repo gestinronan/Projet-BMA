@@ -56,162 +56,12 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     protected Void doInBackground(Void... arg0) {
     	
     	/**FOR Bike*/
-         
- 		try {
- 			
- 			
- 			
- 			File file = mContext.getFileStreamPath(FILENAME_BIKE);
- 			System.out.println(file.getPath());
- 			if(!file.exists() || file.lastModified() >5000) // if the file do not excite and is to hold
- 			{
- 				
- 				 
  		
+ 		dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,5000);
+ 		/**For bus*/
 
-        /** *** Get the bike data *** */
-
-        // First we create the variable for the call
-        InputStream is         = null;
-        String      resultBike = "";
-
-        // String resultBus = "";
-
-        // First let's get the bus
-        try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost   httppost   =
-                new HttpPost("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations");
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity   entity   = response.getEntity();
-
-            is = entity.getContent();
-        } catch (Exception e) {
-            System.out.println("Error in http connection " + e.toString());
-        }
-
-        // Now we convert the response into a String
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-            StringBuilder  sb     = new StringBuilder();
-            String         line   = null;
-
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-
-            is.close();
-            resultBike = sb.toString();
-
-            // System.out.println("Here is the server result: " + result);
-        } catch (Exception e) {
-            System.out.println("Error converting result " + e.toString());
-        }
-
-        dataBike = resultBike;
-        // wirte in data cache file
-        fos = mContext.openFileOutput(FILENAME_BIKE, Context.MODE_PRIVATE);
-		fos.write(dataBike.getBytes());	
-		fos.close();
-        
- 			}
- 			else
- 			{	
- 			
- 				// read in the data cache file
- 				fis=mContext.openFileInput(FILENAME_BIKE);
- 				InputStreamReader isr = new InputStreamReader(fis);
- 		        BufferedReader br = new BufferedReader(isr);
- 		        dataBike = br.readLine();
- 		        Log.i("Reading file" , dataBike); // log info
- 				fis.close();
- 			}
-        
- 		} catch (Exception e) {
- 			Log.i(" Exception :", e.toString()); // Exception traces
- 		}
- 		
- 		
- 		
- 		/** FOR BUS 148.60.11.208:3000/android/data/bus*/
- 		
- 		
-try {
- 			
- 			
- 			
- 			File file = mContext.getFileStreamPath(FILENAME_BUS);
- 			System.out.println(file.getPath());
- 			if(!file.exists()) // if the file do not excite 
- 			{
- 				
- 				 
- 		
-
-        /** *** Get the bus data *** */
-
-        // First we create the variable for the call
-        InputStream is         = null;
-        String      resultBus = "";
-
-        // String resultBus = "";
-
-        // First let's get the bus
-        try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost   httppost   =
-                new HttpPost("http://148.60.11.208:3000/android/data/bus");
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity   entity   = response.getEntity();
-
-            is = entity.getContent();
-        } catch (Exception e) {
-            System.out.println("Error in http connection " + e.toString());
-        }
-
-        // Now we convert the response into a String
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-            StringBuilder  sb     = new StringBuilder();
-            String         line   = null;
-
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-
-            is.close();
-            resultBus = sb.toString();
-
-            // System.out.println("Here is the server result: " + result);
-        } catch (Exception e) {
-            System.out.println("Error converting result " + e.toString());
-        }
-
-        dataBus = resultBus;
-        // wirte in data cache file
-        fos = mContext.openFileOutput(FILENAME_BUS, Context.MODE_PRIVATE);
-		fos.write(dataBus.getBytes());	
-		fos.close();
-        
- 			}
- 			else
- 			{	
- 			
- 				// read in the data cache file
- 				fis=mContext.openFileInput(FILENAME_BUS);
- 				InputStreamReader isr = new InputStreamReader(fis);
- 		        BufferedReader br = new BufferedReader(isr);
- 		        dataBus = br.readLine();
- 		        Log.i("Reading file" , dataBus); // log info
- 				fis.close();
- 			}
-        
- 		} catch (Exception e) {
- 			Log.i(" Exception :", e.toString()); // Exception traces
- 		}
- 		
-
-
+ 		//dataBus =callServer("148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
+ 		/**For Metro*/
         return null;
     }
 
@@ -220,9 +70,95 @@ try {
     	
         // Then put data in the intent
         intent.putExtra("bikeData", dataBike);
-        intent.putExtra("busData", dataBus);
+       // intent.putExtra("busData", dataBus);
         // Start the other Activity
         mContext.startActivity(intent);
+    }
+    
+    
+    
+  /** method use to do serveur call*/
+    public String callServer(String URL, String nameCacheFile, int timeUpdate)
+    {
+    	
+	  String result = "";
+ 		
+ 		
+try {
+ 			
+	// First we create the variable for the call
+    	InputStream is         = null;
+
+    	
+ 			File file = mContext.getFileStreamPath(nameCacheFile);
+ 			if(!file.exists() || (file.lastModified() < timeUpdate && timeUpdate!=-1)) // if the file do not excite 
+ 			{
+ 				
+ 				 
+ 		
+
+        /** *** Get the bus data *** */
+
+       
+
+        // First get
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost   httppost   =
+                new HttpPost(URL);
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity   entity   = response.getEntity();
+
+            is = entity.getContent();
+        } catch (Exception e) {
+        	Log.i("Error in http connection " , e.getMessage());
+        }
+
+        // Now we convert the response into a String
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+            StringBuilder  sb     = new StringBuilder();
+            String         line   = null;
+
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+
+            is.close();
+            result = sb.toString();
+
+           
+        } catch (Exception e) {
+        	Log.i("Error converting result " , e.getMessage());
+        }
+      
+        // wirte in data cache file
+        fos = mContext.openFileOutput(nameCacheFile, Context.MODE_PRIVATE);
+		fos.write(result.getBytes());	
+		fos.close();
+		Log.i("download info" , result); // log info
+		 // return result;
+        
+ 			}
+ 			else
+ 			{	
+ 			
+ 				// read in the data cache file
+ 				fis=mContext.openFileInput(nameCacheFile);
+ 				InputStreamReader isr = new InputStreamReader(fis);
+ 		        BufferedReader br = new BufferedReader(isr);
+ 				fis.close();
+ 				
+ 				Log.i("Reading file" , result); // log info
+ 				
+ 				//return result;
+ 			}
+        
+ 		} catch (Exception e) {
+ 			Log.i(" Exception :", e.getMessage()); // Exception traces
+ 		}
+
+return result;
     }
 }
 
