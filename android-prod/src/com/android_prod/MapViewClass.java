@@ -192,7 +192,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         String lat    = intent.getStringExtra("latitude");
 
         bikeIntent = intent.getStringExtra("bikeData");
-       // busIntent = intent.getStringExtra("busData");
+       busIntent = intent.getStringExtra("busData");
         
 
         // Location listner
@@ -207,11 +207,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         // And the String into Json
         try {
             bikeData = new JSONObject(bikeIntent);
-            //busData = new JSONObject(busIntent);
+            busData = new JSONObject(busIntent);
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), "Error json" + e.toString(), Toast.LENGTH_LONG).show();
         }
-       // Log.i("json Object", busIntent);
+       Log.i("json Object", busIntent);
 
         // We get the layout elements
         mapView     = (MapView) findViewById(R.id.mapview);
@@ -222,7 +222,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         // Define the marker
         bikeMarker = this.getResources().getDrawable(R.drawable.velo);
-       // busMarker = this.getResources().getDrawable(R.drawable.bus);
+        busMarker = this.getResources().getDrawable(R.drawable.bus);
 
         // Set listener on the layout elements
         locateMe.setOnClickListener(locateMeListener);
@@ -270,7 +270,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         // Call the method that create a item array
          displayBikePoint(bikeData);
-         //displayBusPoint(busData);
+         displayBusPoint(busData);
        
 
         /** ************************************************** */
@@ -476,7 +476,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
      
      @SuppressWarnings({ "unused", "null" })
 	
-     /**private void displayBusPoint(JSONObject dataJson) {
+     private void displayBusPoint(JSONObject dataJson) {
     	 try {
         // Declare variables
         JSONObject openData;
@@ -567,7 +567,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
            }
         
       }
-     */
+     
 
     /** ************************************************* */
 
