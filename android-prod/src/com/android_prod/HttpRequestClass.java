@@ -75,8 +75,20 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
         mContext.startActivity(intent);
     }
     
-    
-    
+  
+ /**   @Override
+	protected void onProgressUpdate(Integer... values){
+		super.onProgressUpdate(values);
+		// Mise à jour donné
+		
+		/*FOR Bike*/
+ 		
+		/**dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,5000);
+ 		/*For bus*/
+
+ 		/**dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
+		
+	}*/
   /** method use to do serveur call*/
     public String callServer(String URL, String nameCacheFile, int timeUpdate)
     {
@@ -135,9 +147,10 @@ try {
         // wirte in data cache file
         fos = mContext.openFileOutput(nameCacheFile, Context.MODE_PRIVATE);
 		fos.write(result.getBytes());	
-		fos.close();
+		
 		Log.i("download info" , result); // log info
 		 // return result;
+		fos.close();
         
  			}
  			else
