@@ -13,6 +13,7 @@ import android.widget.Toast;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -29,6 +30,7 @@ import java.io.InputStreamReader;
 
 import java.lang.Object;
 
+import java.net.URI;
 import java.nio.Buffer;
 
 public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
@@ -60,7 +62,8 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  		dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,5000);
  		/**For bus*/
 
- 		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
+ 		dataBus =callServer("http://148.60.11.208:3000/android/data/metro",FILENAME_BUS,5000);
+ 		//Log.i("ERROR", dataBus);
  		/**For Metro*/
         return null;
     }
@@ -70,7 +73,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     	
         // Then put data in the intent
         intent.putExtra("bikeData", dataBike);
-        intent.putExtra("busData", dataBus);
+       //intent.putExtra("busData", dataBus);
         // Start the other Activity
         mContext.startActivity(intent);
     }
@@ -109,16 +112,16 @@ try {
  				 
  		
 
-        /** *** Get the bus data *** */
+        /** *** Get data *** */
 
        
 
         // First get
         try {
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost   httppost   =
-                new HttpPost(URL);
-            HttpResponse response = httpclient.execute(httppost);
+            HttpGet request = new HttpGet();
+            request.setURI(new URI(URL));
+            HttpResponse response = httpclient.execute(request);
             HttpEntity   entity   = response.getEntity();
 
             is = entity.getContent();
