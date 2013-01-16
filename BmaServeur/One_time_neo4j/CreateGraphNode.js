@@ -19,58 +19,6 @@ db = new neo4j('http://localhost:7474');
 // Variable needed to use jquery
 var $ = require('jquery');
 
-
-/**
-* Here we query the SQL database to get each bus stops and create a node for each bus Stops
-* Then we add the nodeiD into the Mysql database
-*/
-
-var query = connection.query('SELECT * FROM BusStops');
-query
-.on('error', function(err) {
-    // Handle error, an 'end' event will be emitted after this as well
-})
-.on('fields', function(fields) {
-    // the field packets for the rows to follow
-})
-.on('result', function(row) {
-
-  // Create the node
-  db.insertNode({Name: row.Stop_name, idStop: row.Stop_id, Lat: row.Stop_lat, Lng: row.Stop_lon, type:"Bus"},
-
-			 	// Callback (function which callend when the insertNode function is done)
-			 	function(err, node){
-
-			 		// Case of error
-			 		if(err){
-			 			console.log("An error occured");
-			 		} else
-			 		console.log("BusNode created : " + node.id);
-
-			 		// Then we update the mysql database by adding the nodeId for each busStops
-			 		connection.query('UPDATE test.BusStops'+
-			 			' SET NodeId = ' + node.id +
-			 			' WHERE Stop_id = ' + row.Stop_id, 
-
-                     				// Callback
-                     				function(err, result){
-
-                      					// Case of error
-                      					if(err){
-                      						console.log("Bus Stop not updated " + err);
-                      					} else {
-                      						console.log("Bus Stop updated " + result);
-                      					}
-
-                      				});
-			 	});
-})
-.on('end', function() {
-
-
-});
-
-
 /**
 * Here we query the SQL database to get each bike stops and create a node for each bike Stops
 * Then we add the nodeiD into the Mysql database
@@ -119,6 +67,52 @@ query
 })
 .on('end', function() {
 
+});
+
+/**
+* Here we query the SQL database to get each bus stops and create a node for each bus Stops
+* Then we add the nodeiD into the Mysql database
+*/
+
+var query = connection.query('SELECT * FROM test.BusStops');
+query
+.on('error', function(err) {
+    // Handle error, an 'end' event will be emitted after this as well
+})
+.on('fields', function(fields) {
+    // the field packets for the rows to follow
+})
+.on('result', function(row) {
+
+  // Create the node
+  db.insertNode({Name: row.Stop_name, idStop: row.Stop_id, Lat: row.Stop_lat, Lng: row.Stop_lon, type:"Bus"},
+
+        // Callback (function which callend when the insertNode function is done)
+        function(err, node){
+
+          // Case of error
+          if(err){
+            console.log("An error occured");
+          } else
+          console.log("BusNode created : " + node.id);
+          // Then we update the mysql database by adding the nodeId for each busStops
+          connection.query('UPDATE test.BusStops' +
+                           ' SET NodeId = ' + node.id +
+                           ' WHERE Stop_id = \'' + row.Stop_id + '\'', 
+                            // Callback
+                            function(err, result){
+
+                                // Case of error
+                                if(err){
+                                  console.log("Bus Stop not updated " + err);
+                                } else {
+                                  console.log("Bus Stop updated " + result);
+                                }
+
+                              });
+        });
+})
+.on('end', function() {
 });
 
 /**
