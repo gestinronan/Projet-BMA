@@ -47,15 +47,13 @@ connection.query("SELECT Stop_id FROM BusStops", function(err, result){
 // Function which depending of the stop_id make a join request
 function joinRequest(stop_id_array){
 
-	console.log(stop_id_array[0].Stop_id);
-
 // For each stop_id we do a join to find the route_id.
 for(i=0; i < stop_id_array.length; i++){
 
 connection.query('SELECT BusStops.Stop_id, BusTrips.Trip_id, BusTrips.Route_id, BusRoutes.Route_id, BusRoutes.Route_long_name, ' +
 				 "BusRoutes.Route_short_name, BusStop_times.Stop_id, BusStop_times.Trip_id " + 							// We select what we need
 				 "FROM BusStops AS busStops, BusTrips AS busTrips, BusStop_times As busStop_times, BusRoutes AS busRoutes " + // We Use shorter name
-				 "WHERE busStops.Stop_id = '" + stop_id_array[i].Stop_id + "'  " + // We pick the right stop_id
+				 "WHERE busStops.Stop_id = \'" + stop_id_array[i].Stop_id + "\'  " + // We pick the right stop_id
 				 "AND busStops.Stop_id = busStop_times.Stop_id " + // We join the BusStops table with the BusStop_Times Table by Stop_id
 				 "AND busStop_times.Trip_id = busTrips.Trip_id " + // We join the BusStop_Times Table with the BusTrips Table by Trip_id
 				 "AND busTrips.Route_id = busRoutes.Route_id",  // We join the BusTrips Table with the BusRoutes table by Route_id
@@ -71,8 +69,7 @@ connection.query('SELECT BusStops.Stop_id, BusTrips.Trip_id, BusTrips.Route_id, 
 					 else{
 					 	
 						 // Else we use the result to upate the BusStops Table
-						 console.log(result);
-						 
+			
 						 // We store the route_long_name route_short_name in arrays
 						 var line_long_name = new Array();
 						 var line_short_name = new Array();
@@ -112,10 +109,10 @@ connection.query('SELECT BusStops.Stop_id, BusTrips.Trip_id, BusTrips.Route_id, 
 							console.log(line_short_name);
 							
 							// Once we parsed the response, we save the array in the BusStops table
-						 	connection.query("UPDATE BusStops SET Line_id = '" + line_id.join(';') + "' " +
-						 				  	", Line_short_name = '" + line_short_name.join(';') + "' " +
-									      	", Line_long_name =  '"+ line_long_name.join(';') + "' " +
-									  	  	" WHERE BusStops.Stop_id = '" + result[0].Stop_id + "' ", 
+						 	connection.query("UPDATE BusStops SET Line_id = " + line_id.join(';') + 
+						 				  	", Line_short_name = " + line_short_name.join(';') + 
+									      	//", Line_long_name =  "+ line_long_name.join(';') + 
+									  	  	" WHERE BusStops.Stop_id = \'" + result[0].Stop_id + "\' ", 
 											  function(err, result){
 									  	  	
 											  // Case there is an error 

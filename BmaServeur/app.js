@@ -174,6 +174,16 @@ app.post('/android/data/bus', function(req, res){
 	});
 });
 
+app.get('/android/data/metro', function(req, res){
+
+	// Database query
+	connection.query('SELECT * FROM MetroStops', function(err, result){
+		
+		// Send the data
+		res.send(result);
+	})
+});
+
 // This send the train data to the android app
 app.post('/android/data/train', function(req, res){
 	
