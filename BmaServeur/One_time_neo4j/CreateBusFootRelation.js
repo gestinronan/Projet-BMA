@@ -20,8 +20,8 @@ db = new neo4j('http://localhost:7474');
 var $ = require('jquery');
 
 // Variable needed to use the cloudmade api (http://developers.cloudmade.com/projects/routing-http-api/examples)
-var url = 'http://routes.cloudmade.com';
-var api_key = '381cd1d2cba94c069b8396f0dcf1ab94';
+var url = 'http://routes.cloudmade.com/';
+var api_key = 'adacc34c3ee24c11871eb269433ad33b';
 
 // Local variable
 var busData = new Array();
@@ -43,6 +43,8 @@ connection.query('SELECT * FROM test.BusStops', function(err, result){
 
     // Once the query is done, we stream the bus data and calcul the relationship
     console.log('First query done!');
+    busData = result;
+
     streamBusTableData();
   }
 });
@@ -54,6 +56,7 @@ connection.query('SELECT * FROM test.BusStops', function(err, result){
 */
 function streamBusTableData(){
 
+  console.log('StreamBusdata');
   var i = 0;
   // Query the database
   var query = connection.query('SELECT * FROM BusStops');
@@ -67,19 +70,11 @@ function streamBusTableData(){
   .on('result', function(row) {
 
     // The current row will be compare to all the others except itself
-
-    // We first parse the busData array
-    for(j=0; j<busData.length; j++){
-
-      // Debug stuff
-      console.log("Row stream: " + i + " compared to result: " + j)
-
-      // if the busStop from the array is different from the current streamed row
-      // we call the getApproximativeFootDistance
-      if(row != busData[j]){
-        getApproximativeFootDistance(row, busData[j]);
-      }
-    }
+    console.log('Streaming row '+ i +' ... ');
+    
+    // Call the compare bus function
+    compareBus(row);
+   
     i++;
   })
   .on('end', function() {
@@ -87,6 +82,24 @@ function streamBusTableData(){
   });
 }
 
+
+/**
+* This function compare a bus stop with all the others
+*/
+function compareBus(busStop){
+
+  console.log("Compare the busStop :: " + busStop.Stop_name);
+  // Parse the busStop list
+  for(i=0; i<busData.length; i++){
+
+    // Check if the bus stop is not the same as the one in parameter
+    if(busStop.Stop_id != busData[i].Stop_id){
+    
+      // Get the approximative distance
+      getApproximativeFootDistance(busStop, busData[i]);
+    }
+  }
+}
 
 
 /**
@@ -106,6 +119,18 @@ function getApproximativeFootDistance(pointA, pointB){
   var latB = pointB.Stop_lat;
   var lngB = pointB.Stop_lon;
 
+  // Remove quotes
+  latA = latA.replace('\"','');
+  lngA = lngA.replace('\"','');
+  latB = latB.replace('\"','');
+  lngB = lngB.replace('\"','');
+
+  // Convert String into float
+  latA = parseFloat(latA);
+  lngA = parseFloat(lngA);
+  latB = parseFloat(latB);
+  lngB = parseFloat(lngB);
+
   // We convert the degree value into radian value
   latA = (Math.PI * latA)/180;
   lngA = (Math.PI * lngA)/180;
@@ -117,9 +142,10 @@ function getApproximativeFootDistance(pointA, pointB){
 
   // Convert the distance in Kilometer
   var distKm = dist * rayonTerre;
-
+  
   // If the distance is lower than .6 km, we create a relation between the two bus stop
-  if(distKm < 0.6){
+  if(distKm < 0.3){
+    console.log('Distance approximative entre ' + pointA.Stop_name + ' et ' + pointB.Stop_name + ' :: ' + distKm);
     getFootDistance(pointA, pointB);
   }
 }
@@ -137,8 +163,26 @@ function getFootDistance(pointA, pointB){
   // To make the request, we just do an ajax call thanks to jquery
 
   // Construct the url
-  var urlFinal = url + '/' + api_key + '/api/0.3/' + pointA.Stop_lat + ',' + pointA.Stop_lon + ',' + pointB.Stop_lat + ',' + pointB.Stop_lon + '/foot.js';
+  // We get latitude and longitude from the two points
+  var latA = pointA.Stop_lat;
+  var lngA = pointA.Stop_lon;
+  var latB = pointB.Stop_lat;
+  var lngB = pointB.Stop_lon;
 
+  // Remove quotes
+  latA = latA.replace('\"','');
+  lngA = lngA.replace('\"','');
+  latB = latB.replace('\"','');
+  lngB = lngB.replace('\"','');
+
+  // Convert String into float
+  latA = parseFloat(latA);
+  lngA = parseFloat(lngA);
+  latB = parseFloat(latB);
+  lngB = parseFloat(lngB);
+
+  var urlFinal = url + api_key + '/api/0.3/' + latA + ',' + lngA + ',' + latB + ',' + lngB + '/foot.js';
+  console.log(urlFinal);
   // Make th http request
   $.ajax({
     url : urlFinal,
