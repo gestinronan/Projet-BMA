@@ -168,13 +168,10 @@ app.get('/android/data/bus', function(req, res){
 	
 	// Get the data from the BusStops table
 	connection.query('SELECT Stop_name, Stop_lat, Stop_lon, Line_short_name FROM BusStops', function(err, result){
-		var data;
-		// Write the data in the output
-		for(i=0; i< result.length; i++){
-			data = data + result[i];
-		}
 		
-		res.send(data);
+		var jString = JSON.stringify(result);
+		
+		res.send(jString);
 	});
 });
 
