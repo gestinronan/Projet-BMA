@@ -153,7 +153,7 @@ app.post('/android/nextdeparture', function(req, res){
 /********** Android get Request ***********/
 
 // This send the bike data to the android app
-app.post('/android/data/bike', function(req, res){
+app.get('/android/data/bike', function(req, res){
 	
 	// Url to get the bike data
 	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations";
@@ -164,7 +164,7 @@ app.post('/android/data/bike', function(req, res){
 });
 
 // This send the bus data to the android app
-app.post('/android/data/bus', function(req, res){
+app.get('/android/data/bus', function(req, res){
 	
 	// Get the data from the BusStops table
 	connection.query('SELECT * FROM BusStops', function(err, result){
