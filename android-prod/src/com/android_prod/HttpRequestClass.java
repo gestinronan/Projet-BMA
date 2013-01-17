@@ -131,16 +131,7 @@ try {
             while ((line = reader.readLine()) != null) {
                 sb.append(line + "\n");
             }
-          /*  if(sb.charAt(0) == '[')
-            {
-            	
-            	sb.replace(0, 1, "{\"opendata:\"");
-            }
-            int lastchar=sb.length()-1;	
-           if(sb.charAt(lastchar) == ']')
-           {
-        	   sb.replace(lastchar-1, lastchar, "}");
-           }*/
+    
            
             result = sb.toString();
             is.close();
@@ -166,6 +157,14 @@ try {
  				fis=mContext.openFileInput(nameCacheFile);
  				InputStreamReader isr = new InputStreamReader(fis);
  		        BufferedReader br = new BufferedReader(isr);
+ 		       StringBuilder  sbtmp     = new StringBuilder();
+ 		        String tmp=null;
+ 		       while ((tmp = br.readLine()) != null) {
+ 	                sbtmp.append(tmp + "\n");
+ 	            }
+ 	    
+ 	           
+ 	            result = sbtmp.toString();
  				fis.close();
  				
  				Log.i("Reading file" , result); // log info
