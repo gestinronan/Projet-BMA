@@ -180,7 +180,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     // for layers
     
     final CharSequence[] items = {"Bus", "metro", "velo"};
-    private boolean[] states = {true, true, true};
+    private boolean[] states = {false, true, true};
 
     /** ************************************************* */
 
@@ -280,7 +280,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         // Call the method that create a item array
          displayBikePoint(bikeData);
-         displayPoint(metroArray);
+         //metro
+         displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
        
 
         /** ************************************************** */
@@ -351,7 +352,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            	if(!mapView.getOverlays().contains(metroItemizedIconOverlay))
         	            	{
         	            		 // Call the method that create a item array
-        	                    displayPoint(metroArray);
+        	                    displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
         	                    mapView.invalidate(); // refresh map
         	                   
         	            	}
@@ -510,23 +511,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
   
      @SuppressWarnings({ "unused", "null" })
 	
-     private void displayPoint(JSONArray dataJson) {
+     private void displayPoint(JSONArray dataJson, String transportName, Drawable makerTransport,ArrayList<OverlayItem>  overlayItemArray, ItemizedIconOverlay<OverlayItem>  itemizedIconOverlay) {
     	 try {
-        // Declare variables
-        //JSONObject openData;
-        //JSONArray  station = null;
+       
         OverlayItem marker=null;
         // Create the overlay and add it to the array
-        metroOverlayItemArray = new ArrayList<OverlayItem>();
-     
-        // Then we get the part of the JSON that we want
-       
-           /* openData = dataJson.getJSONObject("opendata");
-     
-            JSONObject answer = openData.getJSONObject("answer");*/
-           // JSONObject data   = dataJson.getJSONObject("data");
-     
-           // station = data.getJSONArray("station");
+        overlayItemArray = new ArrayList<OverlayItem>();
      
      
         // Loop the Array
@@ -543,19 +533,19 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             	tmpStation = dataJson.getJSONObject(i);
      
                 // get the value
-                lng           = tmpStation.getDouble("MetroStop_lon");
-                lat           = tmpStation.getDouble("MetroStop_lat");
-                name          = tmpStation.getString("MetroStop_name");
+                lng           = tmpStation.getDouble(transportName+"Stop_lon");
+                lat           = tmpStation.getDouble(transportName+"Stop_lat");
+                name          = tmpStation.getString(transportName+"Stop_name");
 
                 
                 // Create a overlay for a special position
                 marker = new OverlayItem(name,name, new GeoPoint(lat, lng));
                  // Add the graphics to the marker
-                 marker.setMarker(metroMarker);
+                 marker.setMarker(makerTransport);
                  
           
                  // Add the marker into the list
-                 metroOverlayItemArray.add(marker);
+                 overlayItemArray.add(marker);
                  
      
      		}
@@ -565,7 +555,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         
         OnItemGestureListener<OverlayItem> myOnItemGestureListener
             = new OnItemGestureListener<OverlayItem>(){
-
           // dsiplay  bus information when  user click
           @Override
           public boolean onItemSingleTapUp(int index, OverlayItem item) {
@@ -587,13 +576,13 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
      // Add the array into another array with some parameters
        
         
-        metroItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, metroOverlayItemArray, myOnItemGestureListener);
+        itemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, overlayItemArray, myOnItemGestureListener);
        
 
        
     	
         // Add the overlays into the map
-        mapView.getOverlays().add(metroItemizedIconOverlay);
+        mapView.getOverlays().add(itemizedIconOverlay);
     	   } catch (JSONException e) {
     		     
                // TODO Auto-generated catch block
