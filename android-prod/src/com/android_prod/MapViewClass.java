@@ -166,7 +166,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private ArrayList<OverlayItem>           metroOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> metroItemizedIconOverlay;
     private Drawable                         metroMarker;
-    private JSONArray 						 Arraymetro ;
+    private JSONArray 						 metroArray ;
 
     // Intent value
     private JSONObject                      bikeData;
@@ -215,7 +215,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         // And the String into Json
         try {
             bikeData = new JSONObject(bikeIntent);
-            Arraymetro = new JSONArray(metroIntent);
+            metroArray = new JSONArray(metroIntent);
            // metroData=Arraymetro.toJSONObject(Arraymetro);
         } catch (JSONException e) {
             Log.i("ERROR JSON" , e.toString());
@@ -232,7 +232,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         // Define the marker
         bikeMarker = this.getResources().getDrawable(R.drawable.velo);
        busMarker = this.getResources().getDrawable(R.drawable.bus);
-       metroMarker = this.getResources().getDrawable(R.drawable.train);
+       metroMarker = this.getResources().getDrawable(R.drawable.icon_subway);
 
         // Set listener on the layout elements
         locateMe.setOnClickListener(locateMeListener);
@@ -280,7 +280,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         // Call the method that create a item array
          displayBikePoint(bikeData);
-         displayPoint(Arraymetro);
+         displayPoint(metroArray);
        
 
         /** ************************************************** */
@@ -320,7 +320,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             // Change activity to settings menu
         case R.id.userLevel :
         	// if the user is trained
-        {}
+        
         case R.id.layers :
         {
         
@@ -330,21 +330,44 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
         	    builder.setTitle("Quel layer vous intreresse?");
         	    builder.setMultiChoiceItems(items, states, new DialogInterface.OnMultiChoiceClickListener(){
+        	    	
         	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
         	        }
         	    });
+        	    
         	    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        	    	
         	        public void onClick(DialogInterface dialog, int id) {
+        	        	
         	            SparseBooleanArray CheCked = ((AlertDialog)dialog).getListView().getCheckedItemPositions();
+        	            
         	            if(CheCked.get(CheCked.keyAt(0)) == true){
         	            	
         	                
         	            }
-        	            if(CheCked.get(CheCked.keyAt(1)) == true){
-        	            	
-        	                
-        	            }
+        	            
+        	            if(CheCked.get(CheCked.keyAt(1)) == true)
+        	            {
+        	            	if(!mapView.getOverlays().contains(metroItemizedIconOverlay))
+        	            	{
+        	            		 // Call the method that create a item array
+        	                    displayPoint(metroArray);
+        	                    mapView.invalidate(); // refresh map
+        	                   
+        	            	}
+        	            }else
+        	            {
+        	            	if(mapView.getOverlays().contains(metroItemizedIconOverlay))
+        	            	{
+        	            		mapView.getOverlays().remove(metroItemizedIconOverlay);
+        	            		 mapView.invalidate(); // refresh mapp
+        	            	}
+        	       
+        	        
+        	             }
+        	        
         	            if(CheCked.get(CheCked.keyAt(2)) == true){
+        	            	
         	            	if(!mapView.getOverlays().contains(bikeItemizedIconOverlay))
         	            	{
         	            		 // Call the method that create a item array
@@ -352,8 +375,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	                    mapView.invalidate(); // refresh map
         	                   
         	            	}
-
-        	            		
         	            }else
         	            {
         	            	if(mapView.getOverlays().contains(bikeItemizedIconOverlay))
@@ -361,7 +382,10 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            		mapView.getOverlays().remove(bikeItemizedIconOverlay);
         	            		 mapView.invalidate(); // refresh mapp
         	            	}
+        	            
         	            }
+        	    
+        	        
         	        }
         	    });
         	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
