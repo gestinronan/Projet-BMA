@@ -1,12 +1,12 @@
 /******************
-* filename: CreateBusMetroFootRelation.js
+* filename: CreateMetroBikeFootRelation.js
 * date: 08/01/13
 * author: Guillaume Le Floch
 * version: 1.0
 ******************/
 
 
-// This file create the relations between each bus Stops and metroStops by foot
+// This file create the relations between each bike Stops and metroStops by foot
 
 // Connection mySql DataBase  
 var mysql      = require('mysql');
@@ -59,7 +59,7 @@ function streamBusTableData(){
   console.log('StreamBusdata');
   var i = 0;
   // Query the database
-  var query = connection.query('SELECT * FROM BusStops');
+  var query = connection.query('SELECT * FROM BikeStops');
   query 
   .on('error', function(err) {
     // Handle error, an 'end' event will be emitted after this as well
@@ -86,17 +86,17 @@ function streamBusTableData(){
 /**
 * This function compare a bus stop with all the others Metro stops
 */
-function compareBusMetro(busStop){
+function compareBusMetro(bikeStop){
 
-  console.log("Compare the busStop :: " + busStop.Stop_name);
+  console.log("Compare the busStop :: " + bikeStop.BikeStop_name);
   // Parse the busStop list
   for(i=0; i<metroData.length; i++){
 
     // Check if the bus stop is not the same as the one in parameter
-    if(busStop.Stop_id != metroData[i].MetroStop_id){
+    if(bikeStop.BikeStop_id != metroData[i].MetroStop_id){
     
       // Get the approximative distance
-      getApproximativeFootDistance(busStop, metroData[i]);
+      getApproximativeFootDistance(bikeStop, metroData[i]);
     }
   }
 }
@@ -114,8 +114,8 @@ function getApproximativeFootDistance(pointA, pointB){
   var rayonTerre = 6366;
 
   // We get latitude and longitude from the two points
-  var latA = pointA.Stop_lat;
-  var lngA = pointA.Stop_lon;
+  var latA = pointA.BikeStop_lat;
+  var lngA = pointA.BikeStop_lon;
   var latB = pointB.MetroStop_lat;
   var lngB = pointB.MetroStop_lon;
 
@@ -145,7 +145,7 @@ function getApproximativeFootDistance(pointA, pointB){
   
   // If the distance is lower than .6 km, we create a relation between the two bus stop
   if(distKm < 0.3){
-    console.log('Distance approximative entre ' + pointA.Stop_name + ' et ' + pointB.MetroStop_name + ' :: ' + distKm);
+    console.log('Distance approximative entre ' + pointA.BikeStop_name + ' et ' + pointB.MetroStop_name + ' :: ' + distKm);
     getFootDistance(pointA, pointB);
   }
 }
@@ -164,8 +164,8 @@ function getFootDistance(pointA, pointB){
 
   // Construct the url
   // We get latitude and longitude from the two points
-  var latA = pointA.Stop_lat;
-  var lngA = pointA.Stop_lon;
+  var latA = pointA.BikeStop_lat;
+  var lngA = pointA.BikeStop_lon;
   var latB = pointB.MetroStop_lat;
   var lngB = pointB.MetroStop_lon;
 

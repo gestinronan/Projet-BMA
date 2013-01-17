@@ -74,7 +74,7 @@ function streamBusTableData(){
     
     // Call the compare bus function
     compareBus(row);
-   
+
     i++;
   })
   .on('end', function() {
@@ -94,7 +94,7 @@ function compareBus(busStop){
 
     // Check if the bus stop is not the same as the one in parameter
     if(busStop.Stop_id != busData[i].Stop_id){
-    
+
       // Get the approximative distance
       getApproximativeFootDistance(busStop, busData[i]);
     }
@@ -191,13 +191,16 @@ function getFootDistance(pointA, pointB){
     // Case of success call
     success: function(data){
 
-      // Once we have the distance and the time between A and B
-      var dist = data.route_summary.total_distance // Distance in meters
-      var time = data.route_summary.total_time; // Estimated times in seconds
+      try{
+        // Once we have the distance and the time between A and B
+        var dist = data.route_summary.total_distance // Distance in meters
+        var time = data.route_summary.total_time; // Estimated times in seconds
 
-      console.log(data.route_summary.total_distance);
-      console.log(data.route_summary.total_time);
-
+        console.log(data.route_summary.total_distance);
+        console.log(data.route_summary.total_time);
+      } catch(err){
+        return;
+      }
       // Then we create the graph relationship between the two points
       createRelation(dist, time, pointA, pointB, "Foot");
     },

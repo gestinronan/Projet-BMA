@@ -1,12 +1,12 @@
 /******************
-* filename: CreateBusMetroFootRelation.js
+* filename: CreateMetroBikeFootRelation.js
 * date: 08/01/13
 * author: Guillaume Le Floch
 * version: 1.0
 ******************/
 
 
-// This file create the relations between each bus Stops and metroStops by foot
+// This file create the relations between each bike Stops and metroStops by foot
 
 // Connection mySql DataBase  
 var mysql      = require('mysql');
@@ -24,14 +24,14 @@ var url = 'http://routes.cloudmade.com/';
 var api_key = 'adacc34c3ee24c11871eb269433ad33b';
 
 // Local variable
-var metroData = new Array();
+var bikeData = new Array();
 
 /**
 * Due to the big amount of data, we first get the bus data
 * And then we stream the bus stops data, Calcul the time and distance between the streamed data and the data from 
 * the array finally we create the relation
 */
-connection.query('SELECT * FROM test.MetroStops', function(err, result){
+connection.query('SELECT * FROM test.BikeStops', function(err, result){
 
 	// Case of error
 	if(err){
@@ -43,7 +43,7 @@ connection.query('SELECT * FROM test.MetroStops', function(err, result){
 
     // Once the query is done, we stream the bus data and calcul the relationship
     console.log('First query done!');
-    metroData = result;
+    bikeData = result;
 
     streamBusTableData();
   }
@@ -73,7 +73,7 @@ function streamBusTableData(){
     console.log('Streaming row '+ i +' ... ');
     
     // Call the compare bus function
-    compareBusMetro(row);
+    compareBikeBus(row);
    
     i++;
   })
@@ -86,17 +86,17 @@ function streamBusTableData(){
 /**
 * This function compare a bus stop with all the others Metro stops
 */
-function compareBusMetro(busStop){
+function compareBikeBus(busStop){
 
   console.log("Compare the busStop :: " + busStop.Stop_name);
   // Parse the busStop list
-  for(i=0; i<metroData.length; i++){
+  for(i=0; i<bikeData.length; i++){
 
     // Check if the bus stop is not the same as the one in parameter
-    if(busStop.Stop_id != metroData[i].MetroStop_id){
+    if(busStop.Stop_id != bikeData[i].BikeStop_id){
     
       // Get the approximative distance
-      getApproximativeFootDistance(busStop, metroData[i]);
+      getApproximativeFootDistance(busStop, bikeData[i]);
     }
   }
 }
@@ -116,8 +116,8 @@ function getApproximativeFootDistance(pointA, pointB){
   // We get latitude and longitude from the two points
   var latA = pointA.Stop_lat;
   var lngA = pointA.Stop_lon;
-  var latB = pointB.MetroStop_lat;
-  var lngB = pointB.MetroStop_lon;
+  var latB = pointB.BikeStop_lat;
+  var lngB = pointB.BikeStop_lon;
 
   // Remove quotes
   latA = latA.replace('\"','');
@@ -145,7 +145,7 @@ function getApproximativeFootDistance(pointA, pointB){
   
   // If the distance is lower than .6 km, we create a relation between the two bus stop
   if(distKm < 0.3){
-    console.log('Distance approximative entre ' + pointA.Stop_name + ' et ' + pointB.MetroStop_name + ' :: ' + distKm);
+    console.log('Distance approximative entre ' + pointA.Stop_name + ' et ' + pointB.BikeStop_name + ' :: ' + distKm);
     getFootDistance(pointA, pointB);
   }
 }
@@ -166,8 +166,8 @@ function getFootDistance(pointA, pointB){
   // We get latitude and longitude from the two points
   var latA = pointA.Stop_lat;
   var lngA = pointA.Stop_lon;
-  var latB = pointB.MetroStop_lat;
-  var lngB = pointB.MetroStop_lon;
+  var latB = pointB.BikeStop_lat;
+  var lngB = pointB.BikeStop_lon;
 
   // Remove quotes
   latA = latA.replace('\"','');
