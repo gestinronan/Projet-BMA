@@ -181,7 +181,9 @@ app.get('/android/data/metro', function(req, res){
 	connection.query('SELECT * FROM MetroStops', function(err, result){
 		
 		// Send the data
-		res.send(result);
+		var jString = JSON.stringify(result);
+		
+		res.send(jString);
 	})
 });
 
@@ -226,14 +228,9 @@ function getData(url, req, res, type){
 			else if(type == "android/data/bike"){
 				var station = data.opendata.answer.data.station;
 				
-				// Edit the Json and add a field which contains the distance between you and the stations
-				for ( i=0; i < station.length; i++){
-
-					// add the field distance into the json
-					station[i].distance = '0';
-				}
-				
-				res.send(data);
+				var jString = JSON.stringify(data);
+		
+				res.send(jString);
 				
 			}
 
