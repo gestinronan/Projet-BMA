@@ -201,3 +201,21 @@ function(err, result){
     }
 });
 
+// Create the BorneElec Table
+connection.query('CREATE TABLE BorneElec (id VARCHAR(100),' +
+                                         'name VARCHAR(100),' +
+                                         'site_type VARCHAR(100),' +
+                                         'acces VARCHAR(100),' +
+                                         'tarif VARCHAR(100),' +
+                                         'borne_type VARCHAR(100),' + 
+                                         'latitude VARCHAR(100),' +
+                                         'longitude VARCHAR(100))' 
+, function(err, result){
+    // Case there is an error during the creation
+    if(err) {
+        console.log(err);
+    } else {
+        console.log("Table TerRoutes Created");
+    }
+});
+
