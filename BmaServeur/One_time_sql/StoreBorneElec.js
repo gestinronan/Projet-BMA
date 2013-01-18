@@ -74,20 +74,20 @@ function processData(data){
 			var id = data[0];
 			var name = data[1];
 			var site_type = data[2];
-			var access = data[3];
+			var acces = data[3];
 			var tarif = data[5];
 			var borne_type = data[6];
 			var latitude = data[17];
 			var longitude = data[16];
 				
 			// Save the data into the BusStops table
-			var query = connection.query("INSERT INTO test.BorneElec SET ?", {id: id, name: name, site_type: site_type, access: access, tarif: tarif, borne_type: borne_type, latitude: latitude, longitude: longitude}, function(err, result) {
+			var query = connection.query("INSERT INTO test.BorneElec SET ?", {id: id, name: name, site_type: site_type, acces: acces, tarif: tarif, borne_type: borne_type, latitude: latitude, longitude: longitude}, function(err, result) {
 			  	
 					// Case there is an error
 					if(err || !data){
 						console.log("An error occured: " + err);
 					} else {
-						console.log("Bus route saved");
+						console.log("Borne elec saved");
 					}
 				});
 			//console.log(query);	
