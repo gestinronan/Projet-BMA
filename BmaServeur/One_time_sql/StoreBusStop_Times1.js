@@ -123,6 +123,7 @@ function processData(array){
 							console.log("Bus stop time saved");
 						}
 					});
+				// Le Total doit etre de  196281 
 				//console.log(query);	
 			}
 		}

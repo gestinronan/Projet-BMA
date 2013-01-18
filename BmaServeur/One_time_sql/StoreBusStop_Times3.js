@@ -11,7 +11,7 @@
 
 // Variables needed for the database connection
 var mysql      = require('mysql');
-var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=true');
+var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
 
 // Connection to the database
 connection.connect(function(err){
@@ -38,6 +38,8 @@ var headers = null;
 var firstTier = new Array();  // This will contain the first Tiers of the data
 var secondTier = new Array(); // This will contain the second Tiers of the data
 var thirdTier = new Array(); // This will contain the third Tiers of the data
+
+var j = 0;
 
 // Load the text file
 fs.readFile(pathToData, function (err, data) {
@@ -128,7 +130,8 @@ function processData(array){
 						if(err || !data){
 							console.log("An error occured: " + err);
 						} else {
-							console.log("Bus stop time saved");
+							console.log("Bus stop time saved :: " + j + "/196282");
+							j++;
 						}
 					});
 				//console.log(query);	
