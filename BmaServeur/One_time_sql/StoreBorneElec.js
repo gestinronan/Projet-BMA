@@ -90,7 +90,7 @@ function processData(data){
 						console.log("Borne elec saved");
 
 						// Case last BorneElec
-						if(x == 14){
+						if(x == allTextLines.length){
 							process.exit(0);
 						}
 						x++;

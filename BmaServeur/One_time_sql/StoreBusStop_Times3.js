@@ -112,6 +112,8 @@ fs.readFile(pathToData, function (err, data) {
 
 function processData(array){
 
+	var x = 0;
+
 	// Parse the half of the data except the first line (header)
     for (var i=0; i < array.length ; i++) {
   
@@ -130,8 +132,13 @@ function processData(array){
 						if(err || !data){
 							console.log("An error occured: " + err);
 						} else {
-							console.log("Bus stop time saved :: " + j + "/196282");
-							j++;
+							console.log("Bus stop time saved :: " + x + "/196282");
+
+							// Case the script is over
+							if(x==array.length){
+								process.exit(0);
+							}
+							x++;
 						}
 					});
 				//console.log(query);	

@@ -11,7 +11,7 @@
 
 // Variables needed for the database connection
 var mysql      = require('mysql');
-var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=true');
+var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
 
 // Connection to the database
 connection.connect(function(err){
@@ -34,6 +34,7 @@ $.ajax({
 	dataType: 'json',
 	success: function(data){
 		
+		var x = 0;
 		// Once we have the data, we parse the JSON and add everything to the database
 		var station = data.opendata.answer.data.station;
 		
@@ -50,7 +51,13 @@ $.ajax({
 				if(err || !data){
 					console.log("An error occured: " + err);
 				} else {
-					console.log("Bike stop saved");
+					console.log("Bike stop saved :: " + x + "/" + station.length);
+
+					// Case the script is done
+					if(x == station.length){
+						process.exit(0);
+					}
+					x++;
 				}
 			});
 		}

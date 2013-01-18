@@ -38,7 +38,7 @@ var headers = null;
 var firstTier = new Array();  // This will contain the first Tiers of the data
 var secondTier = new Array(); // This will contain the second Tiers of the data
 var thirdTier = new Array(); // This will contain the third Tiers of the data
-var j = 0;
+
 
 // Load the text file
 fs.readFile(pathToData, function (err, data) {
@@ -117,6 +117,7 @@ fs.readFile(pathToData, function (err, data) {
 
 function processData(array){
 
+	var x = 0;
 	// Parse the half of the data except the first line (header)
     for (var i=0; i < array.length ; i++) {
     
@@ -136,8 +137,13 @@ function processData(array){
 						if(err || !data){
 							console.log("An error occured: " + err);
 						} else {
-							console.log("Bus stop time saved :: " + j + "/196282");
-							j++;
+							console.log("Bus stop time saved :: " + x + "/" + allTextLines.length);
+
+							// Case the script is over
+							if(x == allTextLines.length){
+								process.exit(0);
+							}
+							x++;
 						}
 					});
 				//console.log(query);	

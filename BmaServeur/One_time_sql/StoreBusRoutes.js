@@ -11,7 +11,7 @@
 
 // Variables needed for the database connection
 var mysql      = require('mysql');
-var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=true');
+var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
 
 // Connection to the database
 connection.connect(function(err){
@@ -55,6 +55,7 @@ fs.readFile(pathToData, function (err, data) {
 function processData(data){
     var allTextLines = data.split(/\r\n|\n/);
     
+    x =0;
 	// Get the header
 	var headers = allTextLines[0].split(',');
 		
@@ -83,7 +84,13 @@ function processData(data){
 					if(err || !data){
 						console.log("An error occured: " + err);
 					} else {
-						console.log("Bus route saved");
+						console.log("Bus route saved :: " + x + "/" + allTextLines.length);
+
+						// Case the script is done
+						if(x == allTextLines.length){
+							process.exit(0);
+						}
+						x++;
 					}
 				});
 			//console.log(query);	
