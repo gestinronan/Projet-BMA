@@ -45,7 +45,6 @@ fs.readFile(pathToData, function (err, data) {
 	 	 console.log("File not load");
  	}
 	 
-
 	// Function that read the file and save the data 
 	processData(data.toString());
 });
@@ -58,10 +57,11 @@ fs.readFile(pathToData, function (err, data) {
 */
 
 function processData(data){
+	var x = 0;
     var allTextLines = data.split(/\r\n|\n/);
-    
+    console.log (allTextLines);
 	// Get the header
-	var headers = allTextLines[0].split(',');
+	var headers = allTextLines[0].split(';');
 		
 	// Parse the data except the first line (header)
     for (var i=1; i<allTextLines.length; i++) {
@@ -88,9 +88,16 @@ function processData(data){
 						console.log("An error occured: " + err);
 					} else {
 						console.log("Borne elec saved");
+
+						// Case last BorneElec
+						if(x == 14){
+							process.exit(0);
+						}
+						x++;
 					}
 				});
 			//console.log(query);	
+			
 		}
 	
 }
