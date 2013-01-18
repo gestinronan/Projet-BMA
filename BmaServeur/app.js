@@ -150,7 +150,10 @@ app.post('/android/nextdeparture', function(req, res){
 	var url = "http://data.keolis-rennes.com/json/?cmd=getbikestations&version=2.1&key=" + key_star + "&param%5Bmode%5D=stop&param%5Bstop%5D%5B%5D=" + stopId;
 });
 
-/********** Android get Request ***********/
+/*************************************************************************************************/
+/*********************************** Android get Request *****************************************/
+/*************************************************************************************************/
+
 
 // This send the bike data to the android app
 app.get('/android/data/bike', function(req, res){
@@ -188,10 +191,21 @@ app.get('/android/data/metro', function(req, res){
 });
 
 // This send the train data to the android app
-app.post('/android/data/train', function(req, res){
+app.get('/android/data/train', function(req, res){
 	
 });
 
+// This send the BorneElectrique data to the android app
+app.get('/android/data/borneelec', function(req, res){
+
+	// Database Query
+	connection.query('SELECT * FROM test.BorneElec', function(err, data){
+
+		// send the data
+		var string = JSON.stringify(data);
+		res.send(string);
+		})
+});
 
 
 /********* Functions ***********/
