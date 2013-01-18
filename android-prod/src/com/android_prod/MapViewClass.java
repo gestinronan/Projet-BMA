@@ -43,14 +43,12 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
-import org.osmdroid.views.overlay.MinimapOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
-import org.osmdroid.views.overlay.ScaleBarOverlay;
+
 
 //~--- JDK imports ------------------------------------------------------------
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MapViewClass<Overlay> extends Activity implements LocationListener {
 
@@ -159,21 +157,28 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private ArrayList<OverlayItem>           bikeOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
     private Drawable                         bikeMarker;
+    
     private ArrayList<OverlayItem>           busOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> busItemizedIconOverlay;
     private Drawable                         busMarker;
+    private JSONArray 						 busArray ;
+    
+    private ArrayList<OverlayItem>           metroOverlayItemArray;
+    private ItemizedIconOverlay<OverlayItem> metroItemizedIconOverlay;
+    private Drawable                         metroMarker;
+    private JSONArray 						 metroArray ;
 
     // Intent value
     private JSONObject                      bikeData;
     private String                          bikeIntent;
-    private JSONObject                      busData;
     private String                          busIntent;
+    private String                          metroIntent;
     private ItemizedIconOverlay<OverlayItem> myLocationItemizedIconOverlay;
     
     // for layers
     
     final CharSequence[] items = {"Bus", "metro", "velo"};
-    private boolean[] states = {true, true, true};
+    private boolean[] states = {false, true, true};
 
     /** ************************************************* */
 
@@ -192,6 +197,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         String lat    = intent.getStringExtra("latitude");
 
         bikeIntent = intent.getStringExtra("bikeData");
+       metroIntent = intent.getStringExtra("metroData");
        busIntent = intent.getStringExtra("busData");
         
 
@@ -207,11 +213,13 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         // And the String into Json
         try {
             bikeData = new JSONObject(bikeIntent);
-            busData = new JSONObject(busIntent);
+            metroArray = new JSONArray(metroIntent);
+            busArray = new JSONArray(busIntent);
+           
         } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), "Error json" + e.toString(), Toast.LENGTH_LONG).show();
+            Log.i("ERROR JSON" , e.toString());
         }
-       Log.i("json Object", busIntent);
+       
 
         // We get the layout elements
         mapView     = (MapView) findViewById(R.id.mapview);
@@ -222,7 +230,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         // Define the marker
         bikeMarker = this.getResources().getDrawable(R.drawable.velo);
-        busMarker = this.getResources().getDrawable(R.drawable.bus);
+       busMarker = this.getResources().getDrawable(R.drawable.bus);
+       metroMarker = this.getResources().getDrawable(R.drawable.icon_subway);
 
         // Set listener on the layout elements
         locateMe.setOnClickListener(locateMeListener);
@@ -270,7 +279,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         // Call the method that create a item array
          displayBikePoint(bikeData);
-         displayBusPoint(busData);
+         //metro
+         displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
        
 
         /** ************************************************** */
@@ -310,7 +320,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             // Change activity to settings menu
         case R.id.userLevel :
         	// if the user is trained
-        {}
+        
         case R.id.layers :
         {
         
@@ -320,21 +330,57 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
         	    builder.setTitle("Quel layer vous intreresse?");
         	    builder.setMultiChoiceItems(items, states, new DialogInterface.OnMultiChoiceClickListener(){
+        	    	
         	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
         	        }
         	    });
+        	    
         	    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        	    	
         	        public void onClick(DialogInterface dialog, int id) {
+        	        	
         	            SparseBooleanArray CheCked = ((AlertDialog)dialog).getListView().getCheckedItemPositions();
+        	            
         	            if(CheCked.get(CheCked.keyAt(0)) == true){
-        	            	
+        	            	if(!mapView.getOverlays().contains(busItemizedIconOverlay))
+        	            	{
+        	            		 // Call the method that create a item array
+        	                    displayPoint(busArray, "", busMarker,busOverlayItemArray,busItemizedIconOverlay);
+        	                    mapView.invalidate(); // refresh map
+        	                   
+        	            	}
+        	            }else
+        	            {
+        	            	if(mapView.getOverlays().contains(busItemizedIconOverlay))
+        	            	{
+        	            		mapView.getOverlays().remove(busItemizedIconOverlay);
+        	            		 mapView.invalidate(); // refresh mapp
+        	            	}
         	                
         	            }
-        	            if(CheCked.get(CheCked.keyAt(1)) == true){
-        	            	
-        	                
-        	            }
+        	            
+        	            if(CheCked.get(CheCked.keyAt(1)) == true)
+        	            {
+        	            	if(!mapView.getOverlays().contains(metroItemizedIconOverlay))
+        	            	{
+        	            		 // Call the method that create a item array
+        	                    displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
+        	                    mapView.invalidate(); // refresh map
+        	                   
+        	            	}
+        	            }else
+        	            {
+        	            	if(mapView.getOverlays().contains(metroItemizedIconOverlay))
+        	            	{
+        	            		mapView.getOverlays().remove(metroItemizedIconOverlay);
+        	            		 mapView.invalidate(); // refresh mapp
+        	            	}
+        	       
+        	        
+        	             }
+        	        
         	            if(CheCked.get(CheCked.keyAt(2)) == true){
+        	            	
         	            	if(!mapView.getOverlays().contains(bikeItemizedIconOverlay))
         	            	{
         	            		 // Call the method that create a item array
@@ -342,8 +388,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	                    mapView.invalidate(); // refresh map
         	                   
         	            	}
-
-        	            		
         	            }else
         	            {
         	            	if(mapView.getOverlays().contains(bikeItemizedIconOverlay))
@@ -351,7 +395,10 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            		mapView.getOverlays().remove(bikeItemizedIconOverlay);
         	            		 mapView.invalidate(); // refresh mapp
         	            	}
+        	            
         	            }
+        	    
+        	        
         	        }
         	    });
         	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -473,30 +520,19 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         
       }
      
-     
+  
      @SuppressWarnings({ "unused", "null" })
 	
-     private void displayBusPoint(JSONObject dataJson) {
+     private void displayPoint(JSONArray dataJson, String transportName, Drawable makerTransport,ArrayList<OverlayItem>  overlayItemArray, ItemizedIconOverlay<OverlayItem>  itemizedIconOverlay) {
     	 try {
-        // Declare variables
-        JSONObject openData;
-        JSONArray  station = null;
+       
         OverlayItem marker=null;
         // Create the overlay and add it to the array
-        busOverlayItemArray = new ArrayList<OverlayItem>();
-     
-        // Then we get the part of the JSON that we want
-       
-            openData = dataJson.getJSONObject("opendata");
-     
-            JSONObject answer = openData.getJSONObject("answer");
-            JSONObject data   = answer.getJSONObject("data");
-     
-            station = data.getJSONArray("station");
+        overlayItemArray = new ArrayList<OverlayItem>();
      
      
         // Loop the Array
-        for (int i = 0; i < station.length(); i++) {
+        for (int i = 0; i < dataJson.length(); i++) {
      
             // We get the data we want
             JSONObject tmpStation;
@@ -506,22 +542,22 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
      
             // Initiate the variable we need
            
-            	tmpStation = station.getJSONObject(i);
+            	tmpStation = dataJson.getJSONObject(i);
      
                 // get the value
-                lng           = tmpStation.getDouble("longitude");
-                lat           = tmpStation.getDouble("latitude");
-                name          = tmpStation.getString("name");
+                lng           = tmpStation.getDouble(transportName+"Stop_lon");
+                lat           = tmpStation.getDouble(transportName+"Stop_lat");
+                name          = tmpStation.getString(transportName+"Stop_name");
 
                 
                 // Create a overlay for a special position
-                // marker = new OverlayItem(next departure);
+                marker = new OverlayItem(name,name, new GeoPoint(lat, lng));
                  // Add the graphics to the marker
-                 marker.setMarker(busMarker);
+                 marker.setMarker(makerTransport);
                  
           
                  // Add the marker into the list
-                 busOverlayItemArray.add(marker);
+                 overlayItemArray.add(marker);
                  
      
      		}
@@ -531,8 +567,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         
         OnItemGestureListener<OverlayItem> myOnItemGestureListener
             = new OnItemGestureListener<OverlayItem>(){
-
-          // dsiplay  bike information when  user click
+          // dsiplay  bus information when  user click
           @Override
           public boolean onItemSingleTapUp(int index, OverlayItem item) {
            Toast.makeText(MapViewClass.this, 
@@ -553,13 +588,13 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
      // Add the array into another array with some parameters
        
         
-        busItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, busOverlayItemArray, myOnItemGestureListener);
+        itemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, overlayItemArray, myOnItemGestureListener);
        
 
        
     	
         // Add the overlays into the map
-        mapView.getOverlays().add(busItemizedIconOverlay);
+        mapView.getOverlays().add(itemizedIconOverlay);
     	   } catch (JSONException e) {
     		     
                // TODO Auto-generated catch block

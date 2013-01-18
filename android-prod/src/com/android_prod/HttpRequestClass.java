@@ -8,13 +8,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 
 import android.util.Log;
-import android.widget.Toast;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -22,16 +19,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import java.lang.Object;
-
 import java.net.URI;
-import java.nio.Buffer;
 
 public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
 
@@ -40,9 +32,11 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     Intent  intent;
     String  dataBike;    // dataBike;
     String  dataBus;    // dataBus;
+    String  dataMetro;    // datametro;
 
 	 String FILENAME_BIKE = "bike.json";
 	 String FILENAME_BUS = "bus.json";
+	 String FILENAME_METRO = "metro.json";
     
     FileOutputStream fos;
     FileInputStream fis;
@@ -60,11 +54,11 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     	/**FOR Bike*/
  		
  		dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,5000);
- 		/**For bus*/
-
- 		dataBus =callServer("http://148.60.11.208:3000/android/data/metro",FILENAME_BUS,5000);
- 		//Log.i("ERROR", dataBus);
  		/**For Metro*/
+ 		dataMetro =callServer("http://148.60.11.208:3000/android/data/metro",FILENAME_METRO,5000);
+ 		
+ 		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
+ 		
         return null;
     }
 
@@ -73,25 +67,31 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     	
         // Then put data in the intent
         intent.putExtra("bikeData", dataBike);
-       //intent.putExtra("busData", dataBus);
+       intent.putExtra("metroData", dataMetro);
+       intent.putExtra("busData", dataBus);
         // Start the other Activity
         mContext.startActivity(intent);
     }
     
   
- /**   @Override
+    @Override
 	protected void onProgressUpdate(Integer... values){
 		super.onProgressUpdate(values);
 		// Mise à jour donné
 		
 		/*FOR Bike*/
  		
-		/**dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,5000);
+		dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,5000);
+ 		/*For Metro*/
+
+ 		dataMetro =callServer("http://148.60.11.208:3000/android/data/metro",FILENAME_METRO,5000);
+ 		
  		/*For bus*/
 
- 		/**dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
+ 		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
 		
-	}*/
+		
+	}
   /** method use to do serveur call*/
     public String callServer(String URL, String nameCacheFile, int timeUpdate)
     {
@@ -138,10 +138,11 @@ try {
             while ((line = reader.readLine()) != null) {
                 sb.append(line + "\n");
             }
-
-            is.close();
+    
+           
             result = sb.toString();
-
+            is.close();
+            Log.i("download info" , result); // log info
            
         } catch (Exception e) {
         	Log.i("Error converting result " , e.getMessage());
@@ -151,10 +152,10 @@ try {
         fos = mContext.openFileOutput(nameCacheFile, Context.MODE_PRIVATE);
 		fos.write(result.getBytes());	
 		
-		Log.i("download info" , result); // log info
+		
 		 // return result;
 		fos.close();
-        
+  
  			}
  			else
  			{	
@@ -163,6 +164,14 @@ try {
  				fis=mContext.openFileInput(nameCacheFile);
  				InputStreamReader isr = new InputStreamReader(fis);
  		        BufferedReader br = new BufferedReader(isr);
+ 		       StringBuilder  sbtmp     = new StringBuilder();
+ 		        String tmp=null;
+ 		       while ((tmp = br.readLine()) != null) {
+ 	                sbtmp.append(tmp + "\n");
+ 	            }
+ 	    
+ 	           
+ 	            result = sbtmp.toString();
  				fis.close();
  				
  				Log.i("Reading file" , result); // log info
