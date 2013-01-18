@@ -78,7 +78,11 @@ function processData(data){
 			var parent_station = data[9];
 			var stop_timezone = data[10];
 			var wheelchair_boarding = data[11];
-				
+
+			
+			stop_lat = replaceAll(stop_lat, '\"', '');
+			stop_lon = replaceAll(stop_lon, '\"', '');
+
 			// Save the data into the BusStops table
 			var query = connection.query("INSERT INTO test.BusStops SET ?", {Stop_id: stop_id, Stop_code: stop_code, Stop_name: stop_name, 
 				Stop_desc: stop_desc, Stop_lat: stop_lat, Stop_lon: stop_lon, Zone_id: zone_id, Stop_url: stop_url, Location_type: location_type,
@@ -95,6 +99,10 @@ function processData(data){
 		}
 	
 }
+}
+
+function replaceAll(txt, replace, with_this) {
+  return txt.replace(new RegExp(replace, 'g'),with_this);
 }
 
 
