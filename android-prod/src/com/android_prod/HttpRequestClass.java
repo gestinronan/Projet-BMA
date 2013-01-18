@@ -56,7 +56,8 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  		dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,5000);
  		/**For Metro*/
  		dataMetro =callServer("http://148.60.11.208:3000/android/data/metro",FILENAME_METRO,5000);
- 		//Log.i("ERROR", dataBus);
+ 		
+ 		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
  		
         return null;
     }
@@ -67,6 +68,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
         // Then put data in the intent
         intent.putExtra("bikeData", dataBike);
        intent.putExtra("metroData", dataMetro);
+       intent.putExtra("busData", dataBus);
         // Start the other Activity
         mContext.startActivity(intent);
     }
@@ -83,6 +85,11 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  		/*For Metro*/
 
  		dataMetro =callServer("http://148.60.11.208:3000/android/data/metro",FILENAME_METRO,5000);
+ 		
+ 		/*For bus*/
+
+ 		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
+		
 		
 	}
   /** method use to do serveur call*/
