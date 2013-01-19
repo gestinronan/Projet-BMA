@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <h1>Borne elecrique<a href="http://localhost:3000/">Bike station</a>, <a href="http://localhost:3000/metro"> Metro link</a></h1>
+  <body>
+	<% for(i=0; i< data.length; i++){ %>
+		<li> Nom: <%= data[i].name%> </li>
+		<li> Longitude: <%= data[i].longitude%> </li>
+		<li> Latitude: <%= data[i].latitude%> </li>
+		<hr>
+	<% } %>	
+	
+  </body>
+</html>

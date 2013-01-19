@@ -112,6 +112,20 @@ app.get('/bus', function(req, res){
         })
     });
 });
+
+
+/********** Get request for the boren electric from the mysql database ****/
+app.get('/borneelec', function(req, res){
+
+	connection.query('SELECT * FROM test.BorneElec', function(err, result){
+
+		res.render('borneelec', {
+			data: result
+		})
+	});
+});
+
+
 /************ Example of an other get Request *****/
 
 app.post('/android',function(req, res){
