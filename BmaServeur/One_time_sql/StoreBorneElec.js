@@ -57,7 +57,7 @@ fs.readFile(pathToData, function (err, data) {
 */
 
 function processData(data){
-	var x = 0;
+	var x = 1;
     var allTextLines = data.split(/\r\n|\n/);
     console.log (allTextLines);
 	// Get the header
@@ -87,10 +87,10 @@ function processData(data){
 					if(err || !data){
 						console.log("An error occured: " + err);
 					} else {
-						console.log("Borne elec saved");
+						console.log("Borne elec saved :: " + x + "/" + 15);
 
 						// Case last BorneElec
-						if(x == allTextLines.length){
+						if(x == 15){
 							process.exit(0);
 						}
 						x++;

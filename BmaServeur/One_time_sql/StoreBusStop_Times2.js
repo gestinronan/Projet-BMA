@@ -137,10 +137,10 @@ function processData(array){
 						if(err || !data){
 							console.log("An error occured: " + err);
 						} else {
-							console.log("Bus stop time saved :: " + x + "/" + allTextLines.length);
+							console.log("Bus stop time saved :: " + x + "/" + array.length);
 
 							// Case the script is over
-							if(x == allTextLines.length){
+							if(x == array.length - 1){
 								process.exit(0);
 							}
 							x++;

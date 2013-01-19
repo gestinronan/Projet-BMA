@@ -87,7 +87,7 @@ function processData(data){
 						console.log("Bus route saved :: " + x + "/" + allTextLines.length);
 
 						// Case the script is done
-						if(x == allTextLines.length){
+						if(x == allTextLines.length-1){
 							process.exit(0);
 						}
 						x++;

@@ -54,7 +54,7 @@ fs.readFile(pathToData, function (err, data) {
 
 function processData(data){
     var allTextLines = data.split(/\r\n|\n/);
-    var x = 0;
+    var x = 1;
     
 	// Get the header
 	var headers = allTextLines[0].split(',');
@@ -84,7 +84,7 @@ function processData(data){
 						console.log("Bus trip saved :: " + x +"/" + allTextLines.length);
 
 						// Case the script is done
-						if(x == allTextLines.length){
+						if(x == allTextLines.length - 1){
 							process.exit(0);
 						}
 						x++;

@@ -51,7 +51,7 @@ $.ajax({
 				if(err || !data){
 					console.log("An error occured: " + err);
 				} else {
-					console.log("Metro stop saved :: " + x + "/" + station.length);
+					console.log("Metro stop saved :: " + x + "/" + station.length - 1);
 				}
 				x++;
 			});
