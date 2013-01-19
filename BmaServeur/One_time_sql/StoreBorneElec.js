@@ -81,7 +81,7 @@ function processData(data){
 			var longitude = data[16];
 				
 			// Save the data into the BusStops table
-			var query = connection.query("INSERT INTO test.BorneElec SET ?", {Borne_id: id, Borne_name: name, Borne_site_type: site_type, Borne_acces: acces, Borne_tarif: tarif, Borne_type: borne_type, Borne_lat: latitude, Borne_lon: longitude}, function(err, result) {
+			var query = connection.query("INSERT INTO test.BorneElec SET ?", {BorneStop_id: id, BorneStop_name: name, BorneStop_site_type: site_type, BorneStop_acces: acces, BorneStop_tarif: tarif, BorneStop_type: borne_type, BorneStop_lat: latitude, BorneStop_lon: longitude}, function(err, result) {
 			  	
 					// Case there is an error
 					if(err || !data){
