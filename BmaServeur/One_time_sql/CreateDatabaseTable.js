@@ -202,14 +202,14 @@ function(err, result){
 });
 
 // Create the BorneElec Table
-connection.query('CREATE TABLE BorneElec (id VARCHAR(100),' +
-                                         'name VARCHAR(100),' +
-                                         'site_type VARCHAR(100),' +
-                                         'acces VARCHAR(100),' +
-                                         'tarif VARCHAR(100),' +
-                                         'borne_type VARCHAR(100),' + 
-                                         'latitude VARCHAR(100),' +
-                                         'longitude VARCHAR(100))' 
+connection.query('CREATE TABLE BorneElec (Borne_id VARCHAR(100),' +
+                                         'Borne_name VARCHAR(100),' +
+                                         'Borne_site_type VARCHAR(100),' +
+                                         'Borne_acces VARCHAR(100),' +
+                                         'Borne_tarif VARCHAR(100),' +
+                                         'Borne_type VARCHAR(100),' + 
+                                         'Borne_lat VARCHAR(100),' +
+                                         'Borne_lon VARCHAR(100))' 
 , function(err, result){
     // Case there is an error during the creation
     if(err) {
