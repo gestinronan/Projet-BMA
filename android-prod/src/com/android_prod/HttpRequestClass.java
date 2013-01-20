@@ -33,10 +33,12 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
     String  dataBike;    // dataBike;
     String  dataBus;    // dataBus;
     String  dataMetro;    // datametro;
+    String  dataBorne;    // datametro;
 
 	 String FILENAME_BIKE = "bike.json";
 	 String FILENAME_BUS = "bus.json";
 	 String FILENAME_METRO = "metro.json";
+	 String FILENAME_BORNE = "borne.json";
     
     FileOutputStream fos;
     FileInputStream fis;
@@ -59,6 +61,8 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
  		
  		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
  		
+ 		dataBorne =callServer("http://148.60.11.208:3000/android/data/borneelec",FILENAME_BORNE,5000);
+ 		
         return null;
     }
 
@@ -69,6 +73,7 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
         intent.putExtra("bikeData", dataBike);
        intent.putExtra("metroData", dataMetro);
        intent.putExtra("busData", dataBus);
+       intent.putExtra("borneData", dataBorne);
         // Start the other Activity
         mContext.startActivity(intent);
     }
@@ -90,7 +95,8 @@ public class HttpRequestClass extends AsyncTask<Void, Integer, Void> {
 
  		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,5000);
 		
-		
+ 		dataBorne =callServer("http://148.60.11.208:3000/android/data/borneelec",FILENAME_BORNE,5000);
+ 		
 	}
   /** method use to do serveur call*/
     public String callServer(String URL, String nameCacheFile, int timeUpdate)
