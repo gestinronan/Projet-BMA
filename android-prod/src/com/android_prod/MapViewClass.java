@@ -168,11 +168,16 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private Drawable                         metroMarker;
     private JSONArray 						 metroArray ;
 
+    private ArrayList<OverlayItem>           borneOverlayItemArray;
+    private ItemizedIconOverlay<OverlayItem> borneItemizedIconOverlay;
+    private Drawable                         borneMarker;
+    private JSONArray 						 borneArray ;
     // Intent value
     private JSONObject                      bikeData;
     private String                          bikeIntent;
     private String                          busIntent;
     private String                          metroIntent;
+    private String                          borneIntent;
     private ItemizedIconOverlay<OverlayItem> myLocationItemizedIconOverlay;
     
     // for layers
@@ -199,7 +204,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         bikeIntent = intent.getStringExtra("bikeData");
        metroIntent = intent.getStringExtra("metroData");
        busIntent = intent.getStringExtra("busData");
-        
+       borneIntent = intent.getStringExtra("borneData");
 
         // Location listner
         lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -215,6 +220,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             bikeData = new JSONObject(bikeIntent);
             metroArray = new JSONArray(metroIntent);
             busArray = new JSONArray(busIntent);
+            borneArray = new JSONArray(borneIntent);
            
         } catch (JSONException e) {
             Log.i("ERROR JSON" , e.toString());
@@ -232,6 +238,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         bikeMarker = this.getResources().getDrawable(R.drawable.velo);
        busMarker = this.getResources().getDrawable(R.drawable.bus);
        metroMarker = this.getResources().getDrawable(R.drawable.icon_subway);
+       borneMarker = this.getResources().getDrawable(R.drawable.greenpoint);
 
         // Set listener on the layout elements
         locateMe.setOnClickListener(locateMeListener);
@@ -281,6 +288,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
          displayBikePoint(bikeData);
          //metro
          displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
+       
+         //borne
+         displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
        
 
         /** ************************************************** */
