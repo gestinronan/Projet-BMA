@@ -215,7 +215,7 @@ connection.query('CREATE TABLE BorneElec (BorneStop_id VARCHAR(100),' +
     if(err) {
         console.log(err);
     } else {
-        console.log("Table TerRoutes Created");
+        console.log("Table Borne elec Created");
     }
 });
 
