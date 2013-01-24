@@ -79,6 +79,10 @@ function processData(data){
 			var borne_type = data[6];
 			var latitude = data[17];
 			var longitude = data[16];
+
+			// Replace comma by point for latitude and longitude
+			latitude = latitude.replace(',', '.');
+			longitude = longitude.replace(',', '.');
 				
 			// Save the data into the BusStops table
 			var query = connection.query("INSERT INTO test.BorneElec SET ?", {BorneStop_id: id, BorneStop_name: name, BorneStop_site_type: site_type, BorneStop_acces: acces, BorneStop_tarif: tarif, BorneStop_type: borne_type, BorneStop_lat: latitude, BorneStop_lon: longitude}, function(err, result) {
