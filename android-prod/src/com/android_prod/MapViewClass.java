@@ -555,8 +555,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             	tmpStation = dataJson.getJSONObject(i);
      
                 // get the value
-                lng           = tmpStation.getDouble(transportName+"Stop_lon");
-                lat           = tmpStation.getDouble(transportName+"Stop_lat");
+            	String lngtmp =tmpStation.getString(transportName+"Stop_lon");
+            	if(!lngtmp.isEmpty())
+            	{
+            	
+                lng           = Double.valueOf(lngtmp).doubleValue();
+                lat           = Double.valueOf(tmpStation.getString(transportName+"Stop_lat")).doubleValue();
                 name          = tmpStation.getString(transportName+"Stop_name");
 
                 
@@ -569,7 +573,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                  // Add the marker into the list
                  overlayItemArray.add(marker);
                  
-     
+            	}
      		}
         
         
