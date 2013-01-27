@@ -39,6 +39,7 @@ var androidLat, androidLng;
 // Variables needed for the database connection
 var mysql      = require('mysql');
 var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
+connection = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
 
 // Connection Neo4j database
 var neo4j = require('node-neo4j');
@@ -124,6 +125,39 @@ app.get('/borneelec', function(req, res){
 		})
 	});
 });
+
+
+/********* GET request for the testGraph view, this return the list of all Stops *****/
+app.get('/testgraphe', function(req, res){
+
+	connection.query('SELECT * FROM test.BusStops; ' + 
+					 'SELECT * FROM test.BikeStops; ' +
+					 'SELECT * FROM test.MetroStops', 
+					 function(err, results){
+					 	console.log(results[0]);
+					 	// Return the data to the template
+					 	res.render('testgraphe',{
+					 		dataBus: results[0],
+					 		dataBike: results[1],
+					 		dataMetro: results[2]
+					 	})
+					 });
+});
+
+
+/********* POST request for the testGraph view, this return the graph query result*****/
+app.post('/testgraphe/post', function(req, res){
+
+	// Get the data from the request
+	var arrive = req.body.arrive;
+	var depart = req.body.depart;
+	var bus = req.body.bus;
+	var bike = req.body.bike;
+	var metro = req.body.metro;
+
+	
+});
+
 
 
 /************ Example of an other get Request *****/
