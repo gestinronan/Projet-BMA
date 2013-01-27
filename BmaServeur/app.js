@@ -155,7 +155,8 @@ app.post('/testgraphe/post', function(req, res){
 	var bike = req.body.bike;
 	var metro = req.body.metro;
 
-	
+	res.send('ok');
+
 });
 
 
@@ -304,31 +305,6 @@ function getData(url, req, res, type){
 			// Case of android with data
 			else if(type == "android/data"){
 				
-				var station = data.opendata.answer.data.station;
-				console.log("Longitude of the phone: " + androidLng);
-				console.log("Latitude of the phone: " + androidLat);
-				
-				// We create a point with our coordinate
-				//var myPos = Point(androidLat, androidLng);
-				
-				// Edit the Json and add a field which contains the distance between you and the stations
-				for ( i=0; i < station.length; i++){
-					
-					// Call the getDistance function
-					d = getDistance(station[i].latitude, station[i].longitude, androidLat, androidLng);
-					
-					/******* Use the node-module where *********/
-					
-					// Create the Geopoint of the stop
-					//var bikeStation = Point(station[i].latitude, station[i].longitude);
-					
-					// then we calcul
-					//myPos.distanceTo(bikeStation);
-					/*******************************************/
-					
-					// add the field distance into the json
-					station[i].distance = d;
-				}
 				res.send(data);
 			}
 		},
@@ -339,27 +315,6 @@ function getData(url, req, res, type){
 	});
 }
 
-/****** Function which calcul the distance between two points ******/ 
-
-function getDistance(lat, lng, mylat, mylng){
-
-	// Variable
-	R = 6371; // Earth raduis in meters
-	
-	// Conversion to Radian
-	lat = (lat * Math.pi) / 180;
-	lng = (lng * Math.pi) / 180;
-	mylat = (mylat * Math.pi) / 180;
-	mylat = (mylat * Math.pi) / 180;
-	
-	
-	// Math equation
-	d = Math.acos(Math.sin(mylat)*Math.sin(lat)+Math.cos(mylat)*Math.cos(lat)*Math.cos(lng-mylng))*R
-	
-	// return the result
-	return d;
-	
-}
 
 /**
 * Function which update the bike node in the graph.
