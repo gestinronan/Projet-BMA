@@ -128,9 +128,15 @@ function processData(array){
 			var data = array[i].split(',');
     	    if (data.length == headers.length) {
 				
+				
+    	    	// Remove quotes From the departure time, arrival time and stop sequence
+    	    	var dp = replaceAll(data[4], '\"', '');
+    	    	var ap = replaceAll(data[3], '\"', '');
+    	    	var ss = replaceAll(data[2], '\"', '');
+				
 				// Save the data into the BusStops table
-				var query = connection.query("INSERT INTO test.BusStop_times SET ?", {Trip_id: data[0], Stop_id: data[1], Arrival_time: data[3], 
-					Departure_time: data[4], Stop_headsign: data[5]}, 
+				var query = connection.query("INSERT INTO test.BusStop_times SET ?", {Trip_id: data[0], Stop_id: data[1], Stop_sequence: ss, Arrival_time: ap, 
+					Departure_time: dp, Stop_headsign: data[5]}, 
 					function(err, result) {
 			  
 						// Case there is an error
@@ -152,5 +158,8 @@ function processData(array){
 	}	
 }
 
+function replaceAll(txt, replace, with_this) {
+  return txt.replace(new RegExp(replace, 'g'),with_this);
+}
 
 

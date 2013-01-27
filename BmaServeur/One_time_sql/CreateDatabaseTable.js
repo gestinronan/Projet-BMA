@@ -64,7 +64,7 @@ function(err, result){
 
 // Create the BusStop_Times Table
 connection.query('CREATE TABLE BusStop_times (Stop_id VARCHAR(100),'+
-		 								 'Stop_sequence VARCHAR(100),' +
+		 								 'Stop_sequence INT,' +
                  						 'Trip_id VARCHAR(100),' +
 										 'Arrival_time VARCHAR(100),' +
 										 'Departure_time VARCHAR(100),' +
