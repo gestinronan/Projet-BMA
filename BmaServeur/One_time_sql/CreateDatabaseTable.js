@@ -15,7 +15,7 @@ var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3
 
 // Create the Bike_Stop Table
 connection.query('CREATE TABLE BikeStops (BikeStop_id int, BikeStop_name VARCHAR(100),' +
-                 'BikeStop_lat VARCHAR(100),BikeStop_lon VARCHAR(100), PRIMARY KEY(BikeStop_id))',
+                 'BikeStop_lat VARCHAR(100),BikeStop_lon VARCHAR(100), NodeId VARCHAR(45), PRIMARY KEY(BikeStop_id))',
 function(err, result){
     // Case there is an error during the creation
     if(err) {
@@ -27,7 +27,7 @@ function(err, result){
 
 // Create the Metro_Stop Table
 connection.query('CREATE TABLE MetroStops (MetroStop_id VARCHAR(100), MetroStop_name VARCHAR(100),' +
-                 'MetroStop_lat VARCHAR(100),MetroStop_lon VARCHAR(100))',
+                 'MetroStop_lat VARCHAR(100), NodeId VARCHAR(45), MetroStop_lon VARCHAR(100))',
 function(err, result){
     // Case there is an error during the creation
     if(err) {
@@ -52,6 +52,7 @@ connection.query('CREATE TABLE BusStops (Stop_id VARCHAR(100), '+
 										 'Wheelchair_boarding VARCHAR(100), ' +
 										 'Line_short_name VARCHAR(150), ' +
 										 'Line_long_name VARCHAR(150), ' +
+                                         'NodeId VARCHAR(45), ' +
 										 'PRIMARY KEY(Stop_id))',
 function(err, result){
     // Case there is an error during the creation

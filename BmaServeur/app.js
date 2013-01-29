@@ -149,11 +149,60 @@ app.get('/testgraphe', function(req, res){
 app.post('/testgraphe/post', function(req, res){
 
 	// Get the data from the request
-	var arrive = req.body.arrive;
-	var depart = req.body.depart;
+
+	// Parse the depart data
+	var tempDepart = req.body.depart;
+	var departType = tempDepart[0];
+	var depart = tempDepart[1];
+
+	// Parse the arrive data
+	var tempArrive = req.body.arrive;
+	var arriveType = tempArrive[0];
+	var arrive = tempArrive[1];
+	
+	// Parse the rest
 	var bus = req.body.bus;
 	var bike = req.body.bike;
 	var metro = req.body.metro;
+
+	// Convert data into table name
+	var departTable;
+	var arriveTable;
+
+	if(departType == 'Bus'){
+		departTable = 'test.BusStops';
+	}
+	else if(departType == 'Bike'){
+		departTable = 'test.BikeStops';
+	}
+	else if(departType == 'Metro'){
+		departTable = 'test.MetroStops';
+	}
+
+	if(arriveType == 'Bus'){
+		arriveTable = 'test.BusStops';
+	}
+	else if(arriveType == 'Bike'){
+		arriveTable = 'test.BikeStops';
+	}
+	else if(arriveType == 'Metro'){
+		arriveTable = 'test.MetroStops';
+	}
+
+	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ';' +
+					 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ';',
+					  function(err, results){
+
+						var id_depart = results[0];
+						var id_arrive = results[1];
+
+						// Run a cypher query against the grapj
+						db.cypherQuery("START d=node(1), e=node(2) " +
+					  				   "MATCH p = shortestPath( d-[*..15]->e ) " +
+                       				   "RETURN p", function(err,result){
+			   							// Result of the query
+						})
+	});
 
 	res.send('ok');
 
