@@ -26,7 +26,7 @@ var BusStop_id = new Array();
 
 // Before doing the join, we select all the busStop_id in an array, then we do a join query with this Id, 
 // built an array with the route_short_name and route_long_name and update the BusStops table.
-connection.query("SELECT Stop_id FROM BusStops", function(err, result){
+connection.query("SELECT test.BusStops.Stop_id FROM test.BusStops", function(err, result){
 		
 	// Case there is an error
 	if(err){
@@ -53,7 +53,7 @@ for(i=0; i < stop_id_array.length; i++){
 connection.query('SELECT BusStops.Stop_id, BusTrips.Trip_id, BusTrips.Route_id, BusRoutes.Route_id, BusRoutes.Route_long_name, ' +
 				 "BusRoutes.Route_short_name, BusStop_times.Stop_id, BusStop_times.Trip_id " + 							// We select what we need
 				 "FROM BusStops AS busStops, BusTrips AS busTrips, BusStop_times As busStop_times, BusRoutes AS busRoutes " + // We Use shorter name
-				 "WHERE busStops.Stop_id = \'" + stop_id_array[i].Stop_id + "\'  " + // We pick the right stop_id
+				 "WHERE busStops.Stop_id = " + stop_id_array[i].Stop_id +  // We pick the right stop_id
 				 "AND busStops.Stop_id = busStop_times.Stop_id " + // We join the BusStops table with the BusStop_Times Table by Stop_id
 				 "AND busStop_times.Trip_id = busTrips.Trip_id " + // We join the BusStop_Times Table with the BusTrips Table by Trip_id
 				 "AND busTrips.Route_id = busRoutes.Route_id",  // We join the BusTrips Table with the BusRoutes table by Route_id
