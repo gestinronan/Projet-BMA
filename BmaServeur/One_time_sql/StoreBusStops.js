@@ -85,6 +85,7 @@ function processData(data){
 			stop_lat = replaceAll(stop_lat, '\"', '');
 			stop_lon = replaceAll(stop_lon, '\"', '');
 			stop_name = replaceAll(stop_name, '\"', '');
+			//stop_id = replaceAll(stop_id, '\"', '');
 
 			// Save the data into the BusStops table
 			var query = connection.query("INSERT INTO test.BusStops SET ?", {Stop_id: stop_id, Stop_code: stop_code, Stop_name: stop_name, 

@@ -74,6 +74,14 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 
+/********* Allow Cross Domain Ajax call ***********/
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 /************* Get Request for the bike stations ********/
 
 // This is the function which manage a get call on '/' (That's the first page which is load)
@@ -146,7 +154,9 @@ app.get('/testgraphe', function(req, res){
 
 
 /********* POST request for the testGraph view, this return the graph query result*****/
-app.post('/testgraphe/post', function(req, res){
+app.post('/testgraphe', function(req, res){
+
+	console.log(req.body);
 
 	// Get the data from the request
 
@@ -169,7 +179,7 @@ app.post('/testgraphe/post', function(req, res){
 	var departTable;
 	var arriveTable;
 
-	if(departType == 'Bus'){
+	/*if(departType == 'Bus'){
 		departTable = 'test.BusStops';
 	}
 	else if(departType == 'Bike'){
@@ -203,7 +213,7 @@ app.post('/testgraphe/post', function(req, res){
 			   							// Result of the query
 						})
 	});
-
+*/
 	res.send('ok');
 
 });
