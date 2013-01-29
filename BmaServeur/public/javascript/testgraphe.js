@@ -29,6 +29,7 @@ function callServer(){
 			// Case of a success call
 			// Display the result div
 			$('#result').show();
+			console.log(data);
 		},
 		error: function(data){
 			// Case of an error during the post request
