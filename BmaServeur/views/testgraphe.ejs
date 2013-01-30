@@ -11,17 +11,17 @@
 
   	<!-- Div which contains the form stuff-->
 	<div>
-		</hr>
+		<hr>
 		<p>Départ:</p>
 		<select id = 'depart'>
 				<% for(i=0; i< dataBus.length; i++){ %>
-				<option value= <%= dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
+				<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
 			<% } %>	
 			<% for(i=0; i< dataBike.length; i++){ %>
-				<option value= <%= dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
+				<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
 			<% } %>	
 			<% for(i=0; i< dataMetro.length; i++){ %>
-				<option value= <%= dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
+				<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
 			<% } %>	
 
 		</select>
@@ -29,24 +29,24 @@
 		<p>Arrivé:</p>
 		<select id='arrive'>
 				<% for(i=0; i< dataBus.length; i++){ %>
-				<option value= <%= dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
+				<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
 			<% } %>	
 			<% for(i=0; i< dataBike.length; i++){ %>
-				<option value= <%= dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
+				<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
 			<% } %>	
 			<% for(i=0; i< dataMetro.length; i++){ %>
-				<option value= <%= dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
+				<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
 			<% } %>	
 
 		</select>
 
 
 		<p>Type de transport:</p>
-		<input type="checkbox" name="bus" id="bus" value="bus" checked="yes">Bus<br>
-		<input type="checkbox" name="bike" id="bike" value="bike" checked="yes">Bike<br>
-		<input type="checkbox" name="metro" id="metro" value="metro" checked="yes">Metro
+		<input type="checkbox" name="bus" id="bus" value="bus" checked=true>Bus<br>
+		<input type="checkbox" name="bike" id="bike" value="bike" checked=true>Bike<br>
+		<input type="checkbox" name="metro" id="metro" value="metro" checked=true>Metro
 		<br>
-		</hr>
+		<hr>
 		<input type="submit" onclick='javascript: callServer()'>
 	</div>
 
