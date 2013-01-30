@@ -39,7 +39,7 @@ var androidLat, androidLng;
 // Variables needed for the database connection
 var mysql      = require('mysql');
 var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
-connection = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
+//connection = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
 
 // Connection Neo4j database
 var neo4j = require('node-neo4j');
@@ -75,12 +75,12 @@ http.createServer(app).listen(app.get('port'), function(){
 
 
 /********* Allow Cross Domain Ajax call ***********/
-app.all('*', function(req, res, next) {
+/*app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
-});
+});*/
 
 /************* Get Request for the bike stations ********/
 
@@ -137,12 +137,13 @@ app.get('/borneelec', function(req, res){
 
 /********* GET request for the testGraph view, this return the list of all Stops *****/
 app.get('/testgraphe', function(req, res){
-
+	connection = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
 	connection.query('SELECT * FROM test.BusStops; ' + 
 					 'SELECT * FROM test.BikeStops; ' +
 					 'SELECT * FROM test.MetroStops', 
 					 function(err, results){
 					 	console.log(results[0]);
+					 	connection = mysql.createConnection({multipleStatements: false}); // Disable the multiquery option
 					 	// Return the data to the template
 					 	res.render('testgraphe',{
 					 		dataBus: results[0],
@@ -198,11 +199,11 @@ app.post('/testgraphe', function(req, res){
 	else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
 	}
-
+	connection = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
 	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ';' +
 					 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ';',
 					  function(err, results){
-
+					  	connection = mysql.createConnection({multipleStatements: false}); // Disable the multiquery option
 						var id_depart = results[0];
 						var id_arrive = results[1];
 
@@ -213,6 +214,7 @@ app.post('/testgraphe', function(req, res){
 			   							// Result of the query
 						})
 	});
+	res.send('ok');
 
 });
 
