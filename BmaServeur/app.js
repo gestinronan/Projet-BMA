@@ -144,18 +144,18 @@ app.get('/borneelec', function(req, res){
 app.get('/testgraphe', function(req, res){
 
 	
-	connection.query('SELECT * FROM test.BusStops' //+ 
-					 //'SELECT * FROM test.BikeStops; ' +
-					 //'SELECT * FROM test.MetroStops', 
-					 ,function(err, results){
+	connectionMultiple.query('SELECT * FROM test.BusStops; ' + 
+					 'SELECT * FROM test.BikeStops; ' +
+					 'SELECT * FROM test.MetroStops', 
+					 function(err, results){
 
-					 	
+					 	console.log(results[0]);
 					 	
 					 	// Return the data to the template
 					 	res.render('testgraphe',{
-					 		dataBus: results,
-					 		dataBike: results,
-					 		dataMetro: results
+					 		dataBus: results[0],
+					 		dataBike: results[1],
+					 		dataMetro: results[2]
 					 	})
 					 });
 });
