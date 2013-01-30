@@ -149,7 +149,7 @@ app.get('/testgraphe', function(req, res){
 					 'SELECT * FROM test.MetroStops', 
 					 function(err, results){
 
-					 	console.log(results[0]);
+					 	console.log(results);
 					 	
 					 	// Return the data to the template
 					 	res.render('testgraphe',{
