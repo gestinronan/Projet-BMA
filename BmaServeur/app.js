@@ -179,7 +179,7 @@ app.post('/testgraphe', function(req, res){
 	var departTable;
 	var arriveTable;
 
-	/*if(departType == 'Bus'){
+	if(departType == 'Bus'){
 		departTable = 'test.BusStops';
 	}
 	else if(departType == 'Bike'){
@@ -208,13 +208,11 @@ app.post('/testgraphe', function(req, res){
 
 						// Run a cypher query against the grapj
 						db.cypherQuery("START d=node(1), e=node(2) " +
-					  				   "MATCH p = shortestPath( d-[*..15]->e ) " +
+					  				   "MATCH p = shortestPath( d-[*..20]->e ) " +
                        				   "RETURN p", function(err,result){
 			   							// Result of the query
 						})
 	});
-*/
-	res.send('ok');
 
 });
 
