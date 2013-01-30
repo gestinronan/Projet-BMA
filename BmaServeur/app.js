@@ -144,7 +144,7 @@ app.get('/borneelec', function(req, res){
 app.get('/testgraphe', function(req, res){
 
 	
-	connectionMultiple.query('SELECT * FROM test.BusStops' //+ 
+	connection.query('SELECT * FROM test.BusStops' //+ 
 					 //'SELECT * FROM test.BikeStops; ' +
 					 //'SELECT * FROM test.MetroStops', 
 					 ,function(err, results){
