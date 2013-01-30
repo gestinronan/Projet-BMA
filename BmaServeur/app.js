@@ -39,7 +39,9 @@ var androidLat, androidLng;
 // Variables needed for the database connection
 var mysql      = require('mysql');
 var connection = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
-//connection = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
+
+var connectionMultiple = mysql.createConnection('mysql://guillaume:guillaume@127.0.0.1:3306/test?debug=false');
+connectionMultiple = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
 
 // Connection Neo4j database
 var neo4j = require('node-neo4j');
@@ -100,6 +102,7 @@ app.get('/',function(req, res){
 app.get('/metro', function(req, res){
 	
 	// Get the data from the table Metro_Stop
+	
 	connection.query('SELECT * FROM MetroStops', function(err, result){
 		
 		// Pass the data to the metro template
@@ -113,6 +116,7 @@ app.get('/metro', function(req, res){
 app.get('/bus', function(req, res){
 
     // Get the data from the BusStops table
+   
     connection.query('SELECT * FROM BusStops', function(err, result){
 
         // Pass the data to the template
@@ -126,6 +130,7 @@ app.get('/bus', function(req, res){
 /********** Get request for the boren electric from the mysql database ****/
 app.get('/borneelec', function(req, res){
 
+	
 	connection.query('SELECT * FROM test.BorneElec', function(err, result){
 
 		res.render('borneelec', {
@@ -137,13 +142,15 @@ app.get('/borneelec', function(req, res){
 
 /********* GET request for the testGraph view, this return the list of all Stops *****/
 app.get('/testgraphe', function(req, res){
-	connection = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
-	connection.query('SELECT * FROM test.BusStops; ' + 
+
+	
+	connectionMultiple.query('SELECT * FROM test.BusStops; ' + 
 					 'SELECT * FROM test.BikeStops; ' +
 					 'SELECT * FROM test.MetroStops', 
 					 function(err, results){
+
 					 	console.log(results[0]);
-					 	connection = mysql.createConnection({multipleStatements: false}); // Disable the multiquery option
+					 	
 					 	// Return the data to the template
 					 	res.render('testgraphe',{
 					 		dataBus: results[0],
@@ -199,11 +206,11 @@ app.post('/testgraphe', function(req, res){
 	else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
 	}
-	connection = mysql.createConnection({multipleStatements: true}); // Enable the multiquery option
-	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ';' +
+	
+	connectionMultiple.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ';' +
 					 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ';',
 					  function(err, results){
-					  	connection = mysql.createConnection({multipleStatements: false}); // Disable the multiquery option
+					  	
 						var id_depart = results[0];
 						var id_arrive = results[1];
 
@@ -310,6 +317,7 @@ app.get('/android/data/borneelec', function(req, res){
 	connection.query('SELECT * FROM test.BorneElec', function(err, data){
 
 		// send the data
+
 		var string = JSON.stringify(data);
 		res.send(string);
 		})
