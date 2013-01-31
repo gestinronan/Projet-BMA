@@ -245,22 +245,24 @@ app.post('/testgraphe', function(req, res){
 		arriveTable = 'test.MetroStops';
 	}
 	
-	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ';',
+	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable,
 					  function(err, result){
 
 					  	// Case of error during the call
 					  	if(err || !result){
 					  		console.log('An error occured getting the depart');
 					  	}
+					  	console.log(result);
 					  	id_depart = result.NodeId;
 
-						connection.query( 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ';',
-					  		function(err, results){
+						connection.query( 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable,
+					  		function(err, result){
 
 					  			// Case of error during the call
 					  			if(err || !result){
-					  				console.log('An error occured getting the depart');
+					  				console.log('An error occured getting the arrive');
 					  			}
+					  			console.log(result);
 					  			id_arrive = result.NodeId;
 
 					  			console.log("Do cypher query nodedepart :: " + id_depart + "; nodearrive :: " + id_arrive);
