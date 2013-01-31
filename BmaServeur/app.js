@@ -143,8 +143,53 @@ app.get('/borneelec', function(req, res){
 /********* GET request for the testGraph view, this return the list of all Stops *****/
 app.get('/testgraphe', function(req, res){
 
+//Variable
+var busData = null;
+var bikeData = null;
+var metroData = null;
+
+// First query to get the busStops
+connection.query('SELECT * FROM test.BusStops', function(err, result){
+	busData = result;
+
+	if(busData != null && bikeData != null && metroData != null){
+		res.render('testgraphe',{
+					 		dataBus: busData,
+					 		dataBike: bikeData,
+					 		dataMetro: metroData
+					 	})
+	}
+});
+
+// Second query to get the bikeStops
+connection.query('SELECT * FROM test.BikeStops', function(err, result){
+	bikeData = result;
+
+	if(busData != null && bikeData != null && metroData != null){
+		res.render('testgraphe',{
+					 		dataBus: busData,
+					 		dataBike: bikeData,
+					 		dataMetro: metroData
+					 	})
+	}
+});
+
+// Third query to get the metro Stops
+connection.query('SELECT * FROM test.MetroStops', function(err, result){
+	metroData = result;
+
+	if(busData != null && bikeData != null && metroData != null){
+		res.render('testgraphe',{
+					 		dataBus: busData,
+					 		dataBike: bikeData,
+					 		dataMetro: metroData
+					 	})
+	}
+});
+
+
 	
-	connectionMultiple.query('SELECT * FROM test.BusStops; ' + 
+	/*connectionMultiple.query('SELECT * FROM test.BusStops; ' + 
 					 'SELECT * FROM test.BikeStops; ' +
 					 'SELECT * FROM test.MetroStops', 
 					 function(err, results){
@@ -158,6 +203,7 @@ app.get('/testgraphe', function(req, res){
 					 		dataMetro: results[2]
 					 	})
 					 });
+	*/
 });
 
 
@@ -187,6 +233,10 @@ app.post('/testgraphe', function(req, res){
 	var departTable;
 	var arriveTable;
 
+	// Variable
+	var id_depart = null;
+	var id_arrive = null;
+
 	if(departType == 'Bus'){
 		departTable = 'test.BusStops';
 	}
@@ -207,21 +257,39 @@ app.post('/testgraphe', function(req, res){
 		arriveTable = 'test.MetroStops';
 	}
 	
-	connectionMultiple.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ';' +
-					 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ';',
-					  function(err, results){
-					  	
-						var id_depart = results[0];
-						var id_arrive = results[1];
+	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ';',
+					  function(err, result){
 
-						// Run a cypher query against the grapj
-						db.cypherQuery("START d=node(1), e=node(2) " +
+					  	// Case of error during the call
+					  	if(err || !result){
+					  		console.log('An error occured getting the depart');
+					  	}
+					  	id_depart = result;
+
+						connection.query( 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ';',
+					  		function(err, results){
+
+					  			// Case of error during the call
+					  			if(err || !result){
+					  				console.log('An error occured getting the depart');
+					  			}
+					  			id_arrive = result;
+
+					  			// Run a cypher query against the grapj
+								db.cypherQuery("START d=node(1), e=node(2) " +
 					  				   "MATCH p = shortestPath( d-[*..20]->e ) " +
                        				   "RETURN p", function(err,result){
+			   							
 			   							// Result of the query
-						})
-	});
-	res.send('ok');
+			   							res.send('ok');
+								});
+
+					 	 });
+					  });
+					 
+
+						
+	
 
 });
 
