@@ -187,23 +187,6 @@ connection.query('SELECT * FROM test.MetroStops', function(err, result){
 	}
 });
 
-
-	
-	/*connectionMultiple.query('SELECT * FROM test.BusStops; ' + 
-					 'SELECT * FROM test.BikeStops; ' +
-					 'SELECT * FROM test.MetroStops', 
-					 function(err, results){
-
-					 	console.log(results[0]);
-					 	
-					 	// Return the data to the template
-					 	res.render('testgraphe',{
-					 		dataBus: results[0],
-					 		dataBike: results[1],
-					 		dataMetro: results[2]
-					 	})
-					 });
-	*/
 });
 
 
@@ -216,11 +199,13 @@ app.post('/testgraphe', function(req, res){
 
 	// Parse the depart data
 	var tempDepart = req.body.depart;
+	tempDepart = tempDepart.split(':');
 	var departType = tempDepart[0];
 	var depart = tempDepart[1];
 
 	// Parse the arrive data
 	var tempArrive = req.body.arrive;
+	arriveType = arriveType.split(':');
 	var arriveType = tempArrive[0];
 	var arrive = tempArrive[1];
 	
