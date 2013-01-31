@@ -219,6 +219,8 @@ app.post('/testgraphe', function(req, res){
 	// Convert data into table name
 	var departTable;
 	var arriveTable;
+	var arriveColumns;
+	var departColumns;
 
 	// Variable
 	var id_depart = null;
@@ -227,25 +229,31 @@ app.post('/testgraphe', function(req, res){
 	
 	if(departType == 'Bus'){
 		departTable = 'test.BusStops';
+		departColumns = 'Stop_id';
 	}
 	else if(departType == 'Bike'){
 		departTable = 'test.BikeStops';
+		departColumns = 'BikeStop_id';
 	}
 	else if(departType == 'Metro'){
 		departTable = 'test.MetroStops';
+		departColumns = 'MetroStop_id';
 	}
 
 	if(arriveType == 'Bus'){
 		arriveTable = 'test.BusStops';
+		arriveColumns = 'Stop_id';
 	}
 	else if(arriveType == 'Bike'){
 		arriveTable = 'test.BikeStops';
+		arriveColumns = 'BikeStop_id';
 	}
 	else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
+		arriveColumns = 'MetroStop_id'
 	}
 	
-	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable,
+	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ' WHERE ' + departColumns + ' = ' + depart,
 					  function(err, result){
 
 					  	// Case of error during the call
@@ -255,7 +263,7 @@ app.post('/testgraphe', function(req, res){
 					  	console.log(result);
 					  	id_depart = result.NodeId;
 
-						connection.query( 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable,
+						connection.query( 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ' WHERE ' + arriveColumns + ' = ' + arrive,
 					  		function(err, result){
 
 					  			// Case of error during the call
