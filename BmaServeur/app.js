@@ -140,6 +140,7 @@ app.get('/borneelec', function(req, res){
 });
 
 
+
 /********* GET request for the testGraph view, this return the list of all Stops *****/
 app.get('/testgraphe', function(req, res){
 
@@ -262,7 +263,7 @@ app.post('/testgraphe', function(req, res){
 					  			}
 					  			id_arrive = result;
 
-					  			console.log("Do cypher query");
+					  			console.log("Do cypher query nodedepart :: " + id_depart + "; nodearrive :: " + id_arrive);
 
 					  			// Run a cypher query against the grapj
 								db.cypherQuery("START d=node(" + id_depart + "), e=node(" + id_arrive + ") " +
