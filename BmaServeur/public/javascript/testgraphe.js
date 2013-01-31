@@ -54,6 +54,7 @@ function callServer(){
 			// Case of a success call
 			// Display the result div
 			$('#result').show();
+			$('#result').append('<p>' + data + '</p>');
 			console.log(data);
 		},
 		error: function(data){

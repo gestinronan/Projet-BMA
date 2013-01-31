@@ -268,6 +268,8 @@ app.post('/testgraphe', function(req, res){
 								db.cypherQuery("START d=node(" + id_depart + "), e=node(" + id_arrive + ") " +
 					  				   "MATCH p = shortestPath( d-[*..20]->e ) " +
                        				   "RETURN p", function(err,result){
+
+                       				   	console.log(result);
 			   							
 			   							// Result of the query
 			   							res.send(result);
