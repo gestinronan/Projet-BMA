@@ -198,14 +198,15 @@ app.post('/testgraphe', function(req, res){
 	// Get the data from the request
 
 	// Parse the depart data
-	var tempDepart = req.body.depart;
-	tempDepart = tempDepart.split(':');
+	var tempD = req.body.depart;
+	var tempDepart = tempD.split(':');
 	var departType = tempDepart[0];
 	var depart = tempDepart[1];
+	console.log("id Depart : " + depart);
 
 	// Parse the arrive data
-	var tempArrive = req.body.arrive;
-	arriveType = arriveType.split(':');
+	var tempA = req.body.arrive;
+	var tempArrive = tempA.split(':');
 	var arriveType = tempArrive[0];
 	var arrive = tempArrive[1];
 	
@@ -222,6 +223,7 @@ app.post('/testgraphe', function(req, res){
 	var id_depart = null;
 	var id_arrive = null;
 
+	
 	if(departType == 'Bus'){
 		departTable = 'test.BusStops';
 	}
@@ -270,11 +272,7 @@ app.post('/testgraphe', function(req, res){
 								});
 
 					 	 });
-					  });
-					 
-
-						
-	
+					  });	
 
 });
 
