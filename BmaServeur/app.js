@@ -262,13 +262,15 @@ app.post('/testgraphe', function(req, res){
 					  			}
 					  			id_arrive = result;
 
+					  			console.log("Do cypher query");
+
 					  			// Run a cypher query against the grapj
 								db.cypherQuery("START d=node(" + id_depart + "), e=node(" + id_arrive + ") " +
 					  				   "MATCH p = shortestPath( d-[*..20]->e ) " +
                        				   "RETURN p", function(err,result){
 			   							
 			   							// Result of the query
-			   							res.send('ok');
+			   							res.send(result);
 								});
 
 					 	 });
