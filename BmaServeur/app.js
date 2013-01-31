@@ -77,12 +77,12 @@ http.createServer(app).listen(app.get('port'), function(){
 
 
 /********* Allow Cross Domain Ajax call ***********/
-/*app.all('*', function(req, res, next) {
+app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
-});*/
+});
 
 /************* Get Request for the bike stations ********/
 
