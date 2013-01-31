@@ -252,7 +252,7 @@ app.post('/testgraphe', function(req, res){
 					  	if(err || !result){
 					  		console.log('An error occured getting the depart');
 					  	}
-					  	id_depart = result;
+					  	id_depart = result.NodeId;
 
 						connection.query( 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ';',
 					  		function(err, results){
@@ -261,7 +261,7 @@ app.post('/testgraphe', function(req, res){
 					  			if(err || !result){
 					  				console.log('An error occured getting the depart');
 					  			}
-					  			id_arrive = result;
+					  			id_arrive = result.NodeId;
 
 					  			console.log("Do cypher query nodedepart :: " + id_depart + "; nodearrive :: " + id_arrive);
 
