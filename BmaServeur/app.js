@@ -193,7 +193,7 @@ connection.query('SELECT * FROM test.MetroStops', function(err, result){
 /********* POST request for the testGraph view, this return the graph query result*****/
 app.post('/testgraphe', function(req, res){
 
-	console.log(req.body);
+	console.log(req.body.depart);
 
 	// Get the data from the request
 
