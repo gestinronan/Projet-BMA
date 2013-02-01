@@ -33,6 +33,10 @@
             android:name="com.android_prod.MapViewClass"
             android:label="@string/title_activity_map_view" >
         </activity>
+        
+        <service
+            android:name="com.android_prod.HttpRequestClass"></service>
+            
     </application>
 
 </manifest>

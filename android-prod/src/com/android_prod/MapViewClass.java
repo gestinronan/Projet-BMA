@@ -5,9 +5,11 @@ package com.android_prod;
 import android.app.Activity;
 import android.app.AlertDialog;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 import android.graphics.drawable.Drawable;
 
@@ -16,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 
@@ -179,6 +182,46 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private String                          metroIntent;
     private String                          borneIntent;
     private ItemizedIconOverlay<OverlayItem> myLocationItemizedIconOverlay;
+    Intent intent = new Intent();
+   
+    
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			
+			Log.i("BACK DATA", "TEST ");
+			
+			 bikeIntent = intent.getStringExtra("bikeData");
+		       metroIntent = intent.getStringExtra("metroData");
+		       busIntent = intent.getStringExtra("busData");
+		       borneIntent = intent.getStringExtra("borneData");
+		       
+		       // And the String into Json
+		        try {
+		            bikeData = new JSONObject(bikeIntent);
+		            metroArray = new JSONArray(metroIntent);
+		            busArray = new JSONArray(busIntent);
+		            borneArray = new JSONArray(borneIntent);
+		           
+		        } catch (JSONException e) {
+		            Log.i("ERROR JSON" , e.toString());
+		        }
+		       
+		        /** ************************************************* */
+		        
+		        
+		        /** ******* This display all the bike station ******* */
+
+		        // Call the method that create a item array
+		         displayBikePoint(bikeData);
+		         //metro
+		         displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
+		       
+		         //borne
+		         displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
+		       
+		}
+	};
     
     // for layers
     
@@ -191,6 +234,10 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_view);
+        
+        // TODO
+      registerReceiver(broadcastReceiver, new IntentFilter(HttpRequestClass.BROADCAST_ACTION));
+      
 
         // Initiate the mcontext variable
         mcontext = this;
@@ -201,10 +248,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         String lng    = intent.getStringExtra("longitude");
         String lat    = intent.getStringExtra("latitude");
 
-        bikeIntent = intent.getStringExtra("bikeData");
-       metroIntent = intent.getStringExtra("metroData");
-       busIntent = intent.getStringExtra("busData");
-       borneIntent = intent.getStringExtra("borneData");
+       //bikeIntent = intent.getStringExtra("bikeData");
+       //metroIntent = intent.getStringExtra("metroData");
+       //busIntent = intent.getStringExtra("busData");
+       //borneIntent = intent.getStringExtra("borneData");
+      
+    
 
         // Location listner
         lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -215,16 +264,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, (LocationListener) this);
 
-        // And the String into Json
-        try {
-            bikeData = new JSONObject(bikeIntent);
-            metroArray = new JSONArray(metroIntent);
-            busArray = new JSONArray(busIntent);
-            borneArray = new JSONArray(borneIntent);
-           
-        } catch (JSONException e) {
-            Log.i("ERROR JSON" , e.toString());
-        }
+       
        
 
         // We get the layout elements
@@ -279,21 +319,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         mapController.setCenter(point2);
 
-        /** ************************************************* */
-        
-        
-        /** ******* This display all the bike station ******* */
 
-        // Call the method that create a item array
-         displayBikePoint(bikeData);
-         //metro
-         displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
-       
-         //borne
-         displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
-       
 
-        /** ************************************************** */
+      
     }
 
     /** ************************************************* */
@@ -659,6 +687,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     }
 
     /** ************************************************* */
+    
+   
 }
 
 
