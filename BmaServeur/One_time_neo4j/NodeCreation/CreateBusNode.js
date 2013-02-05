@@ -90,8 +90,16 @@ function createBusNode(allStopsId){
 
                       // Then create the graph node
                       // Check if there is data before creating the node
-                      if(result[0] != undefined && finalData != undefined){
+                      if(result[0] != 'undefined' && finalData != 'undefined'){
+                      
                       try{
+                        // Check if there is data
+                        console.log(result[0]);
+                        result[0].Stop_name;
+                      } catch(e){
+                        return;
+                      }
+                      
                       finalData = replaceAll(finalData, '\"', '');
                       db.insertNode({Name: result[0].Stop_name, idStop: result[0].Stop_id, Lat: result[0].Stop_lat, Lng: result[0].Stop_lon, type: "Bus", data: finalData},
                        function(err, node){
@@ -101,15 +109,13 @@ function createBusNode(allStopsId){
                       		console.log('An error occured creating the Bus node :: ' + err);
                       	} else {
                       		console.log('Bus Node created :: ' + node.id);
-
+                          
                       		// Then we update the busStops Table by adding the node Id
                       		updateDb(result[0].Stop_id, node.id);
                       	}
 
                       });
-                  } catch(e){
-                  	throw e;
-                  }
+                 
                   }
                   }
 
@@ -139,7 +145,7 @@ function updateDb(stop_id, node_id){
 }
 
 /**
-* Thid function replace all caracter from a string to the one we want
+* This function replace all caracter from a string to the one we want
 */
 function replaceAll(txt, replace, with_this) {
 	if(txt){
