@@ -18,7 +18,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 
@@ -137,12 +136,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     /** ************ Global variable declaration ******* */
 
-    //context
+    static //context
     Context mcontext;
 
     // Map Variable
     private MapController mapController;
-    private MapView       mapView;
+    private static MapView       mapView;
 
     // Layout element
     ImageButton   locateMe;
@@ -157,26 +156,26 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     // Marker variable
     public ArrayList<OverlayItem>            myLocationOverlayItemArray;
-    private ArrayList<OverlayItem>           bikeOverlayItemArray;
-    private ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
-    private Drawable                         bikeMarker;
+    private static ArrayList<OverlayItem>           bikeOverlayItemArray;
+    private static ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
+    private static Drawable                         bikeMarker;
     
     private ArrayList<OverlayItem>           busOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> busItemizedIconOverlay;
     private Drawable                         busMarker;
-    private JSONArray 						 busArray ;
+    private static JSONArray 						 busArray ;
     
-    private ArrayList<OverlayItem>           metroOverlayItemArray;
-    private ItemizedIconOverlay<OverlayItem> metroItemizedIconOverlay;
-    private Drawable                         metroMarker;
-    private JSONArray 						 metroArray ;
+    private static ArrayList<OverlayItem>           metroOverlayItemArray;
+    private static ItemizedIconOverlay<OverlayItem> metroItemizedIconOverlay;
+    private static Drawable                         metroMarker;
+    private static JSONArray 						 metroArray ;
 
-    private ArrayList<OverlayItem>           borneOverlayItemArray;
-    private ItemizedIconOverlay<OverlayItem> borneItemizedIconOverlay;
-    private Drawable                         borneMarker;
-    private JSONArray 						 borneArray ;
+    private static ArrayList<OverlayItem>           borneOverlayItemArray;
+    private static ItemizedIconOverlay<OverlayItem> borneItemizedIconOverlay;
+    private static Drawable                         borneMarker;
+    private static JSONArray 						 borneArray ;
     // Intent value
-    private JSONObject                      bikeData;
+    private static JSONObject                      bikeData;
     private String                          bikeIntent;
     private String                          busIntent;
     private String                          metroIntent;
@@ -185,44 +184,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     Intent intent = new Intent();
    
     
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			
-			Log.i("BACK DATA", "TEST ");
-			
-			 bikeIntent = intent.getStringExtra("bikeData");
-		       metroIntent = intent.getStringExtra("metroData");
-		       busIntent = intent.getStringExtra("busData");
-		       borneIntent = intent.getStringExtra("borneData");
-		       
-		       // And the String into Json
-		        try {
-		            bikeData = new JSONObject(bikeIntent);
-		            metroArray = new JSONArray(metroIntent);
-		            busArray = new JSONArray(busIntent);
-		            borneArray = new JSONArray(borneIntent);
-		           
-		        } catch (JSONException e) {
-		            Log.i("ERROR JSON" , e.toString());
-		        }
-		       
-		        /** ************************************************* */
-		        
-		        
-		        /** ******* This display all the bike station ******* */
-
-		        // Call the method that create a item array
-		         displayBikePoint(bikeData);
-		         //metro
-		         displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
-		       
-		         //borne
-		         displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
-		       
-		}
-	};
-    
+   
     // for layers
     
     final CharSequence[] items = {"Bus", "metro", "velo"};
@@ -233,11 +195,13 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     /** ******* On create Mehtod First launch *********** */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BMARequestReciver broadcastReceiver = new BMARequestReciver();
+      this.registerReceiver(broadcastReceiver, new IntentFilter(HttpRequestClass.BROADCAST_ACTION));
         setContentView(R.layout.map_view);
         
-        // TODO
-      registerReceiver(broadcastReceiver, new IntentFilter(HttpRequestClass.BROADCAST_ACTION));
-      
+        
+     
+     
 
         // Initiate the mcontext variable
         mcontext = this;
@@ -462,7 +426,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     
      @SuppressWarnings("unused")
-	private void displayBikePoint(JSONObject dataJson) {
+	private static void displayBikePoint(JSONObject dataJson) {
     	 try {
         // Declare variables
         JSONObject openData;
@@ -525,7 +489,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
           // dsiplay  bike information when  user click
           @Override
           public boolean onItemSingleTapUp(int index, OverlayItem item) {
-           Toast.makeText(MapViewClass.this, 
+           Toast.makeText(mcontext, 
              item.mTitle + "\n"
              + item.mDescription,
              Toast.LENGTH_LONG).show();
@@ -561,7 +525,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
   
      @SuppressWarnings({ "unused", "null" })
 	
-     private void displayPoint(JSONArray dataJson, String transportName, Drawable makerTransport,ArrayList<OverlayItem>  overlayItemArray, ItemizedIconOverlay<OverlayItem>  itemizedIconOverlay) {
+     private static void displayPoint(JSONArray dataJson, String transportName, Drawable makerTransport,ArrayList<OverlayItem>  overlayItemArray, ItemizedIconOverlay<OverlayItem>  itemizedIconOverlay) {
     	 try {
        
         OverlayItem marker=null;
@@ -612,7 +576,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
           // dsiplay  bus information when  user click
           @Override
           public boolean onItemSingleTapUp(int index, OverlayItem item) {
-           Toast.makeText(MapViewClass.this, 
+           Toast.makeText(mcontext, 
              item.mTitle + "\n"
              + item.mDescription,
              Toast.LENGTH_LONG).show();
@@ -684,6 +648,38 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 
         // TODO Auto-generated method stub
+    }
+
+    /** ************************************************* */
+    
+
+    /** ************************************************* */
+    public static void majData(String bike,String bus,String metro,String borne)
+    {
+    	 // And the String into Json
+        try {
+            bikeData = new JSONObject(bike);
+            metroArray = new JSONArray(metro);
+            busArray = new JSONArray(bus);
+            borneArray = new JSONArray(borne);
+           
+        } catch (JSONException e) {
+            Log.i("ERROR JSON" , e.toString());
+        }
+       
+        /** ************************************************* */
+        
+        
+        /** ******* This display all the bike station ******* */
+
+        // Call the method that create a item array
+         displayBikePoint(bikeData);
+         //metro
+         displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
+       
+         //borne
+         displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
+       
     }
 
     /** ************************************************* */

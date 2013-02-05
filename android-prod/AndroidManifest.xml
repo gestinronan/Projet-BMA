@@ -31,11 +31,21 @@
         </activity>
         <activity
             android:name="com.android_prod.MapViewClass"
-            android:label="@string/title_activity_map_view" >
+            android:label="@string/title_activity_map_view"
+            
+             >
         </activity>
-        
+         
+       
         <service
-            android:name="com.android_prod.HttpRequestClass"></service>
+            android:name="com.android_prod.HttpRequestClass"
+            ></service>
+        
+        <receiver android:name="BMARequestReciver" >
+            <intent-filter>
+                <action android:name="com.android_prod.MapViewClass.event" />
+            </intent-filter>
+        </receiver>
             
     </application>
 
