@@ -5,12 +5,19 @@
     <script type="text/javascript" src='/javascript/testgraphe.js'></script>
     <script type="text/javascript" src='/javascript/jquery-1.8.0.min.js'></script>
     <script type="text/javascript" src='/javascript/d3.v3.min.js'></script>
+
+     <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="/stylesheets/app.css">
+
+  <script src="/javascript/modernizr.foundation.js"></script>
   </head>
   <h1>Test Graph<a href="http://148.60.11.208:3000/">Bike station</a>, <a href="http://148.60.11.208:3000/metro"> Metro link</a></h1>
   <body>
 
   	<!-- Div which contains the form stuff-->
-	<div>
+	<div class="row">
+		<div class="five columns">
 		<hr>
 		<p>Départ:</p>
 		<select id = 'depart'>
@@ -51,9 +58,26 @@
 	</div>
 
 	<!-- Div which will contains the result -->
-	<div id='result'>
+	<div id='result' class="seven columns">
+	
 
 	</div>
+</div>
+
+
+	  <!-- Included JS Files (Compressed) -->
+  <script src="/javascript/jquery.js"></script>
+  <script src="/javascript/foundation.min.js"></script>
+  
+  <!-- Initialize JS Plugins -->
+  <script src="/javascript/app.js"></script>
+
+  
+    <script>
+    $(window).load(function(){
+      $("#featured").orbit();
+    });
+    </script> 
 
   </body>
 </html>
