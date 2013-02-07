@@ -187,9 +187,15 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
    
     // for layers
     
-    final CharSequence[] items = {"Bus", "metro", "velo"};
-    private boolean[] states = {false, true, true};
+    final CharSequence[] itemLayers = {"Bus", "metro", "velo"};
+    private boolean[] statesLayers = {false, true, true};
 
+    
+    
+ // for bike level
+    
+    final CharSequence[] itemsVelo = {"biker", "have fun", "be cool"};
+    private boolean[] statesVelo = {false, false, true};
     /** ************************************************* */
 
     /** ******* On create Mehtod First launch *********** */
@@ -212,10 +218,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         String lng    = intent.getStringExtra("longitude");
         String lat    = intent.getStringExtra("latitude");
 
-       //bikeIntent = intent.getStringExtra("bikeData");
-       //metroIntent = intent.getStringExtra("metroData");
-       //busIntent = intent.getStringExtra("busData");
-       //borneIntent = intent.getStringExtra("borneData");
       
     
 
@@ -316,22 +318,69 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         case R.id.menu_search :
 
             // behaviour of reserch menu
-            return true;
+           // return true;
 
        // case R.id.menu_settings : // not usfull
             // Change activity to settings menu
         case R.id.userLevel :
+        {
+            
+        	final boolean rapid =statesVelo[2];
+        	final boolean havefun =statesVelo[1];
+        	final boolean balande =statesVelo[0];
+        	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	    builder.setTitle("Quel est votre niveau en velo?");
+        	    builder.setMultiChoiceItems(itemLayers, statesLayers, new DialogInterface.OnMultiChoiceClickListener(){
+        	    	
+        	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
+        	        }
+        	    });
+        	    
+        	    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        	    	
+        	        public void onClick(DialogInterface dialog, int id) {
+        	        	
+        	           
+        	        }
+        	           
+        	    });
+        	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        	        public void onClick(DialogInterface dialog, int id) {
+        	        	 SparseBooleanArray CheCked = ((AlertDialog)dialog).getListView().getCheckedItemPositions();
+        	        	 if(CheCked.get(CheCked.keyAt(0)) == false && CheCked.get(CheCked.keyAt(2)) == false || CheCked.get(CheCked.keyAt(0)) == false && CheCked.get(CheCked.keyAt(1)) == false || CheCked.get(CheCked.keyAt(1)) == false && CheCked.get(CheCked.keyAt(1)) == false){
+         	            	Toast.makeText(mcontext, "une seul choix possible", Toast.LENGTH_LONG).show();
+         	                
+         	            }
+         	          
+        	        	 else{
+        	        		 
+        	        		    // cache gestion
+             	        	dialog.cancel();
+        	        		 
+        	        	 }
+         	            	
+         	            	
+         	          
+         	        
+         	        
+        	        
+        	         
+        	        }
+        	    });
+        	    builder.create().show();
+        
+        }
         	// if the user is trained
         
         case R.id.layers :
         {
         
-        	final boolean velo =states[2];
-        	final boolean metro =states[1];
-        	final boolean bus =states[0];
+        	final boolean velo =statesLayers[2];
+        	final boolean metro =statesLayers[1];
+        	final boolean bus =statesLayers[0];
         	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
         	    builder.setTitle("Quel layer vous intreresse?");
-        	    builder.setMultiChoiceItems(items, states, new DialogInterface.OnMultiChoiceClickListener(){
+        	    builder.setMultiChoiceItems(itemLayers, statesLayers, new DialogInterface.OnMultiChoiceClickListener(){
         	    	
         	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
         	        }
@@ -406,9 +455,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
         	        public void onClick(DialogInterface dialog, int id) {
         	             // cache gestion
-        	        	states[2]=velo;
-        	        	states[1]=metro;
-        	        	states[0]=bus;
+        	        	statesLayers[2]=velo;
+        	        	statesLayers[1]=metro;
+        	        	statesLayers[0]=bus;
         	        	dialog.cancel();
         	        }
         	    });
