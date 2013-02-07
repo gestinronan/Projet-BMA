@@ -22,12 +22,12 @@ var $ = require('jquery');
 /** Cypher query which will be executed 
 * 	
 	START d=node(47), e=node(98)
-	MATCH p = shortestPath( d-[*..15]->e )
+	MATCH p = allShortestPaths( d-[*..15]->e )
 	RETURN p;
 ***************************************/
 
 db.cypherQuery("START d=node(47), e=node(98) " +
-					  				   "MATCH p = shortestPath( d-[*..20]->e ) " +
+					  				   "MATCH p = allShortestPaths( d-[*..50]->e ) " +
                        				   "RETURN p", function(err,result){
 			   	// Case of error 
 			   	if(err || !result){

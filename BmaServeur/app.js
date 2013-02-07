@@ -390,6 +390,98 @@ app.get('/android/data/borneelec', function(req, res){
 });
 
 
+/*************************************************************************************************/
+/*********************************** Android Post Request ****************************************/
+/*************************************************************************************************/
+
+app.post('/android/data/getroutes', function(req, res){
+
+	// Variable which will be used to store NodeId
+	nodeIdDepart = null;
+	nodeIdArrive = null;
+
+	// Get the parameter from the post Request
+	var departData = req.body.depart;
+	var arriveData = req.body.arrive;
+
+	// Split the data to extract all the parameters
+	var tempDepart = departData.split(':');
+	var tempArrive = arriveData.split(':');
+
+	// Put the data into variable
+	var departType = tempDepart[0]; // Get the transport type (bike, bus ...)
+	var arriveType = tempArrive[0];	// Get the transport type (bike, bus ...)
+	var idDepart = tempDepart[1]; 	// Get the ID 
+	var idArrive = tempArrive[1]; 	// Get the ID
+
+	// Declare variable for the sql table to query
+	var departTable = null;
+	var arriveTable = null;
+	var departColumns = null;
+	var arriveColumns = null;
+
+	// Set the table to query in order to get the node Id
+	if(departType == 'Bus'){
+		departTable = 'test.BusStops';
+		departColumns = 'Stop_id';
+	} else if(departType == 'Bike'){
+		departType = 'test.BikeStops';
+		departColumns = 'BikeStop_id';
+	} else if(departType == 'Metro'){
+		departType = 'test.MetroStops';
+		departColumns = 'MetroStop_id';
+	}
+
+	if(arriveType == 'Bus'){
+		arriveTable = 'test.BusStops';
+		arriveColumns = 'Stop_id';
+	} else if(arriveType == 'Bike'){
+		arriveTable = 'test.BikeStops';
+		arriveColumns = 'BikeStop_id';
+	} else if(arriveType == 'Metro'){
+		arriveTable = 'test.MetroStops';
+		arriveColumns = 'MetroStop_id';
+	}
+
+	// Once we have the parameters, We get nodes Id from the sql db
+	connection.query('SELECT NodeId FROM ' + departTable + ' WHERE ' + departColumns + ' = ' + idDepart, function(err, result){
+
+		// Case there is an error getting the node ID
+		if(err || !result){
+			console.log('An error Occured getting the sql data');
+			
+			// Report the error to the app
+			res.send('{data: error getting sql data}');
+		} else{
+
+			// Store the nodeId
+			nodeIdDepart = result[0].NodeId;
+
+			// If we get the nodeId of the depart, we can get the nodeId of the arrive
+			connection.query('SELECT NodeId from ' + arriveTable + ' WHERE ' + arriveColumns + ' = ' + idArrive, function(err, result){
+
+				// Case an erroc occured durung the call
+				if(err || !result){
+					console.log('An error Occured getting the second SQL data');
+
+					// Report the error to the app
+					res.send('{data: error getting nodeId in sql table}');
+				} else{
+
+					// Store the Node ID
+					nodeIdArrive = result[0].NodeId;
+
+					// Once we have those parameters, we can query the graph tp get the shortest path
+					getShortestPath(nodeIdDepart, nodeIdArrive, res);
+				}
+			});
+		}
+
+	});
+
+});
+
+
 /********* Functions ***********/
 
 // Get Ajax call function, Maybe we will need to add an other parameter 
@@ -449,75 +541,39 @@ function getData(url, req, res, type){
 }
 
 
+
+
 /**
-* Function which update the bike node in the graph.
+* This Fucntion query the graph to get the shortest path between to node Id and return the result
 */
-function upDateBikeNode(){
+function getShortestPath(depart, arrive, res){
 
-	// Variable
-	var idArray; // Variable to store nodeID and BikeID
-	var i = 0; // Iterator
+	/* 
+	Query the graph thanks to a Cypher Query
+	Cypher is a language like SQL.
 
-	// We get the nodeId from the sql database
-	var query = query.connection('SELECT * FROM test.BusStops');
-	query
-	.on('error', function(err) {
-    // Handle error, an 'end' event will be emitted after this as well
-	})
-	.on('fields', function(fields) {
-    // the field packets for the rows to follow
-	})
-	.on('result', function(row) {
+	Here is the query we will excute to get the all the shortestpath between those two nodes
+	
+	START d=node(47), e=node(98)
+	MATCH p = allShortestPaths( d-[*..15]->e )
+	RETURN p;
+	
+	In this query, we get all the shortest path between the ndoe 47 and the node 98
+	*/
 
-  		// Store data from the database into idArray variable (store the BikeStop_id and the NodeId)
-  		idArray[i] = {BikeStop_id: row.BikeStop_id, NodeId: NodeId};
+	db.cypherQuery('START d=node(' + depart + '), e=node(' + arrive + ') '+
+				   'MATCH p = allShortestPaths( d-[*..30]->e ) ' +
+				   'RETURN p', function(err, data){
 
-    })
-	.on('end', function() {
+				   	// Case an error occured querying the graph
+				   	if(err || !restul){
+				   		console.log('An error occured getting the data :: ' + err);
 
-		// We get the bike data from the keolis API
-		var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations"
-		$.ajax({
-			url: url,
-			dataType: "json",
-			success: function(data){
+				   		// Report the error to the app
+				   		res.send('{data: An error Occured getting the shortest path');
+				   	} else {
+				   		
+				   	}
+				   });
 
-				// We update the bike node by adding the number of slot and bike available
-
-				// First parse the idArray
-				for(j=0; j<idArray.length; j++){
-
-					// We parse the response
-					var station = data.opendata.answer.data.station;
-					for(k=0; k < station.length; k++){
-						
-						// We check if the bike stop of our if the same as the one in the response. 
-						// if it's the case we update the node
-						if(idArray[j].BikeStop_id == station[k].number){
-
-							// In this case we update neo4j node
-							db.updateNode(idArray[j].NodeId, {BikesAvailable: station[k].bikesavailable, SlotsAvailable: station[k].slotsavailable},
-
-								// Callback
-								function(err, node){
-
-									// Case of error when updating the node
-									if(err){
-										console.log('An error occured: ' + err);
-									} else {
-										console.log('BikeStops updated!');
-									}
-								});
-
-						}
-					}
-				}
-			},
-			error: function(err){
-				
-				// Case of error 
-				console.log('An error occured during the ajax call');
-			}
-		});
-	});
 }
