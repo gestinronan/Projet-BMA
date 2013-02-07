@@ -656,6 +656,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     /** ************************************************* */
     public static void majData(String bike,String bus,String metro,String borne)
     {
+    	Log.d("MAJ INFO","new information");
+    	
     	 // And the String into Json
         try {
             bikeData = new JSONObject(bike);
@@ -673,12 +675,19 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         /** ******* This display all the bike station ******* */
 
         // Call the method that create a item array
+        mapView.getOverlays().remove(bikeItemizedIconOverlay);
          displayBikePoint(bikeData);
+         mapView.invalidate();
+         
          //metro
+         mapView.getOverlays().remove(metroItemizedIconOverlay);
          displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
-       
+         mapView.invalidate();
+         
          //borne
+         mapView.getOverlays().remove(borneItemizedIconOverlay);
          displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
+         mapView.invalidate();
        
     }
 

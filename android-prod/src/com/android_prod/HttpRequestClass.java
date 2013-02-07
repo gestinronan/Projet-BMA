@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.provider.Settings.System;
 
 import android.util.Log;
 import org.apache.http.HttpEntity;
@@ -27,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import java.net.URI;
+import java.util.Timer;
 
 public class HttpRequestClass extends IntentService {
 
@@ -43,12 +47,15 @@ public class HttpRequestClass extends IntentService {
     
     FileOutputStream fos;
     FileInputStream fis;
-    boolean fristExe= true;
+    private boolean fristExe= true;
+    
+    // to see if it's the good intent
     public static String BROADCAST_ACTION = "com.android_prod.MapViewClass.event";
+   
     // Constuctor
     public HttpRequestClass() {
     	super("myservices");
-       
+    
     }
 
 
@@ -59,9 +66,8 @@ public class HttpRequestClass extends IntentService {
 
 @Override
 protected void onHandleIntent(Intent intent) {
-	// TODO Auto-generated method stub
 	
-	Log.i("TEST", "in the class");
+	
 	// Mise à jour donné
 	
 	/*FOR Bike*/
@@ -78,22 +84,47 @@ protected void onHandleIntent(Intent intent) {
 		dataBorne =callServer("http://148.60.11.208:3000/android/data/borneelec",FILENAME_BORNE,50);
 		
 		
-		Intent activityIntent= new Intent(HttpRequestClass.this, MapViewClass.class);
+		
 		Intent BrIntent= new Intent(BROADCAST_ACTION);
         // Then put data in the intent
 		BrIntent.putExtra("bikeData", dataBike);
 		BrIntent.putExtra("metroData", dataMetro);
 		BrIntent.putExtra("busData", dataBus);
 		BrIntent.putExtra("borneData", dataBorne);
-        // Start the other Activity
-       	activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-   
-       	
-        mContext.startActivity(activityIntent);
-       
         
+		if(fristExe)
+		{
+		// Start the other Activity
+		Intent activityIntent= new Intent(HttpRequestClass.this, MapViewClass.class);
+		// to start activity in service
+       	activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+       	//launch activity
+        mContext.startActivity(activityIntent);
+        //maj first exe
+        fristExe=false;
+		}
+       // send this information
         sendBroadcast(BrIntent);
-        Log.i("TEST", "SENT");
+      
+      final Intent fackintent=new Intent();  
+       
+	new CountDownTimer(30000,10000){
+
+		@Override
+		public void onFinish() {
+			Log.d("SENT", "new ways");
+			onHandleIntent(fackintent);
+			
+			
+		}
+
+		@Override
+		public void onTick(long millisUntilFinished) {
+			// TODO nothing
+			
+		}
+		
+	};
 	
 }
 
