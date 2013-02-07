@@ -108,7 +108,7 @@ protected void onHandleIntent(Intent intent) {
       
       final Intent fackintent=new Intent();  
        
-	new CountDownTimer(30000,10000){
+	new CountDownTimer(900000,100000){
 
 		@Override
 		public void onFinish() {

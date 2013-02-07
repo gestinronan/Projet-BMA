@@ -176,10 +176,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private static JSONArray 						 borneArray ;
     // Intent value
     private static JSONObject                      bikeData;
-    private String                          bikeIntent;
-    private String                          busIntent;
-    private String                          metroIntent;
-    private String                          borneIntent;
     private ItemizedIconOverlay<OverlayItem> myLocationItemizedIconOverlay;
     Intent intent = new Intent();
    
@@ -700,7 +696,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     }
 
     /** ************************************************* */
-    
+     // live maj data
 
     /** ************************************************* */
     public static void majData(String bike,String bus,String metro,String borne)
