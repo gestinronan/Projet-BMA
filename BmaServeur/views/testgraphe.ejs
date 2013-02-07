@@ -18,51 +18,53 @@
   	<!-- Div which contains the form stuff-->
 	<div class="row">
 		<div class="five columns">
-		<hr>
-		<p>Départ:</p>
-		<select id = 'depart'>
-				<% for(i=0; i< dataBus.length; i++){ %>
-				<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
-			<% } %>	
-			<% for(i=0; i< dataBike.length; i++){ %>
-				<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
-			<% } %>	
-			<% for(i=0; i< dataMetro.length; i++){ %>
-				<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
-			<% } %>	
+			<div class='panel'>
+				<hr>
+				<p>Départ:</p>
+				<select id = 'depart'>
+					<% for(i=0; i< dataBus.length; i++){ %>
+					<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
+				<% } %>	
+				<% for(i=0; i< dataBike.length; i++){ %>
+					<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
+				<% } %>	
+				<% for(i=0; i< dataMetro.length; i++){ %>
+					<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
+				<% } %>	
 
-		</select>
+				</select>
 
-		<p>Arrivé:</p>
-		<select id='arrive'>
-				<% for(i=0; i< dataBus.length; i++){ %>
-				<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
-			<% } %>	
-			<% for(i=0; i< dataBike.length; i++){ %>
-				<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
-			<% } %>	
-			<% for(i=0; i< dataMetro.length; i++){ %>
-				<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
-			<% } %>	
+				<p>Arrivé:</p>
+				<select id='arrive'>
+					<% for(i=0; i< dataBus.length; i++){ %>
+						<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
+					<% } %>	
+					<% for(i=0; i< dataBike.length; i++){ %>
+						<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
+					<% } %>	
+					<% for(i=0; i< dataMetro.length; i++){ %>
+						<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
+					<% } %>	
 
-		</select>
+				</select>
 
 
-		<p>Type de transport:</p>
-		<input type="checkbox" name="bus" id="bus" value="bus" checked=true>Bus<br>
-		<input type="checkbox" name="bike" id="bike" value="bike" checked=true>Bike<br>
-		<input type="checkbox" name="metro" id="metro" value="metro" checked=true>Metro
-		<br>
-		<hr>
-		<input type="submit" onclick='javascript: callServer()'>
-	</div>
+				<p>Type de transport:</p>
+				<input type="checkbox" name="bus" id="bus" value="bus" checked=true>Bus<br>
+				<input type="checkbox" name="bike" id="bike" value="bike" checked=true>Bike<br>
+				<input type="checkbox" name="metro" id="metro" value="metro" checked=true>Metro
+				<br>
+				<hr>
+				<input type="submit" onclick='javascript: callServer()'>
+			</div>
+		</div>
 
 	<!-- Div which will contains the result -->
-	<div id='result' class="seven columns">
+		<div id='result' class="seven columns">
 	
 
+		</div>
 	</div>
-</div>
 
 
 	  <!-- Included JS Files (Compressed) -->
