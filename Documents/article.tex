@@ -1,0 +1,100 @@
+\documentclass{article}   		% use "amsart" instead of "article" for AMSLaTeX format
+
+\usepackage[latin1]{inputenc}  % un package
+\usepackage[T1]{fontenc}          % un second package
+\usepackage[francais]{babel}   % un troisième package
+
+
+\title{Projet Bretagne Mobilit\'e Augment\'e}
+\author{\textsc{Gestin Ronan} - \textsc{El-Ouarrat Fatima} - \textsc{Le Floch Guillaume}}
+\date{\today}
+
+\begin{document}
+
+\maketitle            					% Create the Title
+
+\newpage							% Start a new page
+
+\tableofcontents					% Create the table of contents
+
+\newpage							% Start a new page
+
+\section{Contexte}
+
+	% Contexte du projet
+	\subsection{Projet BMA}
+	
+	% Description du projet BMA
+	Le projet BMA regroupe un grand nombre d'acteur de niveau national. Le but du projet est de trouver un des moyens de transport moins couteux et moins \'emettrice en gaz \`a effet de serre. 
+	
+	% Description de cybel
+	\subsection{Cybel France}
+	
+\clearpage
+\section{Background}
+
+% Introduction au serveur
+Pour la r\'ealisation du projet, nous avons choisi de cr\'eer une application Android ainsi qu'un site Web. Cela servira d'interface pour l'utilisateur. 
+Les deux interfaces communiquent avec un serveur qui ce trouve sur une machine virtuelle de l'universit\'e de Rennes 1.
+	
+	
+\clearpage
+% Section concernant ce que l'on veut faire dans le projet, la visio que nous en avons	
+\section{Approche (Comment le porbl`eme a \'et\'e trait\'e}
+
+	
+	
+
+\newpage
+% Section concernant le travaille effectué
+\section{Travail R\'ealis\'e}
+
+% Section concernant le serveur
+	\subsection{Le Serveur}
+	
+	Nous avons choisi pour ce projet d'utiliser le framework NodeJs. NodeJs est un Framework utilisant le language JavaScript. 
+	Ce serveur a pour but de recevoir, traiter et renvoyer les donn\'ee aux diff\'errantes interfaces utilisateurs.
+	
+	
+	% Description de la base de donner Mysql
+	\subsubsection{La base de donn\'ee MySQL}
+	
+	Les donn\'ees sont stock\'des dans une base de donn\'ee mysql. La base de donn\'ee contient toutes les informations concernant les arr\^ets de bus, de v\'elo, de m\'etro ainsi que toutes les informations a propos des horaires et des lignes de bus.
+	Toutes les donn\'ees concernant les Bus, V\'elos et M\'etro sont en libres service sur le site http://data.keolis-rennes.com/.
+	
+	La r\'ecup\'eration des donn\'des se fait de diff\'errantes mani\`eres. Les donn\'des relatifs aux arr\^ets de v\'elos et de m\'ethos sont accessibles via une API. Pour r\'ecup\'erer les donn\'des, nous faisons un appel AJAX depuis le serveur puis le r\'esultat est ajout\'e dans la Base de donn\'e MySql.
+	En ce qui concerne les arr\^ets de bus, ces donn\'des sont des fichiers statiques que nous devons t\'el\'echarg\'ee. Une fois ces fichiers t\'el\'echarg\'es, nous les avons pars\'es puis ajout\'e les donn\'ees dans la base de donn\'ee.
+	L'int\'eraction entre la base de donn\'ee MySql et le serveur NodeJs se fait gr\^ace \'a la librairie 'node-mysql'.
+	
+	% Description de la base de donner de graph
+	\subsubsection{La base de donn\'ee de Graph neo4j }
+	
+	Afin de pouvoir g\'en\'erer les itin\'eraires utilisant les diff\'erents moyens de transport disponible de Rennes, nous avons d\'ecid\'e de cr\'eer un graphe qui comprend tous les arr\^ets de bus, v\'elos et m\'etro.
+	Pour cr\'eer ce graphe, nous avons utilis\'e la base de donn\'ee Neo4j. Cette base de donn\'e permet de cr\'eer et d'enregistrer les noeuds ainsi que les relations entre les noeuds.
+	
+	L'int\'eraction entre la base de donn\'ee Neo4j et le serveur NodeJs se fait gr\^ace \'a la librairie 'node-neo4j'.  
+	
+	% Section concernant l'application android
+	\subsection{L'aplication Android}
+	
+	% Section concernant le site web
+	\subsection{Le Site Web}
+
+
+\newpage
+% Section concernant la validation du travail par l'entreprise
+\section{Validation du proff\'essionnel}
+
+
+\newpage
+% Section pour la conclusion
+\section{Conclusion}
+
+
+
+\newpage % Start a new page for the bibio
+% Section concernant la bibliographie
+\section{Bibliographie}
+	
+	
+\end{document}
