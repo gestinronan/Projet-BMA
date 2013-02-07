@@ -465,7 +465,7 @@ app.post('/android/data/getroutes', function(req, res){
 					console.log('An error Occured getting the second SQL data');
 
 					// Report the error to the app
-					res.send('{data: error getting nodeId in sql table'});
+					res.send('{data: error getting nodeId in sql table}');
 				} else{
 
 					// Store the Node ID
