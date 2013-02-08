@@ -52,6 +52,12 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
+/**
+ * map view acitivity
+ * @author ronan
+ *
+ * @param <Overlay>
+ */
 public class MapViewClass<Overlay> extends Activity implements LocationListener {
 
     /** ************************************************* */

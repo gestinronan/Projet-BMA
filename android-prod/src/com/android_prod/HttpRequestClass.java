@@ -108,13 +108,14 @@ protected void onHandleIntent(Intent intent) {
       
       final Intent fackintent=new Intent();  
        
+      // wait to do new methode call
 	new CountDownTimer(900000,100000){
 
 		@Override
 		public void onFinish() {
 			Log.d("SENT", "new ways");
 			onHandleIntent(fackintent);
-			
+			// at the end of count he call the same methode
 			
 		}
 

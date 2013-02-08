@@ -9,6 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+
+/**
+ * reciver for information comming to the intent service and he call static method inside the activity
+ * @author ronan
+ *
+ */
 public class BMARequestReciver extends BroadcastReceiver {
 	
 	public BMARequestReciver()
