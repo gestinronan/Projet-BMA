@@ -5,9 +5,11 @@ package com.android_prod;
 import android.app.Activity;
 import android.app.AlertDialog;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 import android.graphics.drawable.Drawable;
 
@@ -50,6 +52,12 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
+/**
+ * map view acitivity
+ * @author ronan
+ *
+ * @param <Overlay>
+ */
 public class MapViewClass<Overlay> extends Activity implements LocationListener {
 
     /** ************************************************* */
@@ -134,12 +142,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     /** ************ Global variable declaration ******* */
 
-    //context
+    static //context
     Context mcontext;
 
     // Map Variable
     private MapController mapController;
-    private MapView       mapView;
+    private static MapView       mapView;
 
     // Layout element
     ImageButton   locateMe;
@@ -154,43 +162,54 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     // Marker variable
     public ArrayList<OverlayItem>            myLocationOverlayItemArray;
-    private ArrayList<OverlayItem>           bikeOverlayItemArray;
-    private ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
-    private Drawable                         bikeMarker;
+    private static ArrayList<OverlayItem>           bikeOverlayItemArray;
+    private static ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
+    private static Drawable                         bikeMarker;
     
     private ArrayList<OverlayItem>           busOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> busItemizedIconOverlay;
     private Drawable                         busMarker;
-    private JSONArray 						 busArray ;
+    private static JSONArray 						 busArray ;
     
-    private ArrayList<OverlayItem>           metroOverlayItemArray;
-    private ItemizedIconOverlay<OverlayItem> metroItemizedIconOverlay;
-    private Drawable                         metroMarker;
-    private JSONArray 						 metroArray ;
+    private static ArrayList<OverlayItem>           metroOverlayItemArray;
+    private static ItemizedIconOverlay<OverlayItem> metroItemizedIconOverlay;
+    private static Drawable                         metroMarker;
+    private static JSONArray 						 metroArray ;
 
-    private ArrayList<OverlayItem>           borneOverlayItemArray;
-    private ItemizedIconOverlay<OverlayItem> borneItemizedIconOverlay;
-    private Drawable                         borneMarker;
-    private JSONArray 						 borneArray ;
+    private static ArrayList<OverlayItem>           borneOverlayItemArray;
+    private static ItemizedIconOverlay<OverlayItem> borneItemizedIconOverlay;
+    private static Drawable                         borneMarker;
+    private static JSONArray 						 borneArray ;
     // Intent value
-    private JSONObject                      bikeData;
-    private String                          bikeIntent;
-    private String                          busIntent;
-    private String                          metroIntent;
-    private String                          borneIntent;
+    private static JSONObject                      bikeData;
     private ItemizedIconOverlay<OverlayItem> myLocationItemizedIconOverlay;
+    Intent intent = new Intent();
+   
     
+   
     // for layers
     
-    final CharSequence[] items = {"Bus", "metro", "velo"};
-    private boolean[] states = {false, true, true};
+    final CharSequence[] itemLayers = {"Bus", "metro", "velo"};
+    private boolean[] statesLayers = {false, true, true};
 
+    
+    
+ // for bike level
+    
+    final CharSequence[] itemsVelo = {"biker", "have fun", "be cool"};
+    private boolean[] statesVelo = {false, false, true};
     /** ************************************************* */
 
     /** ******* On create Mehtod First launch *********** */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BMARequestReciver broadcastReceiver = new BMARequestReciver();
+      this.registerReceiver(broadcastReceiver, new IntentFilter(HttpRequestClass.BROADCAST_ACTION));
         setContentView(R.layout.map_view);
+        
+        
+     
+     
 
         // Initiate the mcontext variable
         mcontext = this;
@@ -201,10 +220,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         String lng    = intent.getStringExtra("longitude");
         String lat    = intent.getStringExtra("latitude");
 
-        bikeIntent = intent.getStringExtra("bikeData");
-       metroIntent = intent.getStringExtra("metroData");
-       busIntent = intent.getStringExtra("busData");
-       borneIntent = intent.getStringExtra("borneData");
+      
+    
 
         // Location listner
         lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -215,16 +232,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, (LocationListener) this);
 
-        // And the String into Json
-        try {
-            bikeData = new JSONObject(bikeIntent);
-            metroArray = new JSONArray(metroIntent);
-            busArray = new JSONArray(busIntent);
-            borneArray = new JSONArray(borneIntent);
-           
-        } catch (JSONException e) {
-            Log.i("ERROR JSON" , e.toString());
-        }
+       
        
 
         // We get the layout elements
@@ -279,21 +287,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
         mapController.setCenter(point2);
 
-        /** ************************************************* */
-        
-        
-        /** ******* This display all the bike station ******* */
 
-        // Call the method that create a item array
-         displayBikePoint(bikeData);
-         //metro
-         displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
-       
-         //borne
-         displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
-       
 
-        /** ************************************************** */
+      
     }
 
     /** ************************************************* */
@@ -324,22 +320,69 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         case R.id.menu_search :
 
             // behaviour of reserch menu
-            return true;
+           // return true;
 
        // case R.id.menu_settings : // not usfull
             // Change activity to settings menu
         case R.id.userLevel :
+        {
+            
+        	final boolean rapid =statesVelo[2];
+        	final boolean havefun =statesVelo[1];
+        	final boolean balande =statesVelo[0];
+        	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	    builder.setTitle("Quel est votre niveau en velo?");
+        	    builder.setMultiChoiceItems(itemLayers, statesLayers, new DialogInterface.OnMultiChoiceClickListener(){
+        	    	
+        	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
+        	        }
+        	    });
+        	    
+        	    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        	    	
+        	        public void onClick(DialogInterface dialog, int id) {
+        	        	
+        	           
+        	        }
+        	           
+        	    });
+        	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        	        public void onClick(DialogInterface dialog, int id) {
+        	        	 SparseBooleanArray CheCked = ((AlertDialog)dialog).getListView().getCheckedItemPositions();
+        	        	 if(CheCked.get(CheCked.keyAt(0)) == false && CheCked.get(CheCked.keyAt(2)) == false || CheCked.get(CheCked.keyAt(0)) == false && CheCked.get(CheCked.keyAt(1)) == false || CheCked.get(CheCked.keyAt(1)) == false && CheCked.get(CheCked.keyAt(1)) == false){
+         	            	Toast.makeText(mcontext, "une seul choix possible", Toast.LENGTH_LONG).show();
+         	                
+         	            }
+         	          
+        	        	 else{
+        	        		 
+        	        		    // cache gestion
+             	        	dialog.cancel();
+        	        		 
+        	        	 }
+         	            	
+         	            	
+         	          
+         	        
+         	        
+        	        
+        	         
+        	        }
+        	    });
+        	    builder.create().show();
+        
+        }
         	// if the user is trained
         
         case R.id.layers :
         {
         
-        	final boolean velo =states[2];
-        	final boolean metro =states[1];
-        	final boolean bus =states[0];
+        	final boolean velo =statesLayers[2];
+        	final boolean metro =statesLayers[1];
+        	final boolean bus =statesLayers[0];
         	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
         	    builder.setTitle("Quel layer vous intreresse?");
-        	    builder.setMultiChoiceItems(items, states, new DialogInterface.OnMultiChoiceClickListener(){
+        	    builder.setMultiChoiceItems(itemLayers, statesLayers, new DialogInterface.OnMultiChoiceClickListener(){
         	    	
         	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
         	        }
@@ -414,9 +457,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
         	        public void onClick(DialogInterface dialog, int id) {
         	             // cache gestion
-        	        	states[2]=velo;
-        	        	states[1]=metro;
-        	        	states[0]=bus;
+        	        	statesLayers[2]=velo;
+        	        	statesLayers[1]=metro;
+        	        	statesLayers[0]=bus;
         	        	dialog.cancel();
         	        }
         	    });
@@ -434,7 +477,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     
      @SuppressWarnings("unused")
-	private void displayBikePoint(JSONObject dataJson) {
+	private static void displayBikePoint(JSONObject dataJson) {
     	 try {
         // Declare variables
         JSONObject openData;
@@ -497,7 +540,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
           // dsiplay  bike information when  user click
           @Override
           public boolean onItemSingleTapUp(int index, OverlayItem item) {
-           Toast.makeText(MapViewClass.this, 
+           Toast.makeText(mcontext, 
              item.mTitle + "\n"
              + item.mDescription,
              Toast.LENGTH_LONG).show();
@@ -533,7 +576,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
   
      @SuppressWarnings({ "unused", "null" })
 	
-     private void displayPoint(JSONArray dataJson, String transportName, Drawable makerTransport,ArrayList<OverlayItem>  overlayItemArray, ItemizedIconOverlay<OverlayItem>  itemizedIconOverlay) {
+     private static void displayPoint(JSONArray dataJson, String transportName, Drawable makerTransport,ArrayList<OverlayItem>  overlayItemArray, ItemizedIconOverlay<OverlayItem>  itemizedIconOverlay) {
     	 try {
        
         OverlayItem marker=null;
@@ -584,7 +627,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
           // dsiplay  bus information when  user click
           @Override
           public boolean onItemSingleTapUp(int index, OverlayItem item) {
-           Toast.makeText(MapViewClass.this, 
+           Toast.makeText(mcontext, 
              item.mTitle + "\n"
              + item.mDescription,
              Toast.LENGTH_LONG).show();
@@ -659,6 +702,49 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     }
 
     /** ************************************************* */
+     // live maj data
+
+    /** ************************************************* */
+    public static void majData(String bike,String bus,String metro,String borne)
+    {
+    	Log.d("MAJ INFO","new information");
+    	
+    	 // And the String into Json
+        try {
+            bikeData = new JSONObject(bike);
+            metroArray = new JSONArray(metro);
+            busArray = new JSONArray(bus);
+            borneArray = new JSONArray(borne);
+           
+        } catch (JSONException e) {
+            Log.i("ERROR JSON" , e.toString());
+        }
+       
+        /** ************************************************* */
+        
+        
+        /** ******* This display all the bike station ******* */
+
+        // Call the method that create a item array
+        mapView.getOverlays().remove(bikeItemizedIconOverlay);
+         displayBikePoint(bikeData);
+         mapView.invalidate();
+         
+         //metro
+         mapView.getOverlays().remove(metroItemizedIconOverlay);
+         displayPoint(metroArray, "Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
+         mapView.invalidate();
+         
+         //borne
+         mapView.getOverlays().remove(borneItemizedIconOverlay);
+         displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
+         mapView.invalidate();
+       
+    }
+
+    /** ************************************************* */
+    
+   
 }
 
 
