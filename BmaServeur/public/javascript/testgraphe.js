@@ -3,7 +3,7 @@
 */
 
 // Url use for the post request
-var urlPost = "http://148.60.11.208:3000/testgraphe";
+var urlPost = "http://localhost:3000/testgraphe";
 
 // Variable containing the data
 var bus = false;
@@ -54,8 +54,30 @@ function callServer(){
 			// Case of a success call
 			// Display the result div
 			$('#result').show();
-			$('#result').append('<p>' + data + '</p>');
+			
+
+			// Display the result
+			for(var i = 0; i<data.nodes.length; i++){
+
+				// Diplay the first node 
+				$('#tableau').append('<tr>');
+
+				// Display a node
+				$('#tableau').append('<td>' + data.nodes[i].data.Name + ' (' + data.nodes[i].data.type + ') </td>');
+
+				// Check if the relationship is present
+				if(data.relations.length > i){
+					var j = i+1;
+					$('#tableau').append('<td>' + data.relations[i].data.time / 60 + 'min (' + data.relations[i].type + ') </td>');
+					$('#tableau').append('<td>' + data.nodes[j].data.Name + ' (' + data.nodes[j].data.type + ') </td>');
+				}
+
+				$('#tableau').appent('</tr>');
+			}
+
 			console.log(data);
+
+
 		},
 		error: function(data){
 			// Case of an error during the post request

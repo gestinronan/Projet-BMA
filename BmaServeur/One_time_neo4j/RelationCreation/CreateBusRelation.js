@@ -63,6 +63,7 @@ function getDataForATripId(trips){
                       if(err || !result){
                         console.log('An error occured getting the data from the trip_id :: ' + trips[i].Trip_id + ' :: ' + err);
                       } else {
+                        console.log(result);
                         parseDataOfTrip(result); // Call the function which parse the data
                       }
 
@@ -113,6 +114,7 @@ function parseDataOfTrip(data){
      console.log('Depart Time :: ' + data[j].Departure_time);
      console.log('Arrival Time :: ' + data[j+1].Arrival_time);
      console.log('Time Between :: ' + time);
+     console.log('Trip Headsign :: ' + data[j].Trip_headsign);
 
      // Create the relation
      db.insertRelationship(data[j].NodeId, data[j+1].NodeId, 'Bus', {
@@ -126,50 +128,23 @@ function parseDataOfTrip(data){
         console.log('An error occured creatingthe relation :: ' + err);
       } else {
         console.log('Relation created :: ' + result.id);
+
+        // Wait 100ms 
+        sleep(100);
       }
 
      });
-
-     // Then we create the relation between thos bus Stops
-     //createRelation(data[0].Trip_id, data[0].Trip_headsign, time, data[j].NodeId, data[j+1].NodeId, 'Bus');
   }
 
 }
 }
 
-/**
-* This function add the relation into the graph 
-*/
 
-function createRelation(trip_id, trip_headsign, time, pointA, pointB, type){
-
-  console.log('Create the relation');
-
-  /**** Debug ****/
-  console.log('trip_id :: ' + trip_id);
-  console.log('trip_headsign :: ' + trip_headsign);
-  console.log('time :: ' + time);
-  console.log('pointA :: ' + pointA);
-  console.log('pointB :: ' + pointB);
-  console.log('type :: ' + type);
-
-  db.insertRelationship(pointA, pointB, type, {
-    time: time,
-    trip_id: trip_id,
-    trip_headsign: trip_headsign
-  }, function(err, relationship){
-    if(err) console.log(err);
-
-        // Output relationship properties.
-        console.log('data :: ' + relationship.data);
-
-        // Output relationship id.
-        console.log('realtionship id :: ' + relationship.id);
-
-        // Output relationship start_node_id.
-        console.log('start node id :: ' + relationship.start_node_id);
-
-        // Output relationship end_node_id.
-        console.log('end node id :: ' + relationship.end_node_id);
-      });
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }

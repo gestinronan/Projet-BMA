@@ -147,7 +147,7 @@ function displayResult(){
 		
 		// Display the relation
 		if(relationParameter.length > i ){
-			console.log('Trajet ' + i + ' de type :: ' + relationParameter[i].type + ' pour une durée de :: ' + relationParameter[i].data.time);
+			console.log('Trajet ' + i + ' de type :: ' + relationParameter[i].type + ' pour une durée de :: ' + relationParameter[i].data.time/60 + 'min');
 		}
 	}
 

@@ -34,6 +34,10 @@ var data;
 /******* Android varaible ****/
 var androidLat, androidLng;
 
+/******* Variable to store path *******/
+var relationParameter = new Array();		// Store relation of a route
+var nodeParameter = new Array();			// Store nodes of a route 
+	
 /*********** Connection to Databases ***********/
 
 // Variables needed for the database connection
@@ -230,6 +234,7 @@ app.post('/testgraphe', function(req, res){
 	if(departType == 'Bus'){
 		departTable = 'test.BusStops';
 		departColumns = 'Stop_id';
+		depart = "\'" + depart + "\'";
 	}
 	else if(departType == 'Bike'){
 		departTable = 'test.BikeStops';
@@ -238,11 +243,13 @@ app.post('/testgraphe', function(req, res){
 	else if(departType == 'Metro'){
 		departTable = 'test.MetroStops';
 		departColumns = 'MetroStop_id';
+		depart = "\'" + depart + "\'";
 	}
 
 	if(arriveType == 'Bus'){
 		arriveTable = 'test.BusStops';
 		arriveColumns = 'Stop_id';
+		arrive = "\'" + arrive + "\'";
 	}
 	else if(arriveType == 'Bike'){
 		arriveTable = 'test.BikeStops';
@@ -250,10 +257,15 @@ app.post('/testgraphe', function(req, res){
 	}
 	else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
-		arriveColumns = 'MetroStop_id'
+		arriveColumns = 'MetroStop_id';
+		arrive = "\’" + arrive + "\'";
 	}
+
+
+
 	
-	connection.query('SELECT ' + departTable + '.NodeId FROM ' + departTable + ' WHERE ' + departColumns + ' = ' + depart,
+	
+	connection.query('SELECT NodeId FROM ' + departTable + ' WHERE ' + departColumns + ' = ' + depart,
 					  function(err, result){
 
 					  	// Case of error during the call
@@ -263,14 +275,18 @@ app.post('/testgraphe', function(req, res){
 					  	console.log(result);
 					  	id_depart = result[0].NodeId;
 
-						connection.query( 'SELECT ' + arriveTable + '.NodeId FROM ' + arriveTable + ' WHERE ' + arriveColumns + ' = ' + arrive,
+					  	/***** DEBUG ******/
+					  	console.log('table :: ' + arriveTable);
+					  	console.log('Columns :: ' + arriveColumns);
+
+						connection.query('SELECT NodeId FROM ' + arriveTable + ' WHERE ' + arriveColumns + ' = ' + arrive,
 					  		function(err, result){
 
 					  			// Case of error during the call
 					  			if(err || !result){
 					  				console.log('An error occured getting the arrive');
 					  			}
-					  			console.log(result);
+					  			console.log('result arrive query :: ' + result);
 					  			id_arrive = result[0].NodeId;
 
 					  			console.log("Do cypher query nodedepart :: " + id_depart + "; nodearrive :: " + id_arrive);
@@ -278,12 +294,15 @@ app.post('/testgraphe', function(req, res){
 					  			// Run a cypher query against the grapj
 								db.cypherQuery("START d=node(" + id_depart + "), e=node(" + id_arrive + ") " +
 					  				   "MATCH p = shortestPath( d-[*..20]->e ) " +
-                       				   "RETURN p", function(err,result){
+                       				   "RETURN p", function(err,data){
 
-                       				   	console.log(result);
+                       				   	// Case an error occured
+                       				   	if(err || !result){
+                       				   		console.log('An error occured when querying the graph');
+                       				   	}
 			   							
 			   							// Result of the query
-			   							res.send(result);
+			   							readCypherData(res, data.data[0].nodes, data.data[0].relationships);
 								});
 
 					 	 });
@@ -293,7 +312,7 @@ app.post('/testgraphe', function(req, res){
 
 
 
-/************ Example of an other get Request *****/
+/************ Example of an other get Request *********/
 
 app.post('/android',function(req, res){
 	
@@ -451,7 +470,7 @@ app.post('/android/data/getroutes', function(req, res){
 			console.log('An error Occured getting the sql data');
 			
 			// Report the error to the app
-			res.send('{data: error getting sql data}');
+			res.send('{data: error while getting sql data}');
 		} else{
 
 			// Store the nodeId
@@ -566,14 +585,108 @@ function getShortestPath(depart, arrive, res){
 				   'RETURN p', function(err, data){
 
 				   	// Case an error occured querying the graph
-				   	if(err || !restul){
+				   	if(err || !data){
 				   		console.log('An error occured getting the data :: ' + err);
 
 				   		// Report the error to the app
 				   		res.send('{data: An error Occured getting the shortest path');
 				   	} else {
+
+				   		// Once we get the result from the cypher query against the graph we parse the data
+				   		// And call a method which will parse and extract all the data
+				   		readCypherData(res, data.data[0].nodes, data.data[0].relationships);
 				   		
 				   	}
 				   });
 
+}
+
+
+/**
+* This function Read all the data coming from the cypher query
+*/
+function readCypherData(res, nodes, relations){
+
+// Call the function which will parse the relationship data
+readRelationship(res, nodes, relations);
+
+
+
+}
+
+/**
+* This function read relation ship
+*/
+function readRelationship(res, nodes, relations){
+	var i=0;
+	var x =0;
+	// Parse all the relation 
+	for(i = 0; i<relations.length; i++){
+
+		// Split the realtion into an array
+		var temp = relations[i].split('/');
+
+		// Extract the ID
+		var idRelation = temp[temp.length -1 ];
+
+		// Read the relation 
+		db.readRelationship(idRelation, function(err, result){
+
+			// Case an error occured reading the realtionship
+			if(err || !result){
+				console.log('An error occured getting relationship parameters :: ' + err );
+			} else {
+				console.log(result);
+				relationParameter[x] = result; // Store the data
+				
+				// If it's done, we call the next function which will read all the nodes
+				if(x == relations.length - 1){
+					
+					readNode(res, nodes, relations);
+				}
+				x ++ ;
+			}
+		});
+	}
+}
+
+/**
+* This function read nodes
+*/
+function readNode(res, nodes, relations){
+	var j =0;
+	var y =0;
+
+	// Parse all the nodes
+	for(j=0; j<nodes.length; j ++){
+
+		// Split the node into an array
+		var temp = nodes[j].split('/');
+
+		// Extracr the ID
+		var idNode = temp[temp.length - 1];
+
+		// Read the node
+		db.readNode(idNode, function(err, result){
+
+			// Case an error occured getting the node parameter
+			if(err || !result){
+				console.log('An error occured getting node paramaters :: ' + err);
+			} else {
+
+				nodeParameter[y] = result;
+
+				// If it's done, we display the result
+				if(y == nodes.length -1){
+					
+					// Once it's Done, we pass the data thanks to the res
+					
+					// Create the json 
+					var jsonData = {nodes: nodeParameter, relations: relationParameter};
+					res.send(jsonData);
+				}
+				y++;
+			}
+		});
+	}
 }

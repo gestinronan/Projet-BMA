@@ -6,30 +6,24 @@
     <script type="text/javascript" src='/javascript/jquery-1.8.0.min.js'></script>
     <script type="text/javascript" src='/javascript/d3.v3.min.js'></script>
 
-     <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="/stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="/stylesheets/app.css">
-
-  <script src="/javascript/modernizr.foundation.js"></script>
+  
   </head>
   <h1>Test Graph<a href="http://148.60.11.208:3000/">Bike station</a>, <a href="http://148.60.11.208:3000/metro"> Metro link</a></h1>
   <body>
 
   	<!-- Div which contains the form stuff-->
-	<div class="row">
-		<div class="five columns">
-			<div class='panel'>
-				<hr>
+	<div >
+		<hr>
 				<p>Départ:</p>
 				<select id = 'depart'>
 					<% for(i=0; i< dataBus.length; i++){ %>
-					<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
+					<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
 				<% } %>	
 				<% for(i=0; i< dataBike.length; i++){ %>
-					<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
+					<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name + "(Bike)"%> </option>
 				<% } %>	
 				<% for(i=0; i< dataMetro.length; i++){ %>
-					<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
+					<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name + "(Metro)"%> </option>
 				<% } %>	
 
 				</select>
@@ -37,13 +31,13 @@
 				<p>Arrivé:</p>
 				<select id='arrive'>
 					<% for(i=0; i< dataBus.length; i++){ %>
-						<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name%> </option>
+						<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
 					<% } %>	
 					<% for(i=0; i< dataBike.length; i++){ %>
-						<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name%> </option>
+						<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name + "(Bike)"%> </option>
 					<% } %>	
 					<% for(i=0; i< dataMetro.length; i++){ %>
-						<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name%> </option>
+						<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name + "(Metro)"%> </option>
 					<% } %>	
 
 				</select>
@@ -57,29 +51,19 @@
 				<hr>
 				<input type="submit" onclick='javascript: callServer()'>
 			</div>
-		</div>
+		
 
 	<!-- Div which will contains the result -->
-		<div id='result' class="seven columns">
-	
+		<div id='result'>
 
+			<!-- Créer un tableau pour afficher le résultat -->
+			<table border="1" id='tableau'>
+				<tr>
+					<th>Depart</th>
+					<th>Route</th>
+					<th>Destination</th>
+				</tr>
+			</table>
 		</div>
-	</div>
-
-
-	  <!-- Included JS Files (Compressed) -->
-  <script src="/javascript/jquery.js"></script>
-  <script src="/javascript/foundation.min.js"></script>
-  
-  <!-- Initialize JS Plugins -->
-  <script src="/javascript/app.js"></script>
-
-  
-    <script>
-    $(window).load(function(){
-      $("#featured").orbit();
-    });
-    </script> 
-
   </body>
 </html>
