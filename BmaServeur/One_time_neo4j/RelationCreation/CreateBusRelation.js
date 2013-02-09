@@ -129,8 +129,7 @@ function parseDataOfTrip(data){
       } else {
         console.log('Relation created :: ' + result.id);
 
-        // Wait 100ms 
-        sleep(100);
+
       }
 
      });
@@ -139,12 +138,3 @@ function parseDataOfTrip(data){
 }
 }
 
-
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
