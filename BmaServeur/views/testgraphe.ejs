@@ -1,69 +1,96 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script type="text/javascript" src='/javascript/testgraphe.js'></script>
-    <script type="text/javascript" src='/javascript/jquery-1.8.0.min.js'></script>
-    <script type="text/javascript" src='/javascript/d3.v3.min.js'></script>
+<head>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<script type="text/javascript" src='/javascript/testgraphe.js'></script>
+	<script type="text/javascript" src='/javascript/jquery-1.8.0.min.js'></script>
+	<script type="text/javascript" src='/javascript/d3.v3.min.js'></script>
 
-  
-  </head>
-  <h1>Test Graph<a href="http://148.60.11.208:3000/test/bike">Bike station</a>, <a href="http://148.60.11.208:3000/test/metro"> Metro link</a></h1>
-  <body>
+	
+</head>
+<h1>Test Graph<a href="http://148.60.11.208:3000/test/bike">Bike station</a>, <a href="http://148.60.11.208:3000/test/metro"> Metro link</a></h1>
+<body>
 
-  	<!-- Div which contains the form stuff-->
-	<div >
+	<!-- Div which contains the form stuff-->
+	<div style='float:left' >
 		<hr>
-				<p>Départ:</p>
-				<select id = 'depart'>
-					<% for(i=0; i< dataBus.length; i++){ %>
-					<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
-				<% } %>	
-				<% for(i=0; i< dataBike.length; i++){ %>
-					<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name + "(Bike)"%> </option>
-				<% } %>	
-				<% for(i=0; i< dataMetro.length; i++){ %>
-					<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name + "(Metro)"%> </option>
-				<% } %>	
+		<p>Départ:</p>
+		<select id = 'depart'>
+			<% for(i=0; i< dataBus.length; i++){ %>
+			<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
+			<% } %>	
+			<% for(i=0; i< dataBike.length; i++){ %>
+			<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name + "(Bike)"%> </option>
+			<% } %>	
+			<% for(i=0; i< dataMetro.length; i++){ %>
+			<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name + "(Metro)"%> </option>
+			<% } %>	
 
-				</select>
+		</select>
 
-				<p>Arrivé:</p>
-				<select id='arrive'>
-					<% for(i=0; i< dataBus.length; i++){ %>
-						<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
-					<% } %>	
-					<% for(i=0; i< dataBike.length; i++){ %>
-						<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name + "(Bike)"%> </option>
-					<% } %>	
-					<% for(i=0; i< dataMetro.length; i++){ %>
-						<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name + "(Metro)"%> </option>
-					<% } %>	
+		<p>Arrivé:</p>
+		<select id='arrive'>
+			<% for(i=0; i< dataBus.length; i++){ %>
+			<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
+			<% } %>	
+			<% for(i=0; i< dataBike.length; i++){ %>
+			<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name + "(Bike)"%> </option>
+			<% } %>	
+			<% for(i=0; i< dataMetro.length; i++){ %>
+			<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name + "(Metro)"%> </option>
+			<% } %>	
 
-				</select>
+		</select>
 
 
-				<p>Type de transport:</p>
-				<input type="checkbox" name="bus" id="bus" value="bus" checked=true>Bus<br>
-				<input type="checkbox" name="bike" id="bike" value="bike" checked=true>Bike<br>
-				<input type="checkbox" name="metro" id="metro" value="metro" checked=true>Metro
-				<br>
-				<hr>
-				<input type="submit" onclick='javascript: callServer()'>
-			</div>
-		
+		<p>Type de transport:</p>
+		<input type="checkbox" name="bus" id="bus" value="bus" checked=true>Bus<br>
+		<input type="checkbox" name="bike" id="bike" value="bike" checked=true>Bike<br>
+		<input type="checkbox" name="metro" id="metro" value="metro" checked=true>Metro
+		<br>
+		<hr>
+		<input type="submit" onclick='javascript: callServer()'>
+	</div>
+	
 
 	<!-- Div which will contains the result -->
-		<div id='result'>
+	<div id='result' style='display:none; float:right'>
+	</div>
 
-			<!-- Créer un tableau pour afficher le résultat -->
-			<table border="1" id='tableau'>
-				<tr>
-					<th>Depart</th>
-					<th>Route</th>
-					<th>Destination</th>
-				</tr>
-			</table>
-		</div>
-  </body>
+
+
+
+	<!-- Style Table -->
+	<style type="text/css">
+	#table-3 {
+		border: 1px solid #DFDFDF;
+		background-color: #F9F9F9;
+		width: 100%;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		font-family: Arial,"Bitstream Vera Sans",Helvetica,Verdana,sans-serif;
+		color: #333;
+	}
+	#table-3 td, #table-3 th {
+		border-top-color: white;
+		border-bottom: 1px solid #DFDFDF;
+		color: #555;
+	}
+	#table-3 th {
+		text-shadow: rgba(255, 255, 255, 0.796875) 0px 1px 0px;
+		font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+		font-weight: normal;
+		padding: 7px 7px 8px;
+		text-align: left;
+		line-height: 1.3em;
+		font-size: 14px;
+	}
+	#table-3 td {
+		font-size: 12px;
+		padding: 4px 7px 2px;
+		vertical-align: top;
+	}
+	</style>
+</body>
 </html>
