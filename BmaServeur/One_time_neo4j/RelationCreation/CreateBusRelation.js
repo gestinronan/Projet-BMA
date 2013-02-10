@@ -63,7 +63,7 @@ function getDataForATripId(trips){
                       if(err || !result){
                         console.log('An error occured getting the data from the trip_id :: ' + trips[i].Trip_id + ' :: ' + err);
                       } else {
-                        console.log(result);
+                        //console.log(result);
                         parseDataOfTrip(result); // Call the function which parse the data
                       }
 
@@ -88,6 +88,7 @@ function parseDataOfTrip(data){
   for(var j=0; j< data.length; j++){
 
     var time = null ;  // Initialize the variable
+    temp = null;       // Initiate the variable
 
     // Check if there is a next stop
     if(j+1 <data.length -1){
@@ -107,10 +108,11 @@ function parseDataOfTrip(data){
 
      // Get the difference between the two times
      time = arrivalTime - departTime;
-     time = time / 60; // Convert seconds into minute
+     time = time / 6000; // Convert seconds into minute
 
      /*** Debug ****/
-
+     console.log('Node départ :: ' + data[j].NodeId);
+     console.log('Node arrivé :: ' + data[j+1].NodeId);
      console.log('Depart Time :: ' + data[j].Departure_time);
      console.log('Arrival Time :: ' + data[j+1].Arrival_time);
      console.log('Time Between :: ' + time);
