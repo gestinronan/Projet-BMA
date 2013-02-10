@@ -1,0 +1,385 @@
+Ce wiki a pour but d'expliquer le fonctionnement et l'installation du serveur.
+
+## Choix Technique
+
+Pour ce projet, nous avons choisi pour le serveur d'utiliser NodeJS. Nous avons fait ce choix afin de pouvoir gérer de façon asynchrone les requêtes reçu par le serveur. Nous utilisons la dernière version stable de NodeJs qui est la version:
+
+    node v0.8.15
+
+Pour stocker les informations statique comme les horaires de bus, les arrêts de vélo ainsi que les gares, nous avons fait le choix d'une base de donnée mySql. 
+Nous utilisons la version suivante de mySql:
+
+    mySql v5.1
+
+Pour ce qui est du graphe, nous avons choisi d'utiliser une base de donnée de graphe. Après recherche, nous avons décidés d'utiliser:
+
+    Neo4j
+
+C'est une base de donnée noSql, le module nodeJS  "neo4js" permet de pouvoir intéragir depuis le serveur nodeJs vers la base de donnée neoJs.
+
+## Installation du serveur:
+
+Le serveur utilisé est un serveur NodeJs. Cela veut dire qu'il est codé en javascript. Pour gérer notre application, nous avons choisi d'utiliser le framework express. Pour pouvoir installer différents paquets sur le serveur, NodeJs possède un manager de packets appellé npm. 
+Depuis nom, nous pouvons installer le framework express de la facon suivante:
+
+    > sudo npm install express -g
+
+Une fois que le framework est installé, nous pouvons alors crée une application de la facon suivante:
+
+    > express --sessions --css stylus --ejs <App name>
+
+L'éxécution de cette commande va créer un dossier portant le nom de l'application. Dans ce dossier, nous trouverons les fichiers et dossiers suivants:
+
+    |- node-modules/
+    |- public/
+        |- stylesheets/
+        |- javascript/
+    |- routes/
+    |- views/
+    |- app.js
+
+Le fichier app.js est le fichier dans lequel se trouvera tout le code contenant le comportement du serveur.
+Pour lancer le serveur il suffit d'éxecuter la commande suivante:
+
+    > node app.js
+
+## Mise en route
+
+Afin de rendre tous les service du serveur disponible, il faut le démarrer. Pour cela, on peut exécuter la commande: 
+
+    > node app.js
+
+Cela va démarrer le serveur. Cependant nous n'avons aucun controle sur son arrêt ou son démarrage. Afin de palier à ce problème, nous utilisons le modules "forever" (https://github.com/nodejitsu/forever). 
+L'installation se fait de la facon suivante:
+
+    > sudo npm install forever
+
+Une fois ce module installé, nous pouvons démarrer, arrêter, ou redemarrer le serveur de la facon suivante:
+
+    > forever start app.js
+    > forever stop app.js
+    > forever restart app.js
+
+## Backup du serveur
+
+En cas de problème sur le serveur, nous avons écrit un script bash qui permet de sauvegarder la totalité du serveur. En cas de problème, nous pourrons utiliser cette sauvegarde afin pour rétablir le serveur dans l'état dans lequel il était au moment de la sauvegarde.
+
+Le script se trouve dans le dossier suivant:
+
+    |- Projet-BMA
+        |- BmaServeur
+        |- Android-prod
+        |- SiteWeb
+        |- serverBackup
+            |- backupScript.sh
+
+Pour éxecuter le script, il suffit de d'entrer la commande suivante:
+
+    > sh backupScript.sh
+
+## La base de donnée mySql
+
+### Connexion
+
+Afin de pouvoir interagir avec les données, il est possible de se connecter à celle-ci en ligne de commande. pour cela:
+
+    > mysql -u "username" -p
+
+En cas de problème, nous pouvons arrêter, démarrer ou redémarrer le serveur mysql de la façon suivante:
+
+    > service mysql stop
+    > service mysql start
+    > service mysql restart
+
+Une fois la base de donnée rempli, pour des raisons de sécurité, ou pour prévenir tous problème sur le serveur, nous pouvons faire une backup de la base de donnée de la façon suivante:
+
+    > mysqldump -u root -p test > alldb_backup.sql
+
+Et nous pouvons ainsi la restorer de la façon suivante:
+
+    > mysqldump -u root -p test < alldb_backup.sql
+
+### Ajouts des données
+
+Afin de sauvegarder toutes les informations concernant les horaires de bus, train ... et les arrêts, toutes les données sont sauvegarder dans une base de données mySql.
+La connexion entre le serveur et la base de données s'effectue grâce au module mode-mysql (https://github.com/felixge/node-mysql).
+L'installation de ce module s'effectue de la façon suivante:
+Tout d'abord ce module:
+
+    > sudo npm install mysql@2.0.0-alpha5
+
+Puis:
+
+    > sudo npm install git://github.com/felixge/node-mysql.git
+
+Une fois ce module installé, nous pouvons nous connecté de la facon suivante à la base de donnée:
+
+    var mysql      = require('mysql');
+    var connection = mysql.createConnection({
+        host     : 'localhost',
+        user     : 'me',
+        password : 'secret',
+    });
+
+    connection.connect();
+
+Puis les queries se font de la façon suivantes:
+
+    connection.query('SELECT * FROM Tables', function(err, result){
+        // Traitement du resultat de la query
+    });
+
+### Remplissage de la base de donnée:
+
+Pour ajouter des données à notre base, nous avons écrit des scripts (en javascript) qui permettent de parsé les différentes données présentes dans les fichiers fournis par la STAR et la SNCF ainsi que les données récupérées grâce aux appels ajax vers l'API de la STAR (données vélo et métro).
+
+Les scripts réalisant ces actions ce trouve dans le dossier:
+
+    |-One_Time_Sql/
+        |- CreateDatabaseTable.js
+        |- RemoveDataFromSqlDb.js
+        |- StoreBikeStops.js
+        |- StoreBusRoutes.js
+        |- StoreBusStop_Times.js
+        |- StoreBusStops.js
+        |- StoreBusTrips.js
+        |- StoreMetroStops.js
+        |- StoreBorneElec.js
+
+Pour exécuter l'un de ces script, il suffit de ce placé dans le dossier "One_Time_Sql" puis d'exécuter la commande suivante:
+
+     > node <Nom du Script a éxecuter> 
+
+##### CreateDatabaseTable.js
+
+Ce fichier créé les différentes table de notre base de donnée. Pour créer une table, il suffit d'éxecuter l'équivalant d'une requête Sql en javascript. C'est à dire transformer cette requête Sql:
+
+    // Création d'une table Sql
+    CREATE TABLE TerStops (
+			     Stop_id int,
+			     Stop_name VARCHAR(100),
+			     Stop_lat VARCHAR(100),
+		       	     Stop_lon VARCHAR(100),
+		       	     PRIMARY KEY(Stop_id));
+
+En JavaScript:
+
+    // Création d'une table Sql en javascript
+    connection.query('CREATE TABLE TerStops ( ' + 
+                     'Stop_id int,' +
+                     'Stop_name VARCHAR(100),' +
+                     'Stop_lat VARCHAR(100),' +
+                     'Stop_lon VARCHAR(100),' + 
+                     'PRIMARY KEY(Stop_id))',
+                 function(err, result){
+                    
+                     // Case there is an error during the creation
+                     if(err) {
+                         console.log(err);
+                     } else {
+                         console.log("Table Ter_Stops Created");
+                     }
+                 });
+
+L'exécution de ce fichier nous permet donc de créer toutes les tables de notre base de donnée et ainsi de créer un schéma de donnée comme celui ci:
+
+
+
+
+##### StoreData.js
+
+Afin d'ajouter données dans notre base de donnée, nous avons créé des scripts qui lors de leur exécution vont faire un appel ajax vers les différents serveurs, ou alors parser les fichiers contenants les données. 
+Ajouter des données dans une table se fait de la façon suivante en Sql:
+
+    INSERT INTO <Nom de la Table> SET <Colonne> = <Valeur>, <Colonne> = <Valeur>;
+
+Ce qui donne en JavaScript:
+
+    connection.query('INSERT INTO <Nom de la table> SET  <Colonne> = <Valeur>, <Colonne> = <Valeur>',
+        function(err, result){
+             // Gestion du resultat.
+        });
+
+
+Note: Afin de pouvoir charger des fichiers dans un script, il faut procéder de la façon suivante:
+
+    fs.readFile(<Location du fichier>, function (err, data) {
+  
+	// Case there is an error
+  	if (err) {
+	 	 console.log("File not load");
+      	throw err; 
+ 	}
+
+	// Traitement des données
+    });
+
+Note 2: Le fichier Stop_Times contenant beaucoup de donnée, nous somme obligé de le parcourir en deux fois. 
+        Pour cela, nous avons créés deux fonctions, une qui va ajouter la première moitié des données dans     
+la base et une seconde qui une fois l'éxecution de la première function terminer va ajouter le reste des 
+        données dans la base.
+        Nous somme obligé de procédé de cette façon, sinon nous obtenons l'erreur:
+
+        Fatal Error: Process out of memory
+
+
+##### UpdateData.js
+
+Afin de donner plus de valeur aux données, nous avons écrit un script qui ajoute à la table des arrêts de bus, les numéro de lignes de bus qui s'y arrête. Pour cela nous avons juste effectuer un JOIN en sql.
+
+## Les appels au serveur
+
+Les appels faits au serveur depuis l'application sont des appels HTTP. Le traitement de chaque appel depend de l'url que la requête appel. Les urls sont definis de la façon suivante:
+
+    
+### Pour l'application android
+
+    148.60.11.208:3000/android/data/bike
+    148.60.11.208:3000/android/data/bus
+    148.60.11.208:3000/android/data/train
+    148.60.11.208:3000/android/data/borneelec
+    148.60.11.208:3000/android/data/getroutes // Necessite paramètre
+    148.60.11.208:3000/android/nextdeparture  // Necessite le paramètre stopId correspondant à un arrêt de bus
+
+### Pour les tests
+
+    148.60.11.208:3000/test/bike
+    148.60.11.208:3000/test/bus
+    148.60.11.208:3000/test/metro
+    148.60.11.208:3000/test/borneelec
+    148.60.11.208:3000/test/testgraphe
+
+### Pour le site web
+
+    148.60.11.208:3000
+
+Les appels a ces Url ne néccesite pas d'envoi de paramètre de la part de l'application, cela veut dire que si l'application appel une de ces trois Url, elle aura pour résultat les données concernant soit les bus, les vélos ou les trains.
+
+### Format de donnée requêtes GET
+
+Les données envoyées par le serveur sont de la forme suivante: 
+    
+    [{ Stop_id: '"4604"',
+       Stop_name: '"Pommiers"',
+       Stop_lat: '"48.21008788"',
+       Stop_lon: '"-1.62587418"',
+       Stop_code: '"4604"',
+       Stop_desc: '"Chevaigné"',
+       Zone_id: '""',
+       Stop_url: '""',
+       Location_type: '""',
+       Parent_station: '""',
+       Stop_timezone: '""',
+       Wheelchair_boarding: '"1"',
+       Line_short_name: null,
+       Line_long_name: null },
+     { Stop_id: '"4605"',
+       Stop_name: '"Fonderies"',
+       Stop_lat: '"48.21442422"',
+       Stop_lon: '"-1.62878295"',
+       Stop_code: '"4605"',
+       Stop_desc: '"Chevaigné"',
+       Zone_id: '""',
+       Stop_url: '""',
+       Location_type: '""',
+       Parent_station: '""',
+       Stop_timezone: '""',
+       Wheelchair_boarding: '"1"',
+       Line_short_name: null,
+       Line_long_name: null },
+       ... ]
+
+### Les requêtes POST
+
+Afin d'obtenir des résultats plus précis ou ne concernant qu'un seul arrêt ou une location spécifique, 
+l'application peut faire une requête vers le serveur en lui transmettant des paramètres.
+
+#### Requêtes 148.60.11.208:3000/android/data/getroutes
+
+Cette requêtes neccesite l'envoie de paramètres de la part de l'utilisateur.
+Ils devront etre mis sous cette forme:
+
+    depart = "type:id" 
+    arrive = "type:id"
+    bus = true/false
+    bike = true/false
+    metro = true/false
+
+Les variables contenant les informations sur le depart et l'arrivée seront constitués de deux données, le type qui pourra être Bus ou Bike ou Metro suivi de l'Id de l'arret selectionnée.
+
+Les trois autres paramétres concerne les chois de l'utilisateur pour savoir si il prefere utilisé le metro, le velo et la metro.
+
+
+    
+## Base de donnée Neo4j
+
+Cette base de donnée contient le graphe de toute les trajets possibles.
+
+### Connexion à la base Neo4j
+
+Afin de ce pouvoir intéragir depuis le serveur nodeJS vers la base de donnée neo4j, nous avons besoin d'installer le module neo4js (https://github.com/neo4j/neo4js). Pour cela nous éxécutons la commande suivante:
+
+    > sudo npm install node-neo4j
+
+Tous les fichiers relatifs à la base de donnée Neo4j se trouve dans le dossier:
+
+    |- OneTime_Neo4j/
+        |- CreateGraph.js
+
+Démarrer le serveur noe4j, il faut ce placer dans le dossier Neo4j puis exécuter la commande:
+
+    > bin/neo4j start 
+
+### Création des noeuds
+
+Pour créer notre graphe, nous devons d'abord créer tous les noeuds qui représentent chaque arrêts de bus, vélo, métro ...
+
+Pour créer un noeud, nous faisons une requête à la base de donnée puis nous créons le noeud de la manière suivante:
+
+    var noeud = graph.insertNode({name: <Nom du noeud>, latitude: ..., longitude: ...}, 
+        function(err, result){
+           // Callback function
+        });
+### Création des relations
+
+Une fois les noeuds du graph créés, il faut créer les relations qui lie chaque noeud entre-eux. Notre comprend comprend plusieurs types de noeuds et de relations. 
+
+    Noeuds: Arrêts de Bus
+            Arrêts de Vélos
+            Arrêts de Métro
+            Arrêts de Train
+
+    Relations: Distance & temps à vélo entre chaque arrêts de vélo // Done
+               Distance & temps en bus en bus entre chaque arrêts de bus (en fonction des horaires)
+               Distance & temps en Metro entre chaque arrêts de métro // Done
+               Distance & temps à pied entre chaque arrêts de bus // Done
+               Distance & temps en Train entre chaque arrêts de train (en fonction des horaires)
+               Distance & temps à pied entre arrêts de métro et arrêts de bus // Done
+               Distance & temps à pied entre arrêts de métro et arrêts de vélo // Done
+               Distance & temps à pied entre arrêts de métro et arrêts de train
+               Distance & temps à pied entre arrêts de bus et arrêts de vélo // Done
+               Distance & temps à pied entre arrêts de train et arrêts de bus
+               Distance & temps à pied entre arrêts de train et arrêts de vélo
+
+### Mise à jour des tables SQL
+
+Une fois le graphe créé, chaque noeud équivaut à un arrêt de bus ou métro ou vélo ou train. Dans le graph, chaque noeud possède un ID propre à lui. Afin de pouvoir acceder facilement au noeuds souhaiter, nous ajoutons aux différentes tables comprenant les arrêts de bus, vélos et métro la colonne suivante:
+
+    NodeId
+
+Dans cette colonne se trouve l'id de l'arrêt dans le graphe.
+
+### Visualisation du graph 
+
+Neo4j posséde une console. 
+La commande suivante permet d'obtenir une vue graphique du graphe:
+
+    start n=node(*) 
+    match n-[r?]->m 
+    return n,type(r),m
+
+##### Gestion des fonctions asynchrone
+
+La plupart des fonction utilisées en javascript son asynchrone. Cela veut donc dire que l'on ne sait pas quand elles vont se finir. Afin de gérer les fonctions asynchrones (et d'éviter les codes en spaghetti), nous utilisons le module node "async" (https://github.com/caolan/async) qui s'installe de la façon suivante:
+
+    > sudo npm install async
