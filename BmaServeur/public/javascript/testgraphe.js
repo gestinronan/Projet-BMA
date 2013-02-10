@@ -3,7 +3,7 @@
 */
 
 // Url use for the post request
-var urlPost = "http://localhost:3000/testgraphe";
+var urlPost = "http://localhost:3000/test/testgraphe";
 
 // Variable containing the data
 var bus = false;

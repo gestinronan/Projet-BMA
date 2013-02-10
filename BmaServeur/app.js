@@ -91,7 +91,7 @@ app.all('*', function(req, res, next) {
 /************* Get Request for the bike stations ********/
 
 // This is the function which manage a get call on '/' (That's the first page which is load)
-app.get('/',function(req, res){
+app.get('/test/bike',function(req, res){
 	
 	var url = "http://data.keolis-rennes.com/json/?version=" + version + "&key=" + key_star + "&cmd=getbikestations";
 	
@@ -103,7 +103,7 @@ app.get('/',function(req, res){
 
 /************* Get Request for the metro stations from mysql database ********/
 
-app.get('/metro', function(req, res){
+app.get('/test/metro', function(req, res){
 	
 	// Get the data from the table Metro_Stop
 	
@@ -117,7 +117,7 @@ app.get('/metro', function(req, res){
 });
 
 /*********** Get request for the bus Stations from the mysql database ***/
-app.get('/bus', function(req, res){
+app.get('/test/bus', function(req, res){
 
     // Get the data from the BusStops table
    
@@ -132,7 +132,7 @@ app.get('/bus', function(req, res){
 
 
 /********** Get request for the boren electric from the mysql database ****/
-app.get('/borneelec', function(req, res){
+app.get('/test/borneelec', function(req, res){
 
 	
 	connection.query('SELECT * FROM test.BorneElec', function(err, result){
@@ -146,7 +146,7 @@ app.get('/borneelec', function(req, res){
 
 
 /********* GET request for the testGraph view, this return the list of all Stops *****/
-app.get('/testgraphe', function(req, res){
+app.get('/test/testgraphe', function(req, res){
 
 //Variable
 var busData = null;
@@ -196,7 +196,7 @@ connection.query('SELECT * FROM test.MetroStops', function(err, result){
 
 
 /********* POST request for the testGraph view, this return the graph query result*****/
-app.post('/testgraphe', function(req, res){
+app.post('/test/testgraphe', function(req, res){
 
 	console.log(req.body.depart);
 
