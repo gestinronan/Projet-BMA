@@ -17,6 +17,12 @@ import android.util.Log;
  */
 public class BMARequestReciver extends BroadcastReceiver {
 	
+	
+	private String Bike;
+	private String Bus;
+	private String Metro;
+	private String Borne;
+	
 	public BMARequestReciver()
 	{
 		
@@ -27,9 +33,25 @@ public class BMARequestReciver extends BroadcastReceiver {
 				Log.d("BACK DATA", "TEST ");
 			
 			       
-			      MapViewClass. majData(intent.getStringExtra("bikeData"),intent.getStringExtra("busData"),intent.getStringExtra("metroData"),intent.getStringExtra("borneData"));
+			      //MapViewClass. majData(intent.getStringExtra("bikeData"),intent.getStringExtra("busData"),intent.getStringExtra("metroData"),intent.getStringExtra("borneData"));
+						Bike=intent.getStringExtra("bikeData");
+						Bus=intent.getStringExtra("busData");
+						Metro=intent.getStringExtra("metroData");
+						Borne=intent.getStringExtra("borneData");
 			}
 			
+			public String getBus(){
+				return Bus;
+			}
+			public String getBike(){
+				return Bike;
+			}
+			public String getMetro(){
+				return Metro;
+			}
+			public String getBorne(){
+				return Borne;
+			}
 
 		
 	    
