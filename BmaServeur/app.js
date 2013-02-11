@@ -274,6 +274,9 @@ app.post('/test/testgraphe', function(req, res){
 	else if(departType == 'Metro'){
 		departTable = 'test.MetroStops';
 		departColumns = 'MetroStop_id';
+	} else if(departType == 'Train'){
+		departTable = 'test.TerStops';
+		departColumns = 'Stop_id';
 	}
 
 	if(arriveType == 'Bus'){
@@ -288,11 +291,10 @@ app.post('/test/testgraphe', function(req, res){
 	else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
 		arriveColumns = 'MetroStop_id';
+	} else if(arriveType == 'Train'){
+		arriveTable = 'test.TerStops';
+		arriveColumns = 'Stop_id';
 	}
-
-
-
-	
 	
 	connection.query('SELECT NodeId FROM ' + departTable + ' WHERE ' + departColumns + ' = ' + depart,
 					  function(err, result){
@@ -421,7 +423,14 @@ app.get('/android/data/metro', function(req, res){
 
 // This send the train data to the android app
 app.get('/android/data/train', function(req, res){
-	
+	// Database query
+	connection.query('SELECT * FROM TerStops', function(err, result){
+		
+		// Send the data
+		var jString = JSON.stringify(result);
+		
+		res.send(jString);
+	})
 });
 
 // This send the BorneElectrique data to the android app
