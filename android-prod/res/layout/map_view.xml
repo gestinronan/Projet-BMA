@@ -46,8 +46,8 @@
             android:background="#AA000000" 
             android:rotation="180" >
 
-            <EditText
-                android1:id="@+id/editText1"
+            <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android" 
+                android1:id="@+id/dep"
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
                 android1:layout_alignParentLeft="true"
@@ -57,12 +57,12 @@
                 android1:ems="10"
                 android1:hint="Départ" />
 
-            <EditText
-                android1:id="@+id/editText2"
+            <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android" 
+                android1:id="@+id/arrival"
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
-                android1:layout_alignLeft="@+id/editText1"
-                android1:layout_below="@+id/editText1"
+                android1:layout_alignLeft="@+id/dep"
+                android1:layout_below="@+id/dep"
                 android1:layout_marginTop="19dp"
                 android1:ems="10"
                 android1:hint="Arrivée" />
@@ -71,8 +71,8 @@
                 android1:id="@+id/switch1"
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
-                android1:layout_alignLeft="@+id/editText2"
-                android1:layout_below="@+id/editText2"
+                android1:layout_alignLeft="@+id/arrival"
+                android1:layout_below="@+id/arrival"
                 android1:layout_marginTop="30dp"
                 android1:text="Bus" />
 
@@ -127,7 +127,7 @@
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
                 android1:layout_below="@+id/radioGroup1"
-                android1:layout_toRightOf="@+id/editText2"
+                android1:layout_toRightOf="@+id/arrival"
                 android1:text="Valider" />
 
             <ImageButton
@@ -135,7 +135,7 @@
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
                 android1:layout_alignLeft="@+id/valider"
-                android1:layout_alignTop="@+id/editText2"
+                android1:layout_alignTop="@+id/arrival"
                 android1:layout_marginLeft="23dp"
                 android1:background="@android:color/transparent"
                 android1:src="@android:drawable/ic_menu_mylocation" />
@@ -144,7 +144,7 @@
                 android1:id="@+id/imageButton1"
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
-                android1:layout_above="@+id/editText2"
+                android1:layout_above="@+id/arrival"
                 android1:layout_alignLeft="@+id/imageButton2"
                 android1:background="@android:color/transparent"
                 android1:src="@android:drawable/ic_menu_mylocation" />
