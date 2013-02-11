@@ -28,8 +28,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
@@ -51,7 +54,15 @@ import org.osmdroid.views.overlay.OverlayItem;
 //~--- JDK imports ------------------------------------------------------------
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * map view acitivity
+ * @author ronan
+ *
+ * @param <Overlay>
+ */
 public class MapViewClass<Overlay> extends Activity implements LocationListener {
 
     /** ************************************************* */
@@ -136,12 +147,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     /** ************ Global variable declaration ******* */
 
-    static //context
+    //context
     Context mcontext;
 
     // Map Variable
     private MapController mapController;
-    private static MapView       mapView;
+    private  MapView       mapView;
 
     // Layout element
     ImageButton   locateMe;
@@ -156,30 +167,27 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     // Marker variable
     public ArrayList<OverlayItem>            myLocationOverlayItemArray;
-    private static ArrayList<OverlayItem>           bikeOverlayItemArray;
-    private static ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
-    private static Drawable                         bikeMarker;
+    private ArrayList<OverlayItem>           bikeOverlayItemArray;
+    private  ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
+    private  Drawable                         bikeMarker;
+    private  Map<String, Double> bikeList=new HashMap<String, Double>();
     
     private ArrayList<OverlayItem>           busOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> busItemizedIconOverlay;
     private Drawable                         busMarker;
-    private static JSONArray 						 busArray ;
+    private  JSONArray 						 busArray ;
     
-    private static ArrayList<OverlayItem>           metroOverlayItemArray;
-    private static ItemizedIconOverlay<OverlayItem> metroItemizedIconOverlay;
-    private static Drawable                         metroMarker;
-    private static JSONArray 						 metroArray ;
+    private  ArrayList<OverlayItem>           metroOverlayItemArray;
+    private ItemizedIconOverlay<OverlayItem> metroItemizedIconOverlay;
+    private  Drawable                         metroMarker;
+    private  JSONArray 						 metroArray ;
 
-    private static ArrayList<OverlayItem>           borneOverlayItemArray;
-    private static ItemizedIconOverlay<OverlayItem> borneItemizedIconOverlay;
-    private static Drawable                         borneMarker;
-    private static JSONArray 						 borneArray ;
+    private  ArrayList<OverlayItem>           borneOverlayItemArray;
+    private  ItemizedIconOverlay<OverlayItem> borneItemizedIconOverlay;
+    private  Drawable                         borneMarker;
+    private  JSONArray 						 borneArray ;
     // Intent value
-    private static JSONObject                      bikeData;
-    private String                          bikeIntent;
-    private String                          busIntent;
-    private String                          metroIntent;
-    private String                          borneIntent;
+    private  JSONObject                      bikeData;
     private ItemizedIconOverlay<OverlayItem> myLocationItemizedIconOverlay;
     Intent intent = new Intent();
    
@@ -187,9 +195,16 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
    
     // for layers
     
-    final CharSequence[] items = {"Bus", "metro", "velo"};
-    private boolean[] states = {false, true, true};
+    final CharSequence[] itemLayers = {"Bus", "metro", "velo"};
+    private boolean[] statesLayers = {false, true, true};
 
+    private AutoCompleteTextView dep;
+    private AutoCompleteTextView Arr;
+    
+ // for bike level
+    
+    final CharSequence[] itemsVelo = {"biker", "have fun", "be cool"};
+    private boolean[] statesVelo = {false, false, true};
     /** ************************************************* */
 
     /** ******* On create Mehtod First launch *********** */
@@ -212,10 +227,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         String lng    = intent.getStringExtra("longitude");
         String lat    = intent.getStringExtra("latitude");
 
-       //bikeIntent = intent.getStringExtra("bikeData");
-       //metroIntent = intent.getStringExtra("metroData");
-       //busIntent = intent.getStringExtra("busData");
-       //borneIntent = intent.getStringExtra("borneData");
       
     
 
@@ -237,7 +248,16 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         slidingMenu = (SlidingDrawer) findViewById(R.id.drawer);
         locateMe    = (ImageButton) findViewById(R.id.locateMe);
         valider     = (Button) findViewById(R.id.valider);
+        // Get a reference to the AutoCompleteTextView in the layout
+        dep= (AutoCompleteTextView) findViewById(R.id.dep);
+        Arr= (AutoCompleteTextView) findViewById(R.id.arrival);
+        
 
+        
+  
+
+        
+        
         // Define the marker
         bikeMarker = this.getResources().getDrawable(R.drawable.velo);
        busMarker = this.getResources().getDrawable(R.drawable.bus);
@@ -282,7 +302,24 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         GeoPoint point2 = new GeoPoint(myLat, myLng);
 
         mapController.setCenter(point2);
-
+        
+        if(broadcastReceiver.isOrderedBroadcast()){
+        
+       // display data 
+       majData(broadcastReceiver.getBike(),broadcastReceiver.getBus(),broadcastReceiver.getMetro(),broadcastReceiver.getBorne());
+        // Get the string array
+        String[] stop= new String[10000];
+        bikeList.keySet().toArray(stop);
+        // Create the adapter and set it to the AutoCompleteTextView 
+        ArrayAdapter<String> adapterDep = 
+                new ArrayAdapter<String>(this,R.layout.map_view,stop );
+        dep.setAdapter(adapterDep);
+        
+        ArrayAdapter<String> adapterArr = 
+                new ArrayAdapter<String>(this,R.layout.map_view,stop );
+        Arr.setAdapter(adapterArr);
+        }
+        
 
 
       
@@ -316,22 +353,69 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         case R.id.menu_search :
 
             // behaviour of reserch menu
-            return true;
+           // return true;
 
        // case R.id.menu_settings : // not usfull
             // Change activity to settings menu
         case R.id.userLevel :
+        {
+            
+        	final boolean rapid =statesVelo[2];
+        	final boolean havefun =statesVelo[1];
+        	final boolean balande =statesVelo[0];
+        	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	    builder.setTitle("Quel est votre niveau en velo?");
+        	    builder.setMultiChoiceItems(itemLayers, statesLayers, new DialogInterface.OnMultiChoiceClickListener(){
+        	    	
+        	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
+        	        }
+        	    });
+        	    
+        	    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        	    	
+        	        public void onClick(DialogInterface dialog, int id) {
+        	        	
+        	           
+        	        }
+        	           
+        	    });
+        	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        	        public void onClick(DialogInterface dialog, int id) {
+        	        	 SparseBooleanArray CheCked = ((AlertDialog)dialog).getListView().getCheckedItemPositions();
+        	        	 if(CheCked.get(CheCked.keyAt(0)) == false && CheCked.get(CheCked.keyAt(2)) == false || CheCked.get(CheCked.keyAt(0)) == false && CheCked.get(CheCked.keyAt(1)) == false || CheCked.get(CheCked.keyAt(1)) == false && CheCked.get(CheCked.keyAt(1)) == false){
+         	            	Toast.makeText(mcontext, "une seul choix possible", Toast.LENGTH_LONG).show();
+         	                
+         	            }
+         	          
+        	        	 else{
+        	        		 
+        	        		    // cache gestion
+             	        	dialog.cancel();
+        	        		 
+        	        	 }
+         	            	
+         	            	
+         	          
+         	        
+         	        
+        	        
+        	         
+        	        }
+        	    });
+        	    builder.create().show();
+        
+        }
         	// if the user is trained
         
         case R.id.layers :
         {
         
-        	final boolean velo =states[2];
-        	final boolean metro =states[1];
-        	final boolean bus =states[0];
+        	final boolean velo =statesLayers[2];
+        	final boolean metro =statesLayers[1];
+        	final boolean bus =statesLayers[0];
         	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
         	    builder.setTitle("Quel layer vous intreresse?");
-        	    builder.setMultiChoiceItems(items, states, new DialogInterface.OnMultiChoiceClickListener(){
+        	    builder.setMultiChoiceItems(itemLayers, statesLayers, new DialogInterface.OnMultiChoiceClickListener(){
         	    	
         	        public void onClick(DialogInterface dialogInterface, int item, boolean state) {
         	        }
@@ -406,9 +490,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
         	        public void onClick(DialogInterface dialog, int id) {
         	             // cache gestion
-        	        	states[2]=velo;
-        	        	states[1]=metro;
-        	        	states[0]=bus;
+        	        	statesLayers[2]=velo;
+        	        	statesLayers[1]=metro;
+        	        	statesLayers[0]=bus;
         	        	dialog.cancel();
         	        }
         	    });
@@ -426,7 +510,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     
      @SuppressWarnings("unused")
-	private static void displayBikePoint(JSONObject dataJson) {
+	private  void displayBikePoint(JSONObject dataJson) {
     	 try {
         // Declare variables
         JSONObject openData;
@@ -454,8 +538,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             			bikeAvailable = null,
                        slotAvailable = null;
             double     lng           = 0,
-                      lat           = 0;
-     
+                      lat           = 0,
+            		id	=0;
+            bikeList=new HashMap<String,Double>();
             // Initiate the variable we need
            
             	tmpStation = station.getJSONObject(i);
@@ -466,6 +551,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                 name          = tmpStation.getString("name");
                 bikeAvailable = tmpStation.getString("bikesavailable");
                 slotAvailable = tmpStation.getString("slotsavailable");
+                id=tmpStation.getDouble("number");
+                
+                bikeList.put(name, id);
                 
                 // Create a overlay for a special position
                  marker = new OverlayItem(name, "Velo Dispo :"+bikeAvailable+"\nEmplacement Dispo :"+slotAvailable, new GeoPoint(lat, lng));
@@ -519,13 +607,14 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                // TODO Auto-generated catch block
                e.printStackTrace();
            }
+    	 
         
       }
      
   
      @SuppressWarnings({ "unused", "null" })
 	
-     private static void displayPoint(JSONArray dataJson, String transportName, Drawable makerTransport,ArrayList<OverlayItem>  overlayItemArray, ItemizedIconOverlay<OverlayItem>  itemizedIconOverlay) {
+     private void displayPoint(JSONArray dataJson, String transportName, Drawable makerTransport,ArrayList<OverlayItem>  overlayItemArray, ItemizedIconOverlay<OverlayItem>  itemizedIconOverlay) {
     	 try {
        
         OverlayItem marker=null;
@@ -651,10 +740,10 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     }
 
     /** ************************************************* */
-    
+     // live maj data
 
     /** ************************************************* */
-    public static void majData(String bike,String bus,String metro,String borne)
+    public  void majData(String bike,String bus,String metro,String borne)
     {
     	Log.d("MAJ INFO","new information");
     	
@@ -688,6 +777,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
          mapView.getOverlays().remove(borneItemizedIconOverlay);
          displayPoint(borneArray, "Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
          mapView.invalidate();
+       
+    
+         
        
     }
 

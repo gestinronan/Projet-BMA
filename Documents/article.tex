@@ -1,8 +1,8 @@
 \documentclass{article}   		% use "amsart" instead of "article" for AMSLaTeX format
 
-\usepackage[latin1]{inputenc}  % un package
-\usepackage[T1]{fontenc}          % un second package
-\usepackage[francais]{babel}   % un troisième package
+\usepackage[latin1]{inputenc} 
+\usepackage[T1]{fontenc}          
+\usepackage[francais]{babel}  
 
 
 \title{Projet Bretagne Mobilit\'e Augment\'e}
@@ -12,7 +12,7 @@
 \begin{document}
 
 \maketitle            					% Create the Title
-
+\line(1, 0){350}
 \newpage							% Start a new page
 
 \tableofcontents					% Create the table of contents
@@ -34,8 +34,33 @@
 \section{Background}
 
 % Introduction au serveur
-Pour la r\'ealisation du projet, nous avons choisi de cr\'eer une application Android ainsi qu'un site Web. Cela servira d'interface pour l'utilisateur. 
-Les deux interfaces communiquent avec un serveur qui ce trouve sur une machine virtuelle de l'universit\'e de Rennes 1.
+Pour la r\'ealisation de ce projet, nous avons choisi d'utiliser plusieurs technologies. Voici une courte introduction \'a chacune de ces technologies.
+
+	% Presentation NodeJs
+	\subsection{NodeJS}
+
+	La partie serveur du projet est r\'ealis\'ee gr\^ace au frameword NodeJs. NodeJs est encore en version Beta mais commence \'a prendre une place non n\'egligeable dans le domaine du web.
+	L'int\'er\^et d'utiliser NodeJs vient du fait qu'il utilise le JavaScript. De ce fait, son \'ex\'ecution est donc tr\`es rapide.
+	De plus NodeJs poss\`ede la commande NPM qui permet d'installer de nombreuses librairie javascript afin de pouvoir int\'eragir avec le reste du syst\`eme.
+
+	% Presentation Neo4j
+	\subsection{Neo4j}
+
+	Afin de pouvoir trouver le plus rapidement possible le chemin par lequel l'utilisateur dois passer, nous avons construit un graphe contenant tous les arr\^ets de transport publique de Rennes. 
+	Chaque noeuds correspond donc \'a un arr\^ets de bus, de v\'elo ou de m\'etro et les arr\^etes qui relis chacun de ces noeuds correspond aux temps n\'ecessaire qu'il faut pour aller d'un noeud \'a un autre.
+	Gr\^ace \'a une librairies, nous pouvons cr\'eer des scripts en JavaScript afin de pouvoir cr\'ee notre graphe.
+
+	% Presentation Android
+	\subsection{Android}
+	
+	Android est un systm\`eme d'exploitation mobile cr\'e\'e par Google. A l'heure actuelle, c'est le syst\`eme d'exploitation mobile le plus utilis\'e dans le monde. C'est pourquoi nous avons choisi de cr\'eer notre application pour le syt\`eme Android.
+	Le syst\`eme Android \'etant open source, nous n'avons pas besoin de license pour d\'evelopper des applications. Les application Android sont developp\'es en Java. 
+	
+	
+	% Presentation HTML5
+	\subsection{Html5} 
+	
+	Le site Web quand \'a lui, b\'en\'eficie des derni\`eres technologie web. Le HTML5 nous permet donc d'int\'egrer la g\'eolocalisation de l'utilisateur via ca connexion internet.
 	
 	
 \clearpage
