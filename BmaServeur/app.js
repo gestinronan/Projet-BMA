@@ -143,6 +143,19 @@ app.get('/test/borneelec', function(req, res){
 	});
 });
 
+/*********** Get request for the Train Stations from the mysql database ***/
+app.get('/test/train', function(req, res){
+
+    // Get the data from the BusStops table
+   
+    connection.query('SELECT * FROM TerStops', function(err, result){
+
+        // Pass the data to the template
+        res.render('train', {
+        	data: result
+        })
+    });
+});
 
 
 /********* GET request for the testGraph view, this return the list of all Stops *****/
@@ -152,16 +165,18 @@ app.get('/test/testgraphe', function(req, res){
 var busData = null;
 var bikeData = null;
 var metroData = null;
+var trainData = null;
 
 // First query to get the busStops
 connection.query('SELECT * FROM test.BusStops', function(err, result){
 	busData = result;
 
-	if(busData != null && bikeData != null && metroData != null){
+	if(busData != null && bikeData != null && metroData != null && trainData != null){
 		res.render('testgraphe',{
 					 		dataBus: busData,
 					 		dataBike: bikeData,
-					 		dataMetro: metroData
+					 		dataMetro: metroData,
+					 		dataTrain: trainData
 					 	})
 	}
 });
@@ -170,11 +185,12 @@ connection.query('SELECT * FROM test.BusStops', function(err, result){
 connection.query('SELECT * FROM test.BikeStops', function(err, result){
 	bikeData = result;
 
-	if(busData != null && bikeData != null && metroData != null){
+	if(busData != null && bikeData != null && metroData != null && trainData != null){
 		res.render('testgraphe',{
 					 		dataBus: busData,
 					 		dataBike: bikeData,
-					 		dataMetro: metroData
+					 		dataMetro: metroData,
+					 		dataTrain: trainData
 					 	})
 	}
 });
@@ -183,11 +199,26 @@ connection.query('SELECT * FROM test.BikeStops', function(err, result){
 connection.query('SELECT * FROM test.MetroStops', function(err, result){
 	metroData = result;
 
-	if(busData != null && bikeData != null && metroData != null){
+	if(busData != null && bikeData != null && metroData != null && trainData != null){
 		res.render('testgraphe',{
 					 		dataBus: busData,
 					 		dataBike: bikeData,
-					 		dataMetro: metroData
+					 		dataMetro: metroData, 
+					 		dataTrain: trainData
+					 	})
+	}
+});
+
+// Third query to get the metro Stops
+connection.query('SELECT * FROM test.TerStops', function(err, result){
+	trainData = result;
+
+	if(busData != null && bikeData != null && metroData != null && trainData != null){
+		res.render('testgraphe',{
+					 		dataBus: busData,
+					 		dataBike: bikeData,
+					 		dataMetro: metroData,
+					 		dataTrain: trainData
 					 	})
 	}
 });
@@ -243,7 +274,6 @@ app.post('/test/testgraphe', function(req, res){
 	else if(departType == 'Metro'){
 		departTable = 'test.MetroStops';
 		departColumns = 'MetroStop_id';
-		depart = "\'" + depart + "\'";
 	}
 
 	if(arriveType == 'Bus'){
@@ -258,7 +288,6 @@ app.post('/test/testgraphe', function(req, res){
 	else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
 		arriveColumns = 'MetroStop_id';
-		arrive = "\’" + arrive + "\'";
 	}
 
 

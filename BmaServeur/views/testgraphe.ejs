@@ -16,30 +16,34 @@
 		<hr>
 		<p>Départ:</p>
 		<select id = 'depart'>
-			<% for(i=0; i< dataBus.length; i++){ %>
-			<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
-			<% } %>	
 			<% for(i=0; i< dataBike.length; i++){ %>
 			<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name + "(Bike)"%> </option>
 			<% } %>	
 			<% for(i=0; i< dataMetro.length; i++){ %>
 			<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name + "(Metro)"%> </option>
 			<% } %>	
-
+			<% for(i=0; i< dataTrain.length; i++){ %>
+			<option value= <%= "Train:" + dataTrain[i].Stop_id %> > <%= dataTrain[i].Stop_name + "(Train)"%> </option>
+			<% } %>	
+			<% for(i=0; i< dataBus.length; i++){ %>
+			<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
+			<% } %>	
 		</select>
 
 		<p>Arrivé:</p>
 		<select id='arrive'>
-			<% for(i=0; i< dataBus.length; i++){ %>
-			<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
-			<% } %>	
 			<% for(i=0; i< dataBike.length; i++){ %>
 			<option value= <%= "Bike:" + dataBike[i].BikeStop_id%> > <%= dataBike[i].BikeStop_name + "(Bike)"%> </option>
 			<% } %>	
 			<% for(i=0; i< dataMetro.length; i++){ %>
 			<option value= <%= "Metro:" + dataMetro[i].MetroStop_id%> > <%=dataMetro[i].MetroStop_name + "(Metro)"%> </option>
 			<% } %>	
-
+			<% for(i=0; i< dataTrain.length; i++){ %>
+			<option value= <%= "Train:" + dataTrain[i].Stop_id %> > <%= dataTrain[i].Stop_name + "(Train)"%> </option>
+			<% } %>	
+			<% for(i=0; i< dataBus.length; i++){ %>
+			<option value= <%= "Bus:" + dataBus[i].Stop_id %> > <%= dataBus[i].Stop_name + "(Bus)"%> </option>
+			<% } %>				
 		</select>
 
 
