@@ -56,11 +56,9 @@
                 android1:layout_marginLeft="20dp"
                 android1:layout_marginTop="20dp"
                 android1:ems="10"
-                android1:hint="Départ"
-                 android1:textSize="20dp"  />
+                android1:hint="Départ" />
             
-
-            <AutoCompleteTextView 
+             <AutoCompleteTextView 
                 android1:id="@+id/arrival"
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
@@ -68,8 +66,7 @@
                 android1:layout_below="@+id/dep"
                 android1:layout_marginTop="19dp"
                 android1:ems="10"
-                android1:hint="Arrivée"
-                 android1:textSize="20dp"  />
+                android1:hint="Arrivée" />
                
 
             <Switch
@@ -153,6 +150,8 @@
                 android1:layout_alignLeft="@+id/imageButton2"
                 android1:background="@android:color/transparent"
                 android1:src="@android:drawable/ic_menu_mylocation" />
+
+           
         </RelativeLayout>
     </SlidingDrawer>
 
