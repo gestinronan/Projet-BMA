@@ -461,6 +461,8 @@ app.post('/android/data/getroutes', function(req, res){
 	var departData = req.body.depart;
 	var arriveData = req.body.arrive;
 
+	console.log(req.body);
+
 	// Split the data to extract all the parameters
 	var tempDepart = departData.split(':');
 	var tempArrive = arriveData.split(':');

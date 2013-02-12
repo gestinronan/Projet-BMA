@@ -40,13 +40,14 @@
         <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:android1="http://schemas.android.com/apk/res/android"
-            android:id="@id/content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="#AA000000" 
-            android:rotation="180" >
+            android1:id="@id/content"
+            android1:layout_width="fill_parent"
+            android1:layout_height="fill_parent"
+            android1:background="#AA000000" 
+            android1:rotation="180" >
+       
 
-            <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android" 
+            <AutoCompleteTextView
                 android1:id="@+id/dep"
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
@@ -55,9 +56,11 @@
                 android1:layout_marginLeft="20dp"
                 android1:layout_marginTop="20dp"
                 android1:ems="10"
-                android1:hint="Départ" />
+                android1:hint="Départ"
+                 android1:textSize="20dp"  />
+            
 
-            <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android" 
+            <AutoCompleteTextView 
                 android1:id="@+id/arrival"
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
@@ -65,7 +68,9 @@
                 android1:layout_below="@+id/dep"
                 android1:layout_marginTop="19dp"
                 android1:ems="10"
-                android1:hint="Arrivée" />
+                android1:hint="Arrivée"
+                 android1:textSize="20dp"  />
+               
 
             <Switch
                 android1:id="@+id/switch1"
