@@ -187,7 +187,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private static ArrayList<OverlayItem>           bikeOverlayItemArray;
     private static  ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
     private static  Drawable                         bikeMarker;
-    private static  Map<String, Double> bikeList=new HashMap<String, Double>();
+    private static  Map<String, Integer> bikeList=new HashMap<String, Integer>();
     
     private ArrayList<OverlayItem>           busOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> busItemizedIconOverlay;
@@ -561,8 +561,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             			bikeAvailable = null,
                        slotAvailable = null;
             double     lng           = 0,
-                      lat           = 0,
-            		id	=0;
+                      lat           = 0;
+            	int	id	=0;
          
             // Initiate the variable we need
            
@@ -574,7 +574,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                 name          = tmpStation.getString("name");
                 bikeAvailable = tmpStation.getString("bikesavailable");
                 slotAvailable = tmpStation.getString("slotsavailable");
-                id=tmpStation.getDouble("number");
+                id=tmpStation.getInt("number");
                 
                 bikeList.put(name, id);
                 

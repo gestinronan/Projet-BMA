@@ -4,13 +4,17 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
@@ -46,10 +50,14 @@ public class TrajetServerRequest extends IntentService {
 	        HttpClient httpclient = new DefaultHttpClient();
 	        HttpPost request = new HttpPost();
 	        request.setURI(new URI("http://148.60.11.208:3000/android/data/getroutes"));
-	        HttpParams params = new BasicHttpParams();
+	      /**  HttpParams params = new BasicHttpParams();
 	        params.setParameter("dep", intent.getStringExtra("Dep"));
 	        params.setParameter("Arr", intent.getStringExtra("Arr"));
-	        request.setParams(params);
+	        request.setParams(params);*/
+	        ArrayList<NameValuePair> param= new ArrayList<NameValuePair>();	
+	        param.add(new BasicNameValuePair("depart", intent.getStringExtra("Dep")));
+	        param.add(new BasicNameValuePair("arrive", intent.getStringExtra("Arr")));
+	        request.setEntity(new UrlEncodedFormEntity(param));
 	        HttpResponse response = httpclient.execute(request);
 	        HttpEntity   entity   = response.getEntity();
 
