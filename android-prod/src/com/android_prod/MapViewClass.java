@@ -40,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,7 +122,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             Intent sent=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
             sent.putExtra("Dep", stopList.get("PONT DE STRASBOURG").getName()+":"+stopList.get("PONT DE STRASBOURG").getValue());
             sent.putExtra("Arr", stopList.get("REPUBLIQUE").getName()+":"+stopList.get("REPUBLIQUE").getValue());
-            sent.putExtra("bus", true);
+           //TODO: get information
+            // sent.putExtra("bus", busSlid.);
             sent.putExtra("bike", true);
             sent.putExtra("metro", true);
            startService(sent);
@@ -232,6 +234,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     private static AutoCompleteTextView dep;
     private static AutoCompleteTextView Arr;
+    private Switch busSlid;
     static BMARequestReciver broadcastReceiver;
     
  // for bike level
@@ -294,7 +297,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         // Get a reference to the AutoCompleteTextView in the layout AutoCompleteTextView
        dep= (AutoCompleteTextView) findViewById(R.id.dep);
        Arr= (AutoCompleteTextView) findViewById(R.id.arrival);
-  
+       busSlid= (Switch) findViewById(R.id.switch1);
         
         
         // Define the marker

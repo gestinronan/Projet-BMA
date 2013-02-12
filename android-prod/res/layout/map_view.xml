@@ -94,14 +94,23 @@
                 android1:layout_alignRight="@+id/switch2"
                 android1:layout_below="@+id/switch2"
                 android1:layout_marginTop="19dp"
-                android1:text="Voiture" />
+                android1:text="Metro" />
+            
+                    <Switch
+                android1:id="@+id/switch4"
+                android1:layout_width="wrap_content"
+                android1:layout_height="wrap_content"
+                android1:layout_alignRight="@+id/switch3"
+                android1:layout_below="@+id/switch3"
+                android1:layout_marginTop="19dp"
+                android1:text="Train" />
 
             <RadioGroup
                 android1:id="@+id/radioGroup1"
                 android1:layout_width="wrap_content"
                 android1:layout_height="wrap_content"
-                android1:layout_alignLeft="@+id/switch2"
-                android1:layout_below="@+id/switch3"
+                android1:layout_alignLeft="@+id/switch3"
+                android1:layout_below="@+id/switch4"
                 android1:layout_marginTop="24dp" >
 
                 <RadioButton
