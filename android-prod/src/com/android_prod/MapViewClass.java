@@ -71,6 +71,8 @@ import java.util.Map;
  * @param <Overlay>
  */
 public class MapViewClass<Overlay> extends Activity implements LocationListener {
+	
+	
 
     /** ************************************************* */
 
@@ -236,12 +238,15 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     
     final CharSequence[] itemsVelo = {"biker", "have fun", "be cool"};
     private boolean[] statesVelo = {false, false, true};
+    public static boolean lanuch= false;
     /** ************************************************* */
 
     /** ******* On create Mehtod First launch *********** */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lanuch=true;
          broadcastReceiver = new BMARequestReciver();
+         
        /** {
 			@Override
 			public void onReceive(Context context, Intent intent) {
@@ -795,25 +800,31 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         /** ******* This display all the bike station ******* */
 
         // Call the method that create a item array
+        if(mapView.getOverlays().contains(bikeItemizedIconOverlay))
         mapView.getOverlays().remove(bikeItemizedIconOverlay);
          displayBikePoint(bikeData);
          mapView.invalidate();
          
          //metro
+         if(mapView.getOverlays().contains(metroItemizedIconOverlay))
          mapView.getOverlays().remove(metroItemizedIconOverlay);
          displayPoint(metroArray, "Metro","Metro:", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
          mapView.invalidate();
          
          //borne
+         if(mapView.getOverlays().contains(borneItemizedIconOverlay))
          mapView.getOverlays().remove(borneItemizedIconOverlay);
          displayPoint(borneArray, "Borne","Borne:", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
          mapView.invalidate();
          
          
-         //borne
+         //Train
+         if(mapView.getOverlays().contains(trainItemizedIconOverlay))
          mapView.getOverlays().remove(trainItemizedIconOverlay);
          displayPoint(trainArray, "","Train:" ,trainMarker,trainOverlayItemArray,trainItemizedIconOverlay);
          mapView.invalidate();
+         
+         
          // remplissage
          stop=new String[stopList.size()];
          stopList.keySet().toArray(stop);
