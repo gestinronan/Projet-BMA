@@ -39,7 +39,7 @@ connection.query('SELECT Trip_id FROM test.BusTrips', function(err, result){
 function getDataForATripId(trips){
 
   // Parse the all tripsId
-  for(i=0; i<trips.length; i++){
+  for(i=0; i<trips.length/3; i++){
 
     /* For each trip id, we query the database to get all the stop_id, arrival and departure time and stop sequence
      The SQL query is the following one:

@@ -238,13 +238,16 @@ app.post('/test/testgraphe', function(req, res){
 	var tempDepart = tempD.split(':');
 	var departType = tempDepart[0];
 	var depart = tempDepart[1];
-	console.log("id Depart : " + depart);
+	console.log("id Depart ::  " + depart);
+	
 
 	// Parse the arrive data
 	var tempA = req.body.arrive;
 	var tempArrive = tempA.split(':');
 	var arriveType = tempArrive[0];
 	var arrive = tempArrive[1];
+
+	console.log("id arrive :: " + arrive);
 	
 	// Parse the rest
 	var bus = req.body.bus;
@@ -274,6 +277,8 @@ app.post('/test/testgraphe', function(req, res){
 	else if(departType == 'Metro'){
 		departTable = 'test.MetroStops';
 		departColumns = 'MetroStop_id';
+		depart = "\'" + depart + "\'";
+
 	} else if(departType == 'Train'){
 		departTable = 'test.TerStops';
 		departColumns = 'Stop_id';
@@ -291,6 +296,8 @@ app.post('/test/testgraphe', function(req, res){
 	else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
 		arriveColumns = 'MetroStop_id';
+		arrive = "\'" + arrive + "\'";
+
 	} else if(arriveType == 'Train'){
 		arriveTable = 'test.TerStops';
 		arriveColumns = 'Stop_id';
@@ -487,23 +494,27 @@ app.post('/android/data/getroutes', function(req, res){
 	if(departType == 'Bus'){
 		departTable = 'test.BusStops';
 		departColumns = 'Stop_id';
+		idDepart = "\'" + idDepart + "\'";
 	} else if(departType == 'Bike'){
 		departTable = 'test.BikeStops';
 		departColumns = 'BikeStop_id';
 	} else if(departType == 'Metro'){
 		departTable = 'test.MetroStops';
 		departColumns = 'MetroStop_id';
+		idDepart = "\'" + idDepart + "\'";
 	}
 
 	if(arriveType == 'Bus'){
 		arriveTable = 'test.BusStops';
 		arriveColumns = 'Stop_id';
+		idArrive = "\'" + idArrive + "\'";
 	} else if(arriveType == 'Bike'){
 		arriveTable = 'test.BikeStops';
 		arriveColumns = 'BikeStop_id';
 	} else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
 		arriveColumns = 'MetroStop_id';
+		idArrive = "\'" + idDepart + "\'";
 	}
 
 	// Once we have the parameters, We get nodes Id from the sql db
