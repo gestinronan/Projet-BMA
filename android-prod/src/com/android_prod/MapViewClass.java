@@ -111,19 +111,21 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         @Override
         public void onClick(View v) {
 
-            // Close the sliding drawer
-            slidingMenu.close();
-            
+           
             //sent information
             
-            Intent sent=new Intent();
+            Intent sent=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
             sent.putExtra("Dep", "Bike:"+bikeList.get("PONT DE STRASBOURG"));
             sent.putExtra("Arr", "Bike:"+bikeList.get("REPUBLIQUE"));
             sent.putExtra("bus", true);
             sent.putExtra("bike", true);
             sent.putExtra("metro", true);
-            startService(sent);
-
+           startService(sent);
+            
+          
+            
+         // Close the sliding drawer
+            slidingMenu.close();
        
         }
     };

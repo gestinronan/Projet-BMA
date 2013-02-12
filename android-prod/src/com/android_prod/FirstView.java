@@ -28,6 +28,7 @@ public class FirstView extends Activity {
 
 
         Intent intent = new Intent(FirstView.this, HttpRequestClass.class);
+        intent.setAction(HttpRequestClass.BROADCAST_ACTION);
        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
         

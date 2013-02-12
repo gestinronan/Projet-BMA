@@ -33,8 +33,9 @@ public class TrajetServerRequest extends IntentService {
 		
 	}
 
-	@Override
 	protected void onHandleIntent(Intent intent) {
+		
+		Log.i("OPEN SERVICE", "SERVICE2");
 		
 	    /** *** post data *** */
 // First we create the variable for the call
