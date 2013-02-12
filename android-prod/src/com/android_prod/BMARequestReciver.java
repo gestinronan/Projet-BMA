@@ -33,8 +33,13 @@ public  class BMARequestReciver extends BroadcastReceiver {
 
 			public void onReceive(Context context, Intent intent) {
 				
-				Log.d("BACK DATA", "TEST ");
-			
+			// because when you reboot data going speedest than the firest download
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			      MapViewClass. majData(intent.getStringExtra("bikeData"),intent.getStringExtra("busData"),intent.getStringExtra("metroData"),intent.getStringExtra("borneData"),intent.getStringExtra("trainData"));
 				
 						
