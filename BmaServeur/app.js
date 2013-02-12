@@ -472,6 +472,10 @@ app.post('/android/data/getroutes', function(req, res){
 	var arriveType = tempArrive[0];	// Get the transport type (bike, bus ...)
 	var idDepart = tempDepart[1]; 	// Get the ID 
 	var idArrive = tempArrive[1]; 	// Get the ID
+    
+    // DEBUG
+    console.log("depart :: " + idDepart);
+    console.log("arrive :: " + idArrive);
 
 	// Declare variable for the sql table to query
 	var departTable = null;
@@ -484,10 +488,10 @@ app.post('/android/data/getroutes', function(req, res){
 		departTable = 'test.BusStops';
 		departColumns = 'Stop_id';
 	} else if(departType == 'Bike'){
-		departType = 'test.BikeStops';
+		departTable = 'test.BikeStops';
 		departColumns = 'BikeStop_id';
 	} else if(departType == 'Metro'){
-		departType = 'test.MetroStops';
+		departTable = 'test.MetroStops';
 		departColumns = 'MetroStop_id';
 	}
 
@@ -507,7 +511,7 @@ app.post('/android/data/getroutes', function(req, res){
 
 		// Case there is an error getting the node ID
 		if(err || !result){
-			console.log('An error Occured getting the sql data');
+			console.log('An error Occured getting the sql data :: ' + err);
 			
 			// Report the error to the app
 			res.send('{data: error while getting sql data}');
