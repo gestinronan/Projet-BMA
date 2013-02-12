@@ -38,12 +38,14 @@ public class HttpRequestClass extends IntentService {
     public String  dataBike;    // dataBike;
     public String  dataBus;    // dataBus;
     public String  dataMetro;    // datametro;
-    public String  dataBorne;    // datametro;
+    public String  dataBorne;    // databorne;
+    public String  dataTrain;    // datatrain;
 
 	 String FILENAME_BIKE = "bike.json";
 	 String FILENAME_BUS = "bus.json";
 	 String FILENAME_METRO = "metro.json";
 	 String FILENAME_BORNE = "borne.json";
+	 String FILENAME_TRAIN = "train.json";
     
     FileOutputStream fos;
     FileInputStream fis;
@@ -84,6 +86,8 @@ protected void onHandleIntent(Intent intent) {
 		dataBorne =callServer("http://148.60.11.208:3000/android/data/borneelec",FILENAME_BORNE,50);
 		
 		
+		dataTrain =callServer("http://148.60.11.208:3000/android/data/train",FILENAME_TRAIN,50);
+		
 		
 		Intent BrIntent= new Intent(BROADCAST_ACTION);
         // Then put data in the intent
@@ -91,6 +95,7 @@ protected void onHandleIntent(Intent intent) {
 		BrIntent.putExtra("metroData", dataMetro);
 		BrIntent.putExtra("busData", dataBus);
 		BrIntent.putExtra("borneData", dataBorne);
+		BrIntent.putExtra("trainData", dataTrain);
         
 		if(fristExe)
 		{
