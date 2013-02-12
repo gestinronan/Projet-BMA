@@ -53,11 +53,11 @@ function getDataForATripId(trips){
      */
 
      connection.query("SELECT test.BusTrips.Trip_id, test.BusStop_times.*, test.BusTrips.Trip_headsign, test.BusStops.Stop_id, test.BusStops.NodeId " +
-       "FROM test.BusStops as busstops, test.BusTrips as bustrips, test.BusStop_times as busstop_times " +
-       "WHERE bustrips.Trip_id = \'" + trips[i].Trip_id + "\' " +
-       "AND bustrips.Trip_id = busstop_times.Trip_id " +
-       "AND busstop_times.Stop_id = busstops.Stop_id " +
-       "ORDER BY busStop_times.Stop_sequence ASC", function(err, result){
+       "FROM test.BusStops, test.BusTrips, test.BusStop_times " +
+       "WHERE BusTrips.Trip_id = \'" + trips[i].Trip_id + "\' " +
+       "AND BusTrips.Trip_id = BusStop_times.Trip_id " +
+       "AND BusStop_times.Stop_id = BusStops.Stop_id " +
+       "ORDER BY BusStop_times.Stop_sequence ASC", function(err, result){
 
                       // Case of error getting the data concerning the trip_id
                       if(err || !result){
