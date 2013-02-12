@@ -1,5 +1,7 @@
 package com.android_prod;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,7 +9,11 @@ import org.json.JSONObject;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+
+
 
 
 /**
@@ -15,45 +21,25 @@ import android.util.Log;
  * @author ronan
  *
  */
-public class BMARequestReciver extends BroadcastReceiver {
+public  class BMARequestReciver extends BroadcastReceiver {
+
+
+
+			public BMARequestReciver()
+			{
+				
+			}
 	
-	
-	private String Bike;
-	private String Bus;
-	private String Metro;
-	private String Borne;
-	
-	public BMARequestReciver()
-	{
-		
-	}
-	
+
 			public void onReceive(Context context, Intent intent) {
 				
 				Log.d("BACK DATA", "TEST ");
 			
-			       
-			      //MapViewClass. majData(intent.getStringExtra("bikeData"),intent.getStringExtra("busData"),intent.getStringExtra("metroData"),intent.getStringExtra("borneData"));
-						Bike=intent.getStringExtra("bikeData");
-						Bus=intent.getStringExtra("busData");
-						Metro=intent.getStringExtra("metroData");
-						Borne=intent.getStringExtra("borneData");
-			}
-			
-			public String getBus(){
-				return Bus;
-			}
-			public String getBike(){
-				return Bike;
-			}
-			public String getMetro(){
-				return Metro;
-			}
-			public String getBorne(){
-				return Borne;
+			      MapViewClass. majData(intent.getStringExtra("bikeData"),intent.getStringExtra("busData"),intent.getStringExtra("metroData"),intent.getStringExtra("borneData"),intent.getStringExtra("trainData"));
+				
+						
 			}
 
-		
 	    
 
 }
