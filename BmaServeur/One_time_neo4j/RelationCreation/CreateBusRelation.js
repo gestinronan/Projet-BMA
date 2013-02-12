@@ -52,8 +52,8 @@ function getDataForATripId(trips){
      ORDER BY busStop_times.Stop_sequence ASC;
      */
 
-     connection.query("SELECT BusTrips.Trip_id, BusStop_times.*, BusTrips.Trip_headsign, BusStops.Stop_id, BusStops.NodeId " +
-       "FROM BusStops as busstops, BusTrips as bustrips, BusStop_times as busstop_times " +
+     connection.query("SELECT test.BusTrips.Trip_id, test.BusStop_times.*, test.BusTrips.Trip_headsign, test.BusStops.Stop_id, test.BusStops.NodeId " +
+       "FROM test.BusStops as busstops, test.BusTrips as bustrips, test.BusStop_times as busstop_times " +
        "WHERE bustrips.Trip_id = \'" + trips[i].Trip_id + "\' " +
        "AND bustrips.Trip_id = busstop_times.Trip_id " +
        "AND busstop_times.Stop_id = busstops.Stop_id " +
@@ -62,6 +62,7 @@ function getDataForATripId(trips){
                       // Case of error getting the data concerning the trip_id
                       if(err || !result){
                         console.log('An error occured getting the data from the trip_id :: ' + trips[i].Trip_id + ' :: ' + err);
+                        throw err;
                       } else {
                         //console.log(result);
                         parseDataOfTrip(result); // Call the function which parse the data

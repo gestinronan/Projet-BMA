@@ -401,7 +401,7 @@ app.get('/android/data/bike', function(req, res){
 app.get('/android/data/bus', function(req, res){
 	
 	// Get the data from the BusStops table
-	connection.query('SELECT Stop_name, Stop_lat, Stop_lon, Line_short_name FROM BusStops', function(err, result){
+	connection.query('SELECT Stop_id, Stop_name, Stop_lat, Stop_lon, Line_short_name FROM BusStops', function(err, result){
 		
 		var jString = JSON.stringify(result);
 		
