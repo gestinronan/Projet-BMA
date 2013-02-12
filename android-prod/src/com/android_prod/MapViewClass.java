@@ -111,9 +111,21 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         @Override
         public void onClick(View v) {
 
-            // Close the sliding drawer
+           
+            //sent information
+            
+            Intent sent=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
+            sent.putExtra("Dep", "Bike:"+bikeList.get("PONT DE STRASBOURG"));
+            sent.putExtra("Arr", "Bike:"+bikeList.get("REPUBLIQUE"));
+            sent.putExtra("bus", true);
+            sent.putExtra("bike", true);
+            sent.putExtra("metro", true);
+           startService(sent);
+            
+          
+            
+         // Close the sliding drawer
             slidingMenu.close();
-
        
         }
     };
@@ -175,7 +187,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private static ArrayList<OverlayItem>           bikeOverlayItemArray;
     private static  ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
     private static  Drawable                         bikeMarker;
-    private static  Map<String, Double> bikeList=new HashMap<String, Double>();
+    private static  Map<String, Integer> bikeList=new HashMap<String, Integer>();
     
     private ArrayList<OverlayItem>           busOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> busItemizedIconOverlay;
@@ -270,10 +282,10 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         handle      = (Button) findViewById(R.id.slideButton);
         slidingMenu = (SlidingDrawer) findViewById(R.id.drawer);
         locateMe    = (ImageButton) findViewById(R.id.locateMe);
-        valider     = (Button) findViewById(R.id.valider);
+       valider     = (Button) findViewById(R.id.valider);
         // Get a reference to the AutoCompleteTextView in the layout AutoCompleteTextView
        dep= (AutoCompleteTextView) findViewById(R.id.dep);
-        Arr= (AutoCompleteTextView) findViewById(R.id.arrival);
+       Arr= (AutoCompleteTextView) findViewById(R.id.arrival);
   
         
         
@@ -549,8 +561,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             			bikeAvailable = null,
                        slotAvailable = null;
             double     lng           = 0,
-                      lat           = 0,
-            		id	=0;
+                      lat           = 0;
+            	int	id	=0;
          
             // Initiate the variable we need
            
@@ -562,7 +574,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                 name          = tmpStation.getString("name");
                 bikeAvailable = tmpStation.getString("bikesavailable");
                 slotAvailable = tmpStation.getString("slotsavailable");
-                id=tmpStation.getDouble("number");
+                id=tmpStation.getInt("number");
                 
                 bikeList.put(name, id);
                 
@@ -809,13 +821,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
          adapterDep.setDropDownViewResource(R.id.content);
          dep.setThreshold(1);
          dep.setAdapter(adapterDep);
-         
+        
          ArrayAdapter<String> adapterArr = 
                  new ArrayAdapter<String>(mcontext,R.id.content,stop );
          adapterArr.setDropDownViewResource(R.id.content);
          Arr.setThreshold(1);
          Arr.setAdapter(adapterArr);
-
 
          
        
