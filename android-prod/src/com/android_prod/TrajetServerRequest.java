@@ -39,7 +39,7 @@ public class TrajetServerRequest extends IntentService {
 
 	protected void onHandleIntent(Intent intent) {
 		
-		Log.i("OPEN SERVICE", "SERVICE2");
+
 		
 	    /** *** post data *** */
 // First we create the variable for the call
@@ -50,10 +50,7 @@ public class TrajetServerRequest extends IntentService {
 	        HttpClient httpclient = new DefaultHttpClient();
 	        HttpPost request = new HttpPost();
 	        request.setURI(new URI("http://148.60.11.208:3000/android/data/getroutes"));
-	      /**  HttpParams params = new BasicHttpParams();
-	        params.setParameter("dep", intent.getStringExtra("Dep"));
-	        params.setParameter("Arr", intent.getStringExtra("Arr"));
-	        request.setParams(params);*/
+	        // list off parametter	   
 	        ArrayList<NameValuePair> param= new ArrayList<NameValuePair>();	
 	        param.add(new BasicNameValuePair("depart", intent.getStringExtra("Dep")));
 	        param.add(new BasicNameValuePair("arrive", intent.getStringExtra("Arr")));
