@@ -238,7 +238,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     
     final CharSequence[] itemsVelo = {"biker", "have fun", "be cool"};
     private boolean[] statesVelo = {false, false, true};
-    public static boolean lanuch= false;
+
     /** ************************************************* */
 
     /** ******* On create Mehtod First launch *********** */
