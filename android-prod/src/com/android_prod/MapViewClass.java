@@ -244,7 +244,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     /** ******* On create Mehtod First launch *********** */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lanuch=true;
+ 
          broadcastReceiver = new BMARequestReciver();
          
        /** {
