@@ -26,6 +26,7 @@
 	Dans le cadre, d'un cour d'innovation a l'ESIR nous avons r\'efl\'echis a ce que serai la mobilit\'e dans les ann\'ee \'a et il en est resortie diff\'erentes \'etudes dont, la combinaison de plusieurs transports. Cela serait un moyen fiable de fid\'eliser les gens \'a l'utilisations des transports en communs. Mais cette invitation au changement ne peut se faire sans garde fou et principalement  la mise en oeuvre d'outils pour aider les gens \'a se retrouver dans cette nouvelle facon de se mouvoir. Dans un m\^eme temps, a eu lieu l'\'expention grandissante du SmartPhone, outils hightech  casimment incontournable de nos jours. Il en est donc ressortit que cet outil est l'un des meilleurs support pour cette l'incitation au changement. Encore plus lorsque l'on connais l'urgence de celle ci.
 	% Description du projet BMA
 	Le projet BMA regroupe un grand nombre d'acteur de niveau national. Le but du projet est de trouver des moyens de transport moins couteux et moins \'emettrice en gaz \`a effet de serre. 
+	Leurs but est de faire \'evolu\'e la facon avec laquelle les gens voyage et ce d\'eplace que ce soit dans leurs milieu professionnel ou personnel.
 	
 	% Description de cybel
 	\subsection{Cybel France}
@@ -105,9 +106,22 @@ Pour la r\'ealisation de ce projet, nous avons choisi d'utiliser plusieurs techn
 	Pour cr\'eer ce graphe, nous avons utilis\'e la base de donn\'ee Neo4j. Cette base de donn\'e permet de cr\'eer et d'enregistrer les noeuds ainsi que les relations entre les noeuds.
 	
 	L'int\'eraction entre la base de donn\'ee Neo4j et le serveur NodeJs se fait gr\^ace \'a la librairie 'node-neo4j'.  
-	
+\newpage	
 	% Section concernant l'application android
 	\subsection{L'aplication Android}
+	
+	Pour ce projet nous somme partie sur une application android, pour sa simplicit\'e d'approche. Mais aussi car c'est le système d'exploitation mobile le plus r\'ependu au monde a l'heur actuel.
+	% Description de la vue principal
+	\subsubsubsection{une acitvit\'e unique}
+	
+	Pour une \èrgonomie unique nous avons d\'ecider de mettre en place une acitivité unique avec l'affichage de la carte directement pour l'utilisateur. avec certaine donne de mobilit\'e pr\'e affichier, tel que les v\'elo, train, metro... avec la possibilité dans le menu  de pr\'ef\'eance d'ajouter les bus ou de réglé le niveau de l'utilisateur en v\'elo..
+	
+	Pour les la partie de gestion des route nous avons mis en place ce que l'on appel un slidingdrawer ( une vu qui ce glisse sur la carte). elle a pour but de r\'ecuperer les information de l'utilisateur pour sont trajet. Elle proposera une aide a la complétion des information ( nom de arret) et le choix des différent moyen de transport pour les trajet.
+ 	
+	% Description des appel au serveur
+	\subsubsubsection{Les appels au serveur}
+	
+	Dans ce projet base sur une communicaiton client serveur,  l'une des principal difficulté \'etait de faire le lien entre c'est deux entit\'ees. Pour cela il a été décider de mettre en place des tache asynchrone pour permettre a l'application de vivre et de faire en même temps la mise a jour des différente donnée pour l'utilisateur. nous avons utiliser pour cela les Intentservices qui permette de communique des donné via les intent  entre les taches asynchrone et les vu ici la vu principal est la map.
 	
 	% Section concernant le site web
 	\subsection{Le Site Web}
