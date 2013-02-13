@@ -697,7 +697,10 @@ function readRelationship(res, nodes, relations){
 				// If it's done, we call the next function which will read all the nodes
 				if(x == relations.length - 1){
 					
-					readNode(res, nodes, relations);
+					//readNode(res, nodes, relations);
+					// Create the JSON to send
+					var json = {relations: relationParameter};
+					res.send(json);
 				}
 				x ++ ;
 			}

@@ -141,3 +141,13 @@ function parseDataOfTrip(data){
 }
 }
 
+
+/**
+* Insert relationship using batch query
+*/
+function insertWithBatchQuery(start, end, type, time, trip_id, trip_headsign){
+  db.batchQuery([], function(err, result){
+
+  }); 
+}
+

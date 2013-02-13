@@ -45,6 +45,7 @@ db.cypherQuery("START d=node(47), e=node(98) " +
 			   	// Else Display the data into the console
 			   	else {
 
+			   		//console.log(result.data);
 			   		// Read the data
 			   		nodes = result.data[0].nodes;
 			   		relations = result.data[0].relationships;
@@ -81,9 +82,13 @@ function readRelationship(relations){
 				
 				relationParameter[x] = result; // Store the data
 				// If it's done, we call the next function which will read all the nodes
+				
+
+
 				if(x == relations.length -1){
-					
-					readNode(nodes);
+					for(j=0; j<relationParameter.length; j++)	
+						console.log(relationParameter[j]);
+					//readNode(nodes);
 				}
 				x ++ ;
 			}
