@@ -39,8 +39,6 @@ public class TrajetServerRequest extends IntentService {
 
 	protected void onHandleIntent(Intent intent) {
 		
-
-		
 	    /** *** post data *** */
 // First we create the variable for the call
 		InputStream is         = null;
@@ -54,6 +52,10 @@ public class TrajetServerRequest extends IntentService {
 	        ArrayList<NameValuePair> param= new ArrayList<NameValuePair>();	
 	        param.add(new BasicNameValuePair("depart", intent.getStringExtra("Dep")));
 	        param.add(new BasicNameValuePair("arrive", intent.getStringExtra("Arr")));
+	        param.add(new BasicNameValuePair("bus", intent.getStringExtra("bus")));
+	        param.add(new BasicNameValuePair("bike", intent.getStringExtra("bike")));
+	        param.add(new BasicNameValuePair("metro", intent.getStringExtra("metro")));
+	        param.add(new BasicNameValuePair("train", intent.getStringExtra("train")));
 	        request.setEntity(new UrlEncodedFormEntity(param));
 	        HttpResponse response = httpclient.execute(request);
 	        HttpEntity   entity   = response.getEntity();

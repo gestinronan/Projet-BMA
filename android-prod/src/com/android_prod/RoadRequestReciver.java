@@ -17,7 +17,7 @@ public class RoadRequestReciver extends BroadcastReceiver {
 	public void onReceive(Context mcontext, Intent road) {
 		
 
-			Log.i("Debeug", road.getStringExtra("road"));
+			
 		
 	}
 

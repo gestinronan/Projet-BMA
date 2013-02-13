@@ -123,11 +123,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             sent.putExtra("Dep", stopList.get("PONT DE STRASBOURG").getName()+":"+stopList.get("PONT DE STRASBOURG").getValue());
             sent.putExtra("Arr", stopList.get("REPUBLIQUE").getName()+":"+stopList.get("REPUBLIQUE").getValue());
            // get information check information
-            sent.putExtra("bus", busSlid.isChecked());
-            sent.putExtra("bike", bikeSlid.isChecked());
-            sent.putExtra("metro", metroSlid.isChecked());
-            sent.putExtra("train", trainSlid.isChecked());
-           startService(sent);
+            sent.putExtra("bus", ""+busSlid.isChecked());
+            sent.putExtra("bike", ""+bikeSlid.isChecked());
+            sent.putExtra("metro", ""+metroSlid.isChecked());
+            sent.putExtra("train", ""+trainSlid.isChecked());
+            startService(sent);
             
           
             
@@ -790,7 +790,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     public static  void majData(String bike, String bus, String metro, String borne,  String train)
     {
     
-    	Log.d("MAJ INFO","new information");
     	
     	 // And the String into Json
         try {
@@ -839,8 +838,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
          stop=new String[stopList.size()];
          stopList.keySet().toArray(stop);
          
-         for(int i=0;i<stop.length;i++)
-         Log.i("Test","stop"+stop[i]);
+        // for(int i=0;i<stop.length;i++)
+        // Log.i("Test","stop"+stop[i]);
          // Create the adapter and set it to the AutoCompleteTextView 
          ArrayAdapter<String> adapterDep = 
                  new ArrayAdapter<String>(mcontext,R.id.content,stop );
