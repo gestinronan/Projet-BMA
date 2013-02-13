@@ -36,7 +36,7 @@ public  class BMARequestReciver extends BroadcastReceiver {
 				
 			// because when you reboot data going speedest than the firest download
 				try {
-					Thread.sleep(10);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

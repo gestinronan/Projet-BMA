@@ -1,31 +1,39 @@
 package working;
 
+
+/**
+ * use to save 2 type off data in  a Map
+ * @author ronan GESTIN
+ *
+ * @param <T>
+ * @param <H>
+ */
 public class PersonnalPairValue<T,H> {
 	
-	T point;
-	H pair;
+	T type;
+	H id;
 	
-	public PersonnalPairValue(T po, H pa){
-		point=po;
-		pair=pa;
+	public PersonnalPairValue(T tp, H id){
+		type=tp;
+		this.id=id;
 		
 	}
 	
-	public T getPoint(){
-		return point;
+	public T getType(){
+		return type;
 	}
 	
-	public H getPair()
+	public H getId()
 	{
-		return pair;
+		return id;
 	}
 
 	
-	public void setPoint(T point){
-		this.point=point;
+	public void setType(T type){
+		this.type=type;
 	}
 	
-	public void setPair(H pair){
-		this.pair=pair;
+	public void setId(H id){
+		this.id=id;
 	}
 }
