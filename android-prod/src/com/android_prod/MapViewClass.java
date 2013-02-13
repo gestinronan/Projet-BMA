@@ -120,8 +120,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             //sent information
             
             Intent sent=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
-            sent.putExtra("Dep", stopList.get("PONT DE STRASBOURG").getName()+":"+stopList.get("PONT DE STRASBOURG").getValue());
-            sent.putExtra("Arr", stopList.get("REPUBLIQUE").getName()+":"+stopList.get("REPUBLIQUE").getValue());
+            sent.putExtra("Dep", stopList.get(dep.getText().toString()).getName()+":"+stopList.get(dep.getText().toString()).getValue());
+            sent.putExtra("Arr", stopList.get(Arr.getText().toString()).getName()+":"+stopList.get(Arr.getText().toString()).getValue());
            // get information check information
             sent.putExtra("bus", ""+busSlid.isChecked());
             sent.putExtra("bike", ""+bikeSlid.isChecked());
@@ -842,17 +842,17 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         // Log.i("Test","stop"+stop[i]);
          // Create the adapter and set it to the AutoCompleteTextView 
          ArrayAdapter<String> adapterDep = 
-                 new ArrayAdapter<String>(mcontext,R.id.content,stop );
+                new ArrayAdapter<String>(mcontext,R.id.content,stop );
          
          adapterDep.setDropDownViewResource(R.id.content);
          dep.setThreshold(1);
-         dep.setAdapter(adapterDep);
+        // dep.setAdapter(adapterDep);
         
          ArrayAdapter<String> adapterArr = 
                  new ArrayAdapter<String>(mcontext,R.id.content,stop );
          adapterArr.setDropDownViewResource(R.id.content);
          Arr.setThreshold(1);
-         Arr.setAdapter(adapterArr);
+       //  Arr.setAdapter(adapterArr);
 
          
        

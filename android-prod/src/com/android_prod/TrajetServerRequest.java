@@ -42,6 +42,8 @@ public class TrajetServerRequest extends IntentService {
 	    /** *** post data *** */
 // First we create the variable for the call
 		InputStream is         = null;
+		Log.i("DEBEUG",intent.getStringExtra("Dep"));
+		Log.i("DEBEUG",intent.getStringExtra("Arr"));
 
 	 // First post
 	    try {
