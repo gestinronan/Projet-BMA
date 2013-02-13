@@ -1,4 +1,4 @@
-package com.android_prod;
+package services;
 
 //~--- non-JDK imports --------------------------------------------------------
 
@@ -19,6 +19,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.android_prod.MapViewClass;
 
 //~--- JDK imports ------------------------------------------------------------
 

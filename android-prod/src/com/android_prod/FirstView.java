@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import services.HttpRequestClass;
+
 import android.app.Activity;
 
 import android.content.Context;

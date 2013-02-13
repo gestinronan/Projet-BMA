@@ -2,6 +2,7 @@ package com.android_prod;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import Reciver.BMARequestReciver;
 import android.app.Activity;
 import android.app.AlertDialog;
 
@@ -57,6 +58,10 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.OverlayItem;
+
+import services.HttpRequestClass;
+import services.TrajetServerRequest;
+import working.PersonnalPairValue;
 
 
 //~--- JDK imports ------------------------------------------------------------
@@ -120,8 +125,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             //sent information
             
             Intent sent=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
-            sent.putExtra("Dep", stopList.get(dep.getText().toString()).getName()+":"+stopList.get(dep.getText().toString()).getValue());
-            sent.putExtra("Arr", stopList.get(Arr.getText().toString()).getName()+":"+stopList.get(Arr.getText().toString()).getValue());
+            sent.putExtra("Dep", stopList.get(dep.getText().toString()).getPair().getName()+":"+stopList.get(dep.getText().toString()).getPair().getValue());
+            sent.putExtra("Arr", stopList.get(Arr.getText().toString()).getPair().getName()+":"+stopList.get(Arr.getText().toString()).getPair().getValue());
            // get information check information
             sent.putExtra("bus", ""+busSlid.isChecked());
             sent.putExtra("bike", ""+bikeSlid.isChecked());
@@ -195,7 +200,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private static  ItemizedIconOverlay<OverlayItem> bikeItemizedIconOverlay;
     private static  Drawable                         bikeMarker;
     // to have <Name, Type:id>
-    private static  Map<String, NameValuePair> stopList=new HashMap<String, NameValuePair>();
+    private static  Map<String,PersonnalPairValue<GeoPoint, NameValuePair> > stopList=new HashMap<String,PersonnalPairValue<GeoPoint, NameValuePair>>();
     
     private ArrayList<OverlayItem>           busOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> busItemizedIconOverlay;
@@ -594,7 +599,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                 slotAvailable = tmpStation.getString("slotsavailable");
                 id=tmpStation.getString("number");
                 
-                stopList.put(name, new BasicNameValuePair("Bike",id));
+                stopList.put(name, new PersonnalPairValue<GeoPoint, NameValuePair>(new GeoPoint(lat,lng), new BasicNameValuePair("Bike",id)));
                 
                 // Create a overlay for a special position
                  marker = new OverlayItem(name, "Velo Dispo :"+bikeAvailable+"\nEmplacement Dispo :"+slotAvailable, new GeoPoint(lat, lng));
@@ -688,7 +693,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                 id = tmpStation.getString(transportName+"Stop_id");
                 
                 //complet stop List
-                stopList.put(name, new BasicNameValuePair(type,id));
+                stopList.put(name, new PersonnalPairValue<GeoPoint, NameValuePair>(new GeoPoint(lat,lng), new BasicNameValuePair(type,id)));
                 // Create a overlay for a special position
                 marker = new OverlayItem(name,name, new GeoPoint(lat, lng));
                  // Add the graphics to the marker
