@@ -2,7 +2,6 @@ package com.android_prod;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import Reciver.BMARequestReciver;
 import android.app.Activity;
 import android.app.AlertDialog;
 
@@ -864,8 +863,49 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     }
 
     /** ************************************************* */
-
+   private static ArrayList<GeoPoint>  GeoRoad = new ArrayList<GeoPoint>();
     
+    public static void drawRoad(JSONArray roadArray){
+    	
+   
+
+	try {
+		
+
+	JSONArray relation;
+
+		relation=roadArray.getJSONArray(1);
+		JSONObject tmpRela;
+		
+		   for (int i = 0; i < relation.length(); i++) {
+			   tmpRela=relation.getJSONObject(i);
+			   
+			//  GeoRoad.add(stopList. new GeoPoint(tmpRela.getString("start_node_id")));
+			   
+			   
+		   }
+	
+		
+	
+    /** GeoPoint gPt0 = new GeoPoint(51500000, -150000);
+       // GeoPoint gPt1 = new GeoPoint(gPt0.getLatitudeE6()+ mIncr, gPt0.getLongitudeE6());
+        //GeoPoint gPt2 = new GeoPoint(gPt0.getLatitudeE6()+ mIncr, gPt0.getLongitudeE6() + mIncr);
+        //GeoPoint gPt3 = new GeoPoint(gPt0.getLatitudeE6(), gPt0.getLongitudeE6() + mIncr);
+       // mMapController.setCenter(gPt0);
+        PathOverlay myPath = new PathOverlay(Color.RED, this);
+        myPath.addPoint(gPt0);
+        myPath.addPoint(gPt1);
+        myPath.addPoint(gPt2);
+        myPath.addPoint(gPt3);
+        myPath.addPoint(gPt0);
+       // mMapView.getOverlays().add(myPath);*/
+		
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+    }
    
 }
 

@@ -1,4 +1,4 @@
-package Reciver;
+package com.android_prod;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android_prod.MapViewClass;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
