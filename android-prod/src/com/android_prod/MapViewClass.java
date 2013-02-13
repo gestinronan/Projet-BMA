@@ -122,10 +122,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             Intent sent=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
             sent.putExtra("Dep", stopList.get("PONT DE STRASBOURG").getName()+":"+stopList.get("PONT DE STRASBOURG").getValue());
             sent.putExtra("Arr", stopList.get("REPUBLIQUE").getName()+":"+stopList.get("REPUBLIQUE").getValue());
-           //TODO: get information
-            // sent.putExtra("bus", busSlid.);
-            sent.putExtra("bike", true);
-            sent.putExtra("metro", true);
+           // get information check information
+            sent.putExtra("bus", busSlid.isChecked());
+            sent.putExtra("bike", bikeSlid.isChecked());
+            sent.putExtra("metro", metroSlid.isChecked());
+            sent.putExtra("train", trainSlid.isChecked());
            startService(sent);
             
           
@@ -231,10 +232,13 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     
     final CharSequence[] itemLayers = {"Bus", "metro", "velo"};
     private boolean[] statesLayers = {false, true, true};
-
+    // informatuin form sliding drawer
     private static AutoCompleteTextView dep;
     private static AutoCompleteTextView Arr;
     private Switch busSlid;
+    private Switch bikeSlid;
+    private Switch metroSlid;
+    private Switch trainSlid;
     static BMARequestReciver broadcastReceiver;
     
  // for bike level
@@ -298,6 +302,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
        dep= (AutoCompleteTextView) findViewById(R.id.dep);
        Arr= (AutoCompleteTextView) findViewById(R.id.arrival);
        busSlid= (Switch) findViewById(R.id.switch1);
+       bikeSlid= (Switch) findViewById(R.id.switch2);
+       metroSlid= (Switch) findViewById(R.id.switch3);
+       trainSlid= (Switch) findViewById(R.id.switch4);
         
         
         // Define the marker
