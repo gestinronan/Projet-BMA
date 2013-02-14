@@ -33,9 +33,10 @@ public class RoadRequestReciver extends BroadcastReceiver {
 			Log.i("RESULT", road.getStringExtra("road"));
 			
 			 try {
-				roadArray = new JSONArray(road.getStringExtra("road"));
+				 JSONObject test = new JSONObject(road.getStringExtra("road"));
+				roadArray = test.getJSONArray("relations");
 				
-				//MapViewClass.drawRoad(roadArray);
+				MapViewClass.drawRoad(roadArray);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

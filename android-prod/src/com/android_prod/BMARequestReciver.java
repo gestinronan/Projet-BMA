@@ -24,7 +24,13 @@ import android.util.Log;
  */
 public  class BMARequestReciver extends BroadcastReceiver {
 
-
+private String bike;
+private String bus;
+private String Train;
+private String Borne;
+private String metro;
+private static boolean waitMap= false;
+private static boolean internaGarde=false;
 
 			public BMARequestReciver()
 			{
@@ -34,18 +40,38 @@ public  class BMARequestReciver extends BroadcastReceiver {
 
 			public void onReceive(Context context, Intent intent) {
 				
-			// because when you reboot data going speedest than the firest download
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			      MapViewClass. majData(intent.getStringExtra("bikeData"),intent.getStringExtra("busData"),intent.getStringExtra("metroData"),intent.getStringExtra("borneData"),intent.getStringExtra("trainData"));
+			
 				
+			     bike=intent.getStringExtra("bikeData");
+			     bus=intent.getStringExtra("busData");
+			     metro=intent.getStringExtra("metroData");
+			    Borne= intent.getStringExtra("borneData");
+			    Train= intent.getStringExtra("trainData");
+			    internaGarde=true;
+			    Log.i("DATA READY", "END WAIT DATA");
+			    display();
 						
 			}
 
+			// When map is ready
+			public void isReady(){
+				
+			Log.i("MAP READY", "END WAIT MAP");
+			waitMap=true;
+			display();
+			}
+			
+			private void display()
+			{
+				
+				Log.i(" READY", "D"+internaGarde+"M"+waitMap);
+					// to garde to be sure allez data can be acces
+				if(waitMap && internaGarde){
+					Log.i("READY", "NICE");
+				MapViewClass.majData(bike, bus, metro, Borne, Train);
+				internaGarde=false;
+				}
+			}
 	    
 
 }

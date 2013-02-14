@@ -361,7 +361,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         
         
 	
-	        	
+        broadcastReceiver.isReady();
 
 	        
         
@@ -875,16 +875,16 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 	try {
 		
 
-	JSONArray relation;
-
-		relation=roadArray.getJSONArray(1);
+	
 		JSONObject tmpRela;
 		
-		   for (int i = 0; i < relation.length(); i++) {
-			   tmpRela=relation.getJSONObject(i);
+		   for (int i = 0; i < roadArray.length(); i++) {
+			   tmpRela=roadArray.getJSONObject(i);
 			   
-			 GeoRoad.add(roadtrip.get(tmpRela.getString("start_node_id")));
-			 GeoRoad.add(roadtrip.get(tmpRela.getString("end_node_id")));
+			   Log.i("NODEStart"+i, tmpRela.getString("Start_Stop_id"));
+			   Log.i("End_node"+i,tmpRela.getString("End_Stop_id"));
+			 GeoRoad.add(roadtrip.get(tmpRela.getString("Start_Stop_id")));
+			 GeoRoad.add(roadtrip.get(tmpRela.getString("End_Stop_id")));
 			   
 			   
 		   }
@@ -896,6 +896,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             myPath.addPoint(GeoRoad.get(i));
       
        mapView.getOverlays().add(myPath);
+       mapView.invalidate();
 		
 	} catch (JSONException e) {
 		// TODO Auto-generated catch block
