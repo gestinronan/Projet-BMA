@@ -30,21 +30,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.android_prod.MapViewClass"
             android:label="@string/title_activity_map_view"
-            
              >
         </activity>
          
        
-        <service
-            android:name="com.android_prod.HttpRequestClass"
-            ></service>
+        <service android:name="services.HttpRequestClass">
+              <intent-filter>
+                <action android:name="com.android_prod.MapViewClass.event" />
+            </intent-filter>
+        </service>
         
-        <receiver android:name="BMARequestReciver" >
+         <service android:name="services.TrajetServerRequest">
+                    <intent-filter>
+                <action android:name="com.android_prod.MapViewClass.sender" />
+            </intent-filter>
+            </service>
+        
+             <receiver android:name="BMARequestReciver">
             <intent-filter>
                 <action android:name="com.android_prod.MapViewClass.event" />
+            </intent-filter>
+        </receiver>
+   
+          <receiver android:name="RoadRequestReciver">
+            <intent-filter>
+                <action android:name="com.android_prod.MapViewClass.sender" />
             </intent-filter>
         </receiver>
             

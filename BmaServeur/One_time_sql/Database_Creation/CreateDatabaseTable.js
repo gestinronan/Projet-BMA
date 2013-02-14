@@ -122,18 +122,13 @@ function(err, result){
 
 // Create the TerStops Table
 
-connection.query('CREATE TABLE TERStops (Stop_id VARCHAR(100),'+
-		 								 'Stop_name VARCHAR(100),' +
-                 						 'Stop_lat VARCHAR(100),' +
-										 'Stop_lon VARCHAR(100),' +
-										 'Stop_code VARCHAR(100),' +
-		          						 'Stop_desc VARCHAR(100),' +
-										 'Zone_id VARCHAR(100),' +
-										 'Stop_url VARCHAR(100),' +
-										 'Location_type VARCHAR(100),' +
-										 'Parent_station VARCHAR(100),' +
-										 'Stop_timezone VARCHAR(100),' +
-										 'Wheelchair_boarding,' +
+connection.query('CREATE TABLE TerStops (Stop_id VARCHAR(100), ' +
+		 								 'Stop_name VARCHAR(100), ' +
+                 						 'Stop_lat VARCHAR(100), ' +
+										 'Stop_lon VARCHAR(100), ' +
+										 'Stop_code VARCHAR(100), ' +
+		          						 'Stop_desc VARCHAR(100), ' +
+                                         'NodeId VARCHAR(45), ' +
 										 'PRIMARY KEY(Stop_id))',
 function(err, result){
     // Case there is an error during the creation

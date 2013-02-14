@@ -3,7 +3,7 @@
 */
 
 // Url use for the post request
-var urlPost = "http://148.60.11.208:3000/testgraphe";
+var urlPost = "http://localhost:3000/test/testgraphe";
 
 // Variable containing the data
 var bus = false;
@@ -54,14 +54,52 @@ function callServer(){
 			// Case of a success call
 			// Display the result div
 			$('#result').show();
-			$('#result').append('<p>' + data + '</p>');
+
+			//<!-- Créer un tableau pour afficher le résultat -->
+
+			var content = "<table border='1' id='table-3'>" +
+						  "<thead>" +
+						  "<th>Depart</th>" +
+						  "<th>Route</th>" + 
+						  "<th>Destination</th>" +
+					      "</thead>" + 
+					      "<tbody>";
+		
+			
+
+			// Display the result
+			for(var i = 0; i<data.nodes.length; i++){
+
+				if(data.nodes.length > i + 1){
+					// Diplay the first node 
+					content += "<tr>";
+
+					// Display a node
+					content += '<td>' + data.nodes[i].data.Name + ' (' + data.nodes[i].data.type + ') </td>';
+
+					// Check if the relationship is present
+					if(data.relations.length > i){
+						var j = i+1;
+						content += '<td>' + data.relations[i].data.time / 60 + 'min (' + data.relations[i].type + ') </td>';
+						content += '<td>' + data.nodes[j].data.Name + ' (' + data.nodes[j].data.type + ') </td> </tr>';
+					}
+				}
+				
+			}
+			content += "</tbody>";
+			content += "</table>";
+
+			$('#result').append(content);
+
 			console.log(data);
+
+
 		},
 		error: function(data){
 			// Case of an error during the post request
 		}
 
-	}) 
+	}); 
 
 
 }

@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import services.HttpRequestClass;
+
 import android.app.Activity;
 
 import android.content.Context;
@@ -28,6 +30,7 @@ public class FirstView extends Activity {
 
 
         Intent intent = new Intent(FirstView.this, HttpRequestClass.class);
+        intent.setAction(HttpRequestClass.BROADCAST_ACTION);
        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
         
