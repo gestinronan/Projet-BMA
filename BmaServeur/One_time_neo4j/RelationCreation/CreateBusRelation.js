@@ -119,11 +119,13 @@ function parseDataOfTrip(data){
      console.log('Time Between :: ' + time);
      console.log('Trip Headsign :: ' + data[j].Trip_headsign);
 
+     var trip = removeCrap(data[j].Trip_headsign);
+
      // Create the relation
      db.insertRelationship(data[j].NodeId, data[j+1].NodeId, 'Bus', {
       time: time,
       trip_id: data[j].Trip_id,
-      trip_headsign: data[j].Trip_headsign
+      //trip_headsign: trip
      }, function(err, result){
 
       // Case of error
@@ -143,11 +145,16 @@ function parseDataOfTrip(data){
 
 
 /**
-* Insert relationship using batch query
 */
-function insertWithBatchQuery(start, end, type, time, trip_id, trip_headsign){
-  db.batchQuery([], function(err, result){
-
-  }); 
+function removeCrap(str){
+  try{
+    console.log(str);
+    var newstr = str.replace('é','e');
+    console.log(newstr);
+  } catch(e){
+    throw e;
+    return str;
+  }
+  return newstr;
 }
 
