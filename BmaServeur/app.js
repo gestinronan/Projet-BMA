@@ -706,6 +706,7 @@ function readRelationship(res, nodes, relations){
 	}
 }
 
+
 /**
 * This function read nodes
 */
@@ -738,8 +739,37 @@ function readNode(res, nodes, relations){
 					// Once it's Done, we pass the data thanks to the res
 					
 					// Create the json 
-					var jsonData = {nodes: nodeParameter, relations: relationParameter};
-					res.send(jsonData);
+					//var jsonData = {nodes: nodeParameter, relations: relationParameter};
+					//res.send(jsonData);
+
+					// Edit the relations array to add each sql node id in it
+					
+					var j=0;
+					for(z=0; z<relationParameter.length; z++){
+
+						// Get the start node ID
+						var Start_Stop_id = nodes[j].data.idStop;
+						j++;
+						var End_Stop_id = nodes[j].data.idStop;
+
+						// Edit the json response
+						relationParameter[z].Start_Stop_id = Start_Stop_id;
+						relationParameter[z].End_Stop_id = End_Stop_id;
+
+						// When it's done 
+						if(z == relationParameter.length -1){
+
+							// Creates a JSON String
+							var jsonData = {relations:relationParameter};
+							console.log(relationParameter);
+							res.send(jsonData);
+						}
+
+					}
+
+
+
+
 				}
 				y++;
 			}
