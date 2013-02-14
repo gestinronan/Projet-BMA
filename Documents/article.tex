@@ -73,11 +73,12 @@ Pour la r\'ealisation de ce projet, nous avons choisi d'utiliser plusieurs techn
 	
 	
 
-% Section concernant ce que l'on veut faire dans le projet, la visio que nous en avons	
-\section{Approche (Comment le porbl`eme a \'et\'e trait\'e}
+% Section concernant ce que l'on veut faire dans le projet, la vision que nous en avons	
+\section{Approche (Comment le porbl\`eme a \'et\'e trait\'e}
 
-	
-	
+	les Personne qui cherchent a utiliser les nouveau moyen de transport, ont besoin d'un outils a la fois, rapide, facile d'utilisation et surtout fiable.
+	Dans cette démarche, nous avons d/'ecider de proposer un application avec un design  simple, une carte et une option pour poser les question sur les trajet que l'on peut glisser dessu. Pour \'évité un trop grand nombre d'appel vers les serveur des différent partenaire nous avons travailler sur un serveur personnel Nodejs, qui permet de travaillier a la fois sur les donn\'es brute et sur les infromations de trajet. Pour c'est dernier nous avons mis en place un graphe des dépendance pour illusatrer les trajet possible et  donc l'application peut int\'eroger le serveur pour mettre en place les différents lien possible.
+
 
 
 % Section concernant le travaille effectué
@@ -126,7 +127,13 @@ Pour la r\'ealisation de ce projet, nous avons choisi d'utiliser plusieurs techn
 	
 	% Section concernant le site web
 	\subsection{Le Site Web}
-	Le site permet de chercher des itin\'eraires de bien diverses facons: l’utilisateur peut entrer manuellement l’adresse d\'epart, d'arriv\'ee (et \'eventuellement ajouter jusqu'\'a 3 \'etapes) dans les champs pr\'evus \'a cet effet puis cliquer sur le bouton 'Rechercher'.Encore plus simple d'utilisation, la d\'efinition des points sur la carte permet aux utilisateurs de d\'efinir en quelques clics de souris l'itin\'eraire qu’ils souhaitent calculer. Un Clique sur les lieux que l’utilisateur souhaite inclure \'a son itin\'eraire. Apr\`es 5 points d\'efinis, les points suivants viennent s'ajouter sur les champs r\'eserver pour le d\'epart et l’arriver. Comme il peut aussi rechercher par mots on \'ecrivant un mot...Si l’utilisateur est \'a pied ou avec son v\'elo, le site lui propose le trajet de son point de d\'epart \'a son point d'arriv\'ee, en passant par les \'etapes qu’il a d\'efinie lors de sa recherche.Les itin\'eraires sont calcul\'es \'a partir des informations envoy\'ees par le serveur. Si l’utilisateur utilise un transport public K\'eolis (V\'eloStar, bus, m\'etro), la r\'eponse fourni par le serveur lui permet d’avoir la station la plus proche de son points d\'efinis et lui indique ensuite comment faire pour rejoindre les autres points qu’il a d\'efini.Sur la carte on a d\'efini un petit menu qui permis aux utilisateurs de voir directement sur la carte les stations de m\'etro, v\'elo, borne \'electrique en s\'electionnant l’une ou plusieurs options.  Le site a \'et\'e r\'ealis\'e en HTML5, CSS et JavaScript
+	Le site permet de chercher des itin\'eraires de bien diverses facons: l’utilisateur peut entrer manuellement l’adresse d\'epart, d'arriv\'ee (et \'eventuellement ajouter jusqu'\'a 3 \'etapes) dans les champs pr\'evus \'a cet effet puis cliquer sur le bouton 'Rechercher'.
+Encore plus simple d'utilisation, la d\'efinition des points sur la carte permet aux utilisateurs de d\'efinir en quelques clics de souris l'itin\'eraire qu’ils souhaitent calculer. Un Clique sur les lieux que l’utilisateur souhaite inclure \'a son itin\'eraire. Apr\`es 5 points d\'efinis, les points suivants viennent s'ajouter sur les champs r\'eserver pour le d\'epart et l’arriver. Comme il peut aussi rechercher par mots on \'ecrivant un mot...
+Si l’utilisateur est \'a pied ou avec son v\'elo, le site lui propose le trajet de son point de d\'epart \'a son point d'arriv\'ee, en passant par les \'etapes qu’il a d\'efinie lors de sa recherche.
+Les itin\'eraires sont calcul\'es \'a partir des informations envoy\'ees par le serveur. 
+Si l’utilisateur utilise un transport public K\'eolis (V\'eloStar, bus, m\'etro), la r\'eponse fourni par le serveur lui permet d’avoir la station la plus proche de son points d\'efinis et lui indique ensuite comment faire pour rejoindre les autres points qu’il a d\'efini.
+Sur la carte on a d\'efini un petit menu qui permis aux utilisateurs de voir directement sur la carte les stations de m\'etro, v\'elo, borne \'electrique en s\'electionnant l’une ou plusieurs options.  
+Le site a \'et\'e r\'ealis\'e en HTML5, CSS et JavaScript
 
 
 
