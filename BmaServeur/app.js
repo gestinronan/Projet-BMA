@@ -747,10 +747,13 @@ function readNode(res, nodes, relations){
 					var j=0;
 					for(z=0; z<relationParameter.length; z++){
 
+						console.log("node: " + nodes[j]);
+
 						// Get the start node ID
 						var Start_Stop_id = nodes[j].data.idStop;
 						j++;
 						var End_Stop_id = nodes[j].data.idStop;
+						j++;
 
 						// Edit the json response
 						relationParameter[z].Start_Stop_id = Start_Stop_id;
