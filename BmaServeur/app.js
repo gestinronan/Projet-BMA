@@ -750,9 +750,9 @@ function readNode(res, nodes, relations){
 						console.log("node: " + nodes[j]);
 
 						// Get the start node ID
-						var Start_Stop_id = nodes[j].data.idStop;
+						var Start_Stop_id = nodeParameter[j].data.idStop;
 						j++;
-						var End_Stop_id = nodes[j].data.idStop;
+						var End_Stop_id = nodeParameter[j].data.idStop;
 						j++;
 
 						// Edit the json response
