@@ -13,9 +13,10 @@
 
 \maketitle            					% Create the Title
 \line(1, 0){350}
-\newpage							% Start a new page
+\newpage		
+\clearpage					% Start a new page
 
-\tableofcontents					% Create the table of contents
+%\tableofcontents					% Create the table of contents
 
 \newpage							% Start a new page
 
@@ -38,7 +39,7 @@
 		Positionnement concurrentiel
 		Analyse de chaines de valeur
 	
-\clearpage
+
 \section{Background}
 
 % Introduction au serveur
@@ -71,14 +72,14 @@ Pour la r\'ealisation de ce projet, nous avons choisi d'utiliser plusieurs techn
 	Le site Web quand \'a lui, b\'en\'eficie des derni\`eres technologie web. Le HTML5 nous permet donc d'int\'egrer la g\'eolocalisation de l'utilisateur via ca connexion internet.
 	
 	
-\clearpage
+
 % Section concernant ce que l'on veut faire dans le projet, la visio que nous en avons	
 \section{Approche (Comment le porbl`eme a \'et\'e trait\'e}
 
 	
 	
 
-\newpage
+
 % Section concernant le travaille effectué
 \section{Travail R\'ealis\'e}
 
@@ -106,39 +107,40 @@ Pour la r\'ealisation de ce projet, nous avons choisi d'utiliser plusieurs techn
 	Pour cr\'eer ce graphe, nous avons utilis\'e la base de donn\'ee Neo4j. Cette base de donn\'e permet de cr\'eer et d'enregistrer les noeuds ainsi que les relations entre les noeuds.
 	
 	L'int\'eraction entre la base de donn\'ee Neo4j et le serveur NodeJs se fait gr\^ace \'a la librairie 'node-neo4j'.  
-\newpage	
+
 	% Section concernant l'application android
 	\subsection{L'aplication Android}
 	
-	Pour ce projet nous somme partie sur une application android, pour sa simplicit\'e d'approche. Mais aussi car c'est le système d'exploitation mobile le plus r\'ependu au monde a l'heur actuel.
+	Pour ce projet nous somme partie sur une application android, pour sa simplicit\'e d'approche. Mais aussi car c'est le syst\`eme d'exploitation mobile le plus r\'ependu au monde a l'heur actuel.
 	% Description de la vue principal
-	\subsubsubsection{une acitvit\'e unique}
+	\subsubsection{Une acitvit\'e unique}
 	
-	Pour une \èrgonomie unique nous avons d\'ecider de mettre en place une acitivité unique avec l'affichage de la carte directement pour l'utilisateur. avec certaine donne de mobilit\'e pr\'e affichier, tel que les v\'elo, train, metro... avec la possibilité dans le menu  de pr\'ef\'eance d'ajouter les bus ou de réglé le niveau de l'utilisateur en v\'elo..
+	Pour une \'ergonomie unique nous avons d\'ecider de mettre en place une acitivit\'e unique avec l'affichage de la carte directement pour l'utilisateur. avec certaine donne de mobilit\'e pr\'e affichier, tel que les v\'elo, train, metro... avec la possibilit\'e dans le menu  de pr\'ef\'eance d'ajouter les bus ou de r\'egl\'e le niveau de l'utilisateur en v\'elo..
 	
-	Pour les la partie de gestion des route nous avons mis en place ce que l'on appel un slidingdrawer ( une vu qui ce glisse sur la carte). elle a pour but de r\'ecuperer les information de l'utilisateur pour sont trajet. Elle proposera une aide a la complétion des information ( nom de arret) et le choix des différent moyen de transport pour les trajet.
+	Pour les la partie de gestion des route nous avons mis en place ce que l'on appel un slidingdrawer ( une vu qui ce glisse sur la carte). Elle a pour but de r\'ecuperer les information de l'utilisateur pour sont trajet. Elle proposera une aide \'a la compl\'etion des information ( nom de arret) et le choix des diff\'erent moyen de transport pour les trajet.
  	
 	% Description des appel au serveur
-	\subsubsubsection{Les appels au serveur}
+	\subsubsection{Les appels au serveur}
 	
-	Dans ce projet base sur une communicaiton client serveur,  l'une des principal difficulté \'etait de faire le lien entre c'est deux entit\'ees. Pour cela il a été décider de mettre en place des tache asynchrone pour permettre a l'application de vivre et de faire en même temps la mise a jour des différente donnée pour l'utilisateur. nous avons utiliser pour cela les Intentservices qui permette de communique des donné via les intent  entre les taches asynchrone et les vu ici la vu principal est la map.
+	Dans ce projet base sur une communicaiton client serveur,  l'une des principal difficult\'e \'etait de faire le lien entre c'est deux entit\'ees. Pour cela il a \'et\'e d\'ecider de mettre en place des tache asynchrone pour permettre a l'application de vivre et de faire en m\^eme temps la mise a jour des diff\'erente donn\'ee pour l'utilisateur. Nous avons utiliser pour cela les Intentservices qui permette de communique des donn\'des via les intent  entre les taches asynchrone et les vu ici la vu principal est la map.
 	
 	% Section concernant le site web
 	\subsection{Le Site Web}
+	Le site permet de chercher des itin\'eraires de bien diverses facons: l’utilisateur peut entrer manuellement l’adresse d\'epart, d'arriv\'ee (et \'eventuellement ajouter jusqu'\'a 3 \'etapes) dans les champs pr\'evus \'a cet effet puis cliquer sur le bouton 'Rechercher'.Encore plus simple d'utilisation, la d\'efinition des points sur la carte permet aux utilisateurs de d\'efinir en quelques clics de souris l'itin\'eraire qu’ils souhaitent calculer. Un Clique sur les lieux que l’utilisateur souhaite inclure \'a son itin\'eraire. Apr\`es 5 points d\'efinis, les points suivants viennent s'ajouter sur les champs r\'eserver pour le d\'epart et l’arriver. Comme il peut aussi rechercher par mots on \'ecrivant un mot...Si l’utilisateur est \'a pied ou avec son v\'elo, le site lui propose le trajet de son point de d\'epart \'a son point d'arriv\'ee, en passant par les \'etapes qu’il a d\'efinie lors de sa recherche.Les itin\'eraires sont calcul\'es \'a partir des informations envoy\'ees par le serveur. Si l’utilisateur utilise un transport public K\'eolis (V\'eloStar, bus, m\'etro), la r\'eponse fourni par le serveur lui permet d’avoir la station la plus proche de son points d\'efinis et lui indique ensuite comment faire pour rejoindre les autres points qu’il a d\'efini.Sur la carte on a d\'efini un petit menu qui permis aux utilisateurs de voir directement sur la carte les stations de m\'etro, v\'elo, borne \'electrique en s\'electionnant l’une ou plusieurs options.  Le site a \'et\'e r\'ealis\'e en HTML5, CSS et JavaScript
 
 
-\newpage
+
 % Section concernant la validation du travail par l'entreprise
 \section{Validation du proff\'essionnel}
+Lors des r\'eunions avec le PDG, ce dernier \'etait satisfait de notre travail r\'ealiser lors de chaque r\'eunion, il nous a confi\'e de rajouter des tache sur le projet comme l’ajout des bornes \'electrique.Il a souhait\'e aussi qu’on puisse proposer aux clients des services, en l’int\'egrant dans l’application en utilisant prolog.
 
 
-\newpage
 % Section pour la conclusion
 \section{Conclusion}
 
 
 
-\newpage % Start a new page for the bibio
+
 % Section concernant la bibliographie
 \section{Bibliographie}
 	
