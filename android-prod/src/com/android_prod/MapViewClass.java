@@ -127,7 +127,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             
             Intent sent=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
             sent.putExtra("Dep", stopList.get(dep.getText().toString()).getType()+":"+stopList.get(dep.getText().toString()).getId());
-            sent.putExtra("Arr", stopList.get(Arr.getText().toString()).getType()+":"+stopList.get(Arr.getText().toString()).getId());
+            sent.putExtra("Arr", stopList.get(arr.getText().toString()).getType()+":"+stopList.get(arr.getText().toString()).getId());
            // get information check information
             sent.putExtra("bus", ""+busSlid.isChecked());
             sent.putExtra("bike", ""+bikeSlid.isChecked());
@@ -240,7 +240,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private boolean[] statesLayers = {false, true, true};
     // informatuin form sliding drawer
     private static AutoCompleteTextView dep;
-    private static AutoCompleteTextView Arr;
+    private static AutoCompleteTextView arr;
     private Switch busSlid;
     private Switch bikeSlid;
     private Switch metroSlid;
@@ -307,7 +307,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
        valider     = (Button) findViewById(R.id.valider);
         // Get a reference to the AutoCompleteTextView in the layout AutoCompleteTextView
        dep= (AutoCompleteTextView) findViewById(R.id.dep);
-       Arr= (AutoCompleteTextView) findViewById(R.id.arrival);
+       dep.setTextColor(Color.WHITE);
+       arr= (AutoCompleteTextView) findViewById(R.id.arrival);
+       arr.setTextColor(Color.WHITE);
        busSlid= (Switch) findViewById(R.id.switch1);
        bikeSlid= (Switch) findViewById(R.id.switch2);
        metroSlid= (Switch) findViewById(R.id.switch3);
@@ -859,7 +861,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
          ArrayAdapter<String> adapterArr = 
                  new ArrayAdapter<String>(mcontext,R.id.content,stop );
          adapterArr.setDropDownViewResource(R.id.content);
-         Arr.setThreshold(1);
+         arr.setThreshold(1);
        //  Arr.setAdapter(adapterArr);
 
          
