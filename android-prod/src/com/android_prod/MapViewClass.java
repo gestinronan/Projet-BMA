@@ -764,12 +764,13 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     	
     	 // And the String into Json
         try {
-            bikeData = new JSONObject(bike);
+        	Log.i("REBOOT", bike);
+        	bikeData = new JSONObject(bike);
             metroArray = new JSONArray(metro);
             busArray = new JSONArray(bus);
             borneArray = new JSONArray(borne);
             trainArray = new JSONArray(train);
-           
+          
         } catch (JSONException e) {
             Log.i("ERROR JSON" , e.toString());
         }

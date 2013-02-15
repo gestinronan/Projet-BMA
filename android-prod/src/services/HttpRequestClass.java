@@ -76,19 +76,19 @@ protected void onHandleIntent(Intent intent) {
 	
 	/*FOR Bike*/
 		
-	dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,5000);
+	dataBike =callServer("http://data.keolis-rennes.com/json/?version=2.0&key=FR6UMKCXT1TY5GJ&cmd=getbikestations",FILENAME_BIKE,50000);
 		/*For Metro*/
 
-		dataMetro =callServer("http://148.60.11.208:3000/android/data/metro",FILENAME_METRO,50);
+		dataMetro =callServer("http://148.60.11.208:3000/android/data/metro",FILENAME_METRO,50000);
 		
 		/*For bus*/
 
-		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,50);
+		dataBus =callServer("http://148.60.11.208:3000/android/data/bus",FILENAME_BUS,50000);
 	
-		dataBorne =callServer("http://148.60.11.208:3000/android/data/borneelec",FILENAME_BORNE,50);
+		dataBorne =callServer("http://148.60.11.208:3000/android/data/borneelec",FILENAME_BORNE,50000);
 		
 		
-		dataTrain =callServer("http://148.60.11.208:3000/android/data/train",FILENAME_TRAIN,50);
+		dataTrain =callServer("http://148.60.11.208:3000/android/data/train",FILENAME_TRAIN,50000);
 		
 		
 		Intent BrIntent= new Intent(BROADCAST_ACTION);
@@ -154,7 +154,7 @@ try {
 
 	
 			File file = mContext.getFileStreamPath(nameCacheFile);
-			if(!file.exists() || (file.lastModified() < timeUpdate && timeUpdate!=-1)) // if the file do not excite 
+			if(!file.exists() || file.lastModified() < timeUpdate || timeUpdate==-1) // if the file do not excite 
 			{
 				
 				 
@@ -207,6 +207,7 @@ try {
 			}
 			else
 			{	
+				Log.i("reboot beug", "debeug");
 			
 				// read in the data cache file
 				fis=mContext.openFileInput(nameCacheFile);
