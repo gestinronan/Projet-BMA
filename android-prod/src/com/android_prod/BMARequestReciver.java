@@ -43,22 +43,17 @@ private static boolean internaGarde=false;
 			
 				
 			     bike=intent.getStringExtra("bikeData");
-			     Log.i("reboot beug1", intent.getStringExtra("bikeData"));
-			     Log.i("reboot beug", bike);
 			     bus=intent.getStringExtra("busData");
 			     metro=intent.getStringExtra("metroData");
 			    Borne= intent.getStringExtra("borneData");
 			    Train= intent.getStringExtra("trainData");
 			    internaGarde=true;
-			    Log.i("DATA READY", "END WAIT DATA");
 			    display();
 						
 			}
 
 			// When map is ready
 			public void isReady(){
-				
-			Log.i("MAP READY", "END WAIT MAP");
 			waitMap=true;
 			display();
 			}
@@ -69,8 +64,6 @@ private static boolean internaGarde=false;
 				Log.i(" READY", "D"+internaGarde+"M"+waitMap);
 					// to garde to be sure allez data can be acces
 				if(waitMap && internaGarde){
-					Log.i("READY", "NICE");
-					Log.i("reboot beug", bike);
 				MapViewClass.majData(bike, bus, metro, Borne, Train);
 				internaGarde=false;
 				waitMap=false;
