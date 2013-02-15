@@ -83,7 +83,7 @@ public class TrajetServerRequest extends IntentService {
 	        Log.i("download info" , result); // log info
 	       
 	    } catch (Exception e) {
-	    	Log.i("Error converting result " , e.getMessage());
+	    	Log.i("Error converting result " , "error");
 	    }
 		
 		Intent road=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
