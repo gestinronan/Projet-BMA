@@ -389,6 +389,77 @@ app.post('/android/nextdeparture', function(req, res){
 });
 
 /*************************************************************************************************/
+/*********************************** Siteweb get Request *****************************************/
+/*************************************************************************************************/
+
+// This is the redirection for the website
+app.get('/', function(req, res){
+	//Variable
+var busData = null;
+var bikeData = null;
+var metroData = null;
+var trainData = null;
+
+// First query to get the busStops
+connection.query('SELECT * FROM test.BusStops', function(err, result){
+	busData = result;
+
+	if(busData != null && bikeData != null && metroData != null && trainData != null){
+		res.render('bma',{
+					 		dataBus: busData,
+					 		dataBike: bikeData,
+					 		dataMetro: metroData,
+					 		dataTrain: trainData
+					 	})
+	}
+});
+
+// Second query to get the bikeStops
+connection.query('SELECT * FROM test.BikeStops', function(err, result){
+	bikeData = result;
+
+	if(busData != null && bikeData != null && metroData != null && trainData != null){
+		res.render('bma',{
+					 		dataBus: busData,
+					 		dataBike: bikeData,
+					 		dataMetro: metroData,
+					 		dataTrain: trainData
+					 	})
+	}
+});
+
+// Third query to get the metro Stops
+connection.query('SELECT * FROM test.MetroStops', function(err, result){
+	metroData = result;
+
+	if(busData != null && bikeData != null && metroData != null && trainData != null){
+		res.render('bma',{
+					 		dataBus: busData,
+					 		dataBike: bikeData,
+					 		dataMetro: metroData, 
+					 		dataTrain: trainData
+					 	})
+	}
+});
+
+// Third query to get the metro Stops
+connection.query('SELECT * FROM test.TerStops', function(err, result){
+	trainData = result;
+
+	if(busData != null && bikeData != null && metroData != null && trainData != null){
+		res.render('bma',{
+					 		dataBus: busData,
+					 		dataBike: bikeData,
+					 		dataMetro: metroData,
+					 		dataTrain: trainData
+					 	})
+	}
+});
+
+
+});
+
+/*************************************************************************************************/
 /*********************************** Android get Request *****************************************/
 /*************************************************************************************************/
 
