@@ -289,11 +289,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         // Location listner
         lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
-        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) 
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, (LocationListener) this);
-        }
-
-        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, (LocationListener) this);
+        
+        
+        if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) 
+        	lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, (LocationListener) this);
 
        
        
