@@ -133,6 +133,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             sent.putExtra("bike", ""+bikeSlid.isChecked());
             sent.putExtra("metro", ""+metroSlid.isChecked());
             sent.putExtra("train", ""+trainSlid.isChecked());
+            broadcastReceiver.isReady();
             startService(sent);
             
           

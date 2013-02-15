@@ -70,6 +70,7 @@ private static boolean internaGarde=false;
 					Log.i("READY", "NICE");
 				MapViewClass.majData(bike, bus, metro, Borne, Train);
 				internaGarde=false;
+				waitMap=false;
 				}
 			}
 	    
