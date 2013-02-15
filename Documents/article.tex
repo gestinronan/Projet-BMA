@@ -12,7 +12,7 @@
 \begin{document}
 
 \maketitle            					% Create the Title
-\line(1, 0){350}
+
 \newpage		
 \clearpage					% Start a new page
 
@@ -24,7 +24,7 @@
 
 	% Contexte du projet
 	\subsection{Projet BMA}
-	Dans le cadre, d'un cour d'innovation a l'ESIR nous avons r\'efl\'echis a ce que serai la mobilit\'e dans les ann\'ee \'a et il en est resortie diff\'erentes \'etudes dont, la combinaison de plusieurs transports. Cela serait un moyen fiable de fid\'eliser les gens \'a l'utilisations des transports en communs. Mais cette invitation au changement ne peut se faire sans garde fou et principalement  la mise en oeuvre d'outils pour aider les gens \'a se retrouver dans cette nouvelle facon de se mouvoir. Dans un m\^eme temps, a eu lieu l'\'expention grandissante du SmartPhone, outils hightech  casimment incontournable de nos jours. Il en est donc ressortit que cet outil est l'un des meilleurs support pour cette l'incitation au changement. Encore plus lorsque l'on connais l'urgence de celle ci.
+	Dans le cadre, d'un cours d'innovation \'a l'ESIR, nous avons r\'efl\'echis \'a ce que serai la mobilit\'e dans les ann\'ee \'a venir. Il en est resortie diff\'erentes \'etudes dont, la combinaison de plusieurs transports. Cela serait un moyen fiable de fid\'eliser les gens \'a l'utilisations des transports en communs. Mais cette invitation au changement ne peut se faire sans garde fou et principalement  la mise en oeuvre d'outils pour aider les gens \'a se retrouver dans cette nouvelle facon de se mouvoir. Dans un m\^eme temps, a eu lieu l'\'expention grandissante du SmartPhone, outils hightech  casimment incontournable de nos jours. Il en est donc ressortit que cet outil est l'un des meilleurs support pour cette l'incitation au changement. Encore plus lorsque l'on connais l'urgence de celle ci.
 	% Description du projet BMA
 	Le projet BMA regroupe un grand nombre d'acteur de niveau national. Le but du projet est de trouver des moyens de transport moins couteux et moins \'emettrice en gaz \`a effet de serre. 
 	Leurs but est de faire \'evolu\'e la facon avec laquelle les gens voyage et ce d\'eplace que ce soit dans leurs milieu professionnel ou personnel.
@@ -74,10 +74,10 @@ Pour la r\'ealisation de ce projet, nous avons choisi d'utiliser plusieurs techn
 	
 
 % Section concernant ce que l'on veut faire dans le projet, la vision que nous en avons	
-\section{Approche (Comment le porbl\`eme a \'et\'e trait\'e}
+\section{Approche (Comment le porbleme a \'et\'e trait\'e}
 
-	les Personne qui cherchent a utiliser les nouveau moyen de transport, ont besoin d'un outils a la fois, rapide, facile d'utilisation et surtout fiable.
-	Dans cette démarche, nous avons d/'ecider de proposer un application avec un design  simple, une carte et une option pour poser les question sur les trajet que l'on peut glisser dessu. Pour \'évité un trop grand nombre d'appel vers les serveur des différent partenaire nous avons travailler sur un serveur personnel Nodejs, qui permet de travaillier a la fois sur les donn\'es brute et sur les infromations de trajet. Pour c'est dernier nous avons mis en place un graphe des dépendance pour illusatrer les trajet possible et  donc l'application peut int\'eroger le serveur pour mettre en place les différents lien possible.
+	Les personnes qui cherchent a utiliser les nouveaux moyens de transports, ont besoin d'un outil \'a la fois, rapide, facile d'utilisation et surtout fiable.
+	Dans cette d\'emarche, nous avons d/'ecider de proposer un application avec un design  simple, une carte et une option pour poser les question sur les trajet que l'on peut glisser de haut en bas. Pour \'eviter un trop grand nombre d'appel vers les serveurs des diff\'erents partenaires nous avons travaill\'es sur un serveur personnel Nodejs, cela nous permet de pouvoir travaillier \'a la fois sur nos donn\'es brutes et sur les informations de trajet. Pour c'est derni\`eres, nous avons mis en place un graph comportant des d\'ependances pour illustrer les trajets possibles. L'application peut int\'eroger le serveur pour mettre en place les diff\'erents lien possible.
 
 
 
@@ -127,29 +127,51 @@ Pour la r\'ealisation de ce projet, nous avons choisi d'utiliser plusieurs techn
 	
 	% Section concernant le site web
 	\subsection{Le Site Web}
-	Le site permet de chercher des itin\'eraires de bien diverses facons: l’utilisateur peut entrer manuellement l’adresse d\'epart, d'arriv\'ee (et \'eventuellement ajouter jusqu'\'a 3 \'etapes) dans les champs pr\'evus \'a cet effet puis cliquer sur le bouton 'Rechercher'.
-Encore plus simple d'utilisation, la d\'efinition des points sur la carte permet aux utilisateurs de d\'efinir en quelques clics de souris l'itin\'eraire qu’ils souhaitent calculer. Un Clique sur les lieux que l’utilisateur souhaite inclure \'a son itin\'eraire. Apr\`es 5 points d\'efinis, les points suivants viennent s'ajouter sur les champs r\'eserver pour le d\'epart et l’arriver. Comme il peut aussi rechercher par mots on \'ecrivant un mot...
-Si l’utilisateur est \'a pied ou avec son v\'elo, le site lui propose le trajet de son point de d\'epart \'a son point d'arriv\'ee, en passant par les \'etapes qu’il a d\'efinie lors de sa recherche.
+	Le site permet de chercher des itin\'eraires de bien diverses facons: l'utilisateur peut entrer manuellement l'adresse  de d\'epart et d'arriv\'ee (et \'eventuellement ajouter jusqu'\'a 3 \'etapes) dans les champs pr\'evus \'a cet effet puis cliquer sur le bouton 'Rechercher'.
+Encore plus simple d'utilisation, la d\'efinition des points sur la carte permet aux utilisateurs de d\'efinir en quelques clics de souris l'itin\'eraire qu'ils souhaitent calculer. Un Clique sur les lieux que l'utilisateur souhaite inclure \'a son itin\'eraire. Apr\`es 5 points d\'efinis, les points suivants viennent s'ajouter sur les champs r\'eserver pour le d\'epart et l'arriver. Comme il peut aussi rechercher par mots on \'ecrivant un mot...
+Si l'utilisateur est \'a pied ou avec son v\'elo, le site lui propose le trajet de son point de d\'epart \'a son point d'arriv\'ee, en passant par les \'etapes qu'il a d\'efinie lors de sa recherche.
 Les itin\'eraires sont calcul\'es \'a partir des informations envoy\'ees par le serveur. 
-Si l’utilisateur utilise un transport public K\'eolis (V\'eloStar, bus, m\'etro), la r\'eponse fourni par le serveur lui permet d’avoir la station la plus proche de son points d\'efinis et lui indique ensuite comment faire pour rejoindre les autres points qu’il a d\'efini.
-Sur la carte on a d\'efini un petit menu qui permis aux utilisateurs de voir directement sur la carte les stations de m\'etro, v\'elo, borne \'electrique en s\'electionnant l’une ou plusieurs options.  
+Si l'utilisateur utilise un transport public K\'eolis (V\'eloStar, bus, m\'etro), la r\'eponse fourni par le serveur lui permet d'avoir la station la plus proche de son points d\'efinis et lui indique ensuite comment faire pour rejoindre les autres points qu'il a d\'efini.
+Sur la carte on a d\'efini un petit menu qui permis aux utilisateurs de voir directement sur la carte les stations de m\'etro, v\'elo, borne \'electrique en s\'electionnant l'une ou plusieurs options.  
 Le site a \'et\'e r\'ealis\'e en HTML5, CSS et JavaScript
 
 
 
 % Section concernant la validation du travail par l'entreprise
 \section{Validation du proff\'essionnel}
-Lors des r\'eunions avec le PDG, ce dernier \'etait satisfait de notre travail r\'ealiser lors de chaque r\'eunion, il nous a confi\'e de rajouter des tache sur le projet comme l’ajout des bornes \'electrique.Il a souhait\'e aussi qu’on puisse proposer aux clients des services, en l’int\'egrant dans l’application en utilisant prolog.
+Lors des r\'eunions avec le PDG, ce dernier \'etait satisfait de notre travail r\'ealiser lors de chaque r\'eunion, il nous a confi\'e de rajouter des taches sur le projet comme l'ajout des bornes \'electrique.Il a souhait\'e aussi qu'on puisse proposer aux clients des services, en l'int\'egrant dans l'application en utilisant prolog.
 
 
 % Section pour la conclusion
 \section{Conclusion}
 
-
+Ce projet nous a permis de pouvoir mettre en application les diff\'erentes comp\'etence de chacun. Nous avons ainsi pu cr\'eer une base de donn\'ee MySql pour stocker toutes nos donn\'ees concernant les diff\'erents moyens et types de transport publique disponible dans la r\'egion Rennaise. Nous avons aussi cr\'e\'es une base de donn\'ee de graphe pour \^etre de capable de g\'enerer des it\'eraires dans la ville de Rennes. Un serveur en NodeJs a \'et\'e cr\'e\'e dans le but de pouvoir g\'erer les requ\^etes venant \'a la fois de notre site web ainsi que de notre application internet. Le serveur fait les query vers les diff\'errantes base de donn\'ees et renvoie les informations \'a l'application ou au site web.
+Gr\^ace \'a ce projet, nous avons pu apprendre \'a travailler \'a plusieurs sur un m\^eme sujet. Afin de bien g\'erer ce projet, nous avons du apprendre \'a respecter un emploi du temps et \'a rendre nos travaux en temps et heure.
+De plus le suivi de projet de la part de Mr Chevalier nous a permis d'avoir une id\'ee de comment comprendre et retranscrire les id\'es abord\'ees lors de nos diff\'errantes r\'union dans notre travail. 
+Ce projet a pour nous \'et\'e une tr\`es bonne exp\'erience.
+De plus, nous tenons \'a remercier Mr Chevalier ainsi que Mr Bourcier pour l'aide qu'ils nous ont fournis durant tout ce projet.
 
 
 % Section concernant la bibliographie
-\section{Bibliographie}
-	
+\section{Bibliographis}
+
+\begin{flushleft}
+Projet BMA: http://bretagne-mobilite-augmentee.fr/
+\newline 
+Cybel: www.cybel.fr
+\newline 
+Le code du projet: https://github.com/gestinronan/Projet-BMA
+\newline 
+La documentation du projet: https://github.com/gestinronan/Projet-BMA/wiki/
+\newline 
+NodeJs: http://nodejs.org/
+\newline 
+Android: http://developer.android.com/index.html
+\newline 
+Html5: http://www.html5rocks.com/fr/
+\end{flushleft}
+
+
+
 	
 \end{document}
