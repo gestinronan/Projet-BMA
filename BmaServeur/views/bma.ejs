@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="description" content="BMA, calculateur d'itinéraires à Rennes" />
+<meta name="keywords" content="itinéraire,rennes,métro,bus,vélo,bicyclette,star,mobilité,concours,metropole" />
+<meta name="google-site-verification" content="xyx2Nswcs2y3Zh3G43wIq5sCRt2wJaDu_uqUv-dQjAk" />
+<link rel="stylesheet" type="text/css" href="reset.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="print.css" media="print" />
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+
+<script type="text/javascript">
+	var current_user_id = null;
+	
+</script>
+
+<title>BMA</title>
+</head>
+
+<body onload="initializeGoogleMap()">
+
+
+<div id="autoursidebar">
+	<div id="sidebar">
+		<div id="contenu-sidebar">    
+			<!-- LOGO ET BASELINE -->
+<div id="header">
+	<div id="contenu-header">
+		<h1>Bretagne mobilité augmentée</h1>
+		<h2></h2>
+	</div>
+</div>
+
+			<!-- VERSION IMPRIMABLE D'UN ITI -->
+<div id="imprimer" class="module">
+<h3 class="titre">Impression de l'Itinéraire Rennes </h3>
+	<div class="contenu">
+		
+	</div>
+</div>
+			<div id="ie">
+				<p>Le développement du site Itinéraire rennes n'a pas été pris en charge et optimisé pour la version de votre navigateur (Internet Explorer 7 et antérieure).</p>
+				<p>Veuillez <a href="http://www.presence-pc.com/tests/internet-explorer-firefox-chrome-opera-23271/10/" title="Navigateurs modernes">télécharger un navigateur plus compréhensif des normes du web moderne</a> pour profiter de toutes les fonctionnalités de ce site.</p>
+			</div>
+			<div class="clearfix"></div>	
+			<!-- TROUVEZ UN ITINERAIRE -->
+<div id="trouvez" class="module">
+	<h3 class="titre">Trouvez des Itinéraire <span class="clr-logo">Rennes</span></h3>
+	<div class="contenu">
+		<div class="onglets">
+			<a href="#" id="classique" class="onglet actif">Classique</a>
+			
+			<a href="#" id="mots" class="onglet">Par mots</a>
+		</div><div class="clearfix"></div>
+		<div id="classique">
+			<form id="classique">
+				<div id="depart">
+					<label for="pos-depart" class="pos-label">de</label>
+					<div class="clearfix"></div>
+					<input id="pos-depart" type="text" name="Adresse départ" tabindex="50" autocomplete="off" value="Départ" required>
+				</div>
+				<div class="clearfix"></div>
+				<div id="arrivee">
+					<label for="pos-arrivee" class="pos-label">à</label>
+					<div class="clearfix"></div>	
+					<input id="pos-arrivee" type="text" name="Adresse destination" tabindex="60" autocomplete="off" value="Destination" required>
+				</div>
+				<div class="clearfix"></div>
+				<div class="trouvez-actions">
+				<input type="button" id="ajoutetape" value="Ajouter une étape" class="bouton petit">
+					<div class="clearfix"></div>
+					<input type="button" id="reset" value="Remettre à zéro" class="bouton petit">
+				</div>
+				<input type="submit" id="rechercher" value="Rechercher" class="bouton" tabindex="70">
+				
+				<div class="clearfix"></div>
+			</form>
+		</div>
+		
+		
+		
+		<div id="mots">
+			<form id="mots">
+				<label for="mots" class="pos-label">mots</label>
+				<div class="clearfix"></div>
+				<input id="mots" type="text" name="Mots-clés" tabindex="60" autocomplete="on" value="Mots-clés">
+				<div class="clearfix"></div>
+					<div class="trouvez-actions">
+						<input type="button" id="reset" value="Remettre à zéro" class="bouton petit">
+					</div>
+					<input type="submit" id="rechercher-mots" value="Rechercher" class="bouton" tabindex="70">
+			</form>
+		</div>
+		
+	</div>
+</div>
+
+
+			<div class="clearfix"></div>   
+			<!-- RESULTATS -->
+<div id="resultats" class="module">
+    <h3 class="titre">Itiné<span class="clr-logo">rennes</span> proposés</h3>
+    <div class="contenu">
+    </div>
+</div>
+			<div class="clearfix"></div>
+			
+			<!-- FOOTER -->
+<div id="footer">
+        <div id="menu"><a href="#faq">Informations et contact</a></div> 
+        <div id="actionstaille">
+        	<a href="#" id="policemoins">A<sup>-</sup></a>
+	       	<a href="#" id="policeplus">A<sup>+</sup></a>
+	       	<a href="#" id="sidemoins"><</a>
+	       	<a href="#" id="sideplus">></a>
+	    </div>
+</div>
+		</div>
+	</div>
+</div>
+
+  
+  	<div id="map"></div><!-- #map --> 
+  	
+  <div id="filtres">
+	<div id="filtres-bouton"><div id="filtres-bouton-texte"></div></div>
+	<div class="colonne">
+		<input type="checkbox" id="velostar"><label for="velostar">Stations VéloStar</label><div class="clearfix"></div>
+		<input type="checkbox" id="metro"><label for="metro">Stations métro</label><div class="clearfix"></div>
+		<input type="checkbox" id="velostar"><label for="velostar">Borne électrique </label><div class="clearfix"></div>
+ 	</div>
+</div>
+  
+
+
+   <div id="overlay"></div><!-- calque grisé qui cache tout derrière la div statique -->  
+ 
+      
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=fr"></script>
+<script type="text/javascript" src="bma_ajax.js"></script>
+<script type="text/javascript" src="bma_googlemap.js"></script>
+<script type="text/javascript" src="bma_overlay.js"></script>
+<script type="text/javascript" src="bma_object.js"></script>
+<script type="text/javascript" src="bma_core.js"></script>
+<script type="text/javascript" src="scripts.js"></script>
+
+
+</body>
+</html>
