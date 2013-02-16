@@ -71,6 +71,13 @@ function CreateMetroRelation(){
 				}
 
 			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "PON"){
+					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
 			break;
 
 
@@ -85,6 +92,13 @@ function CreateMetroRelation(){
 				}
 
 			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "TRI"){
+					createRelation(2, metroData[i], metroData[j], 'metro');
+				}
+
+			}
 			break;
 
 		// Arret Charles de Gaules
@@ -94,6 +108,13 @@ function CreateMetroRelation(){
 			for(j=0; j<metroData.length; j++){
 
 				if(metroData[j].MetroStop_id === "GAR"){
+					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "REP"){
 					createRelation(1, metroData[i], metroData[j], 'metro');
 				}
 
@@ -111,6 +132,13 @@ function CreateMetroRelation(){
 				}
 
 			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "CDG"){
+					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
 			break;
 
 		// Arret clémenceau
@@ -121,6 +149,14 @@ function CreateMetroRelation(){
 
 				if(metroData[j].MetroStop_id === "HFR"){
 					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
+			// Get the Clemenceau nodeID
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "JCA"){
+					createRelation(3, metroData[i], metroData[j], 'metro');
 				}
 
 			}
@@ -137,6 +173,14 @@ function CreateMetroRelation(){
 				}
 
 			}
+			// Get the Henri Freville nodeID
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "GCL"){
+					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
 			break;
 
 		// Arret Italie
@@ -146,6 +190,13 @@ function CreateMetroRelation(){
 			for(j=0; j<metroData.length; j++){
 
 				if(metroData[j].MetroStop_id === "TRI"){
+					createRelation(2, metroData[i], metroData[j], 'metro');
+				}
+
+			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "HFR"){
 					createRelation(2, metroData[i], metroData[j], 'metro');
 				}
 
@@ -160,6 +211,13 @@ function CreateMetroRelation(){
 
 				if(metroData[j].MetroStop_id === "GCL"){
 					createRelation(3, metroData[i], metroData[j], 'metro');
+				}
+
+			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "GAR"){
+					createRelation(1, metroData[i], metroData[j], 'metro');
 				}
 
 			}
@@ -189,11 +247,25 @@ function CreateMetroRelation(){
 				}
 
 			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "VU"){
+					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
 			break;
 		// Arret La Poterie
 		case "POT":
 
 			console.log('Arret poterie');
+				for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "BLO"){
+					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
 			break;
 
 		// Arret République
@@ -203,6 +275,13 @@ function CreateMetroRelation(){
 			for(j=0; j<metroData.length; j++){
 
 				if(metroData[j].MetroStop_id === "CDG"){
+					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "STA"){
 					createRelation(1, metroData[i], metroData[j], 'metro');
 				}
 
@@ -220,6 +299,13 @@ function CreateMetroRelation(){
 				}
 
 			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "ANF"){
+					createRelation(2, metroData[i], metroData[j], 'metro');
+				}
+
+			}
 			break;
 
 		// Arret triangle
@@ -229,6 +315,13 @@ function CreateMetroRelation(){
 			for(j=0; j<metroData.length; j++){
 
 				if(metroData[j].MetroStop_id === "BLO"){
+					createRelation(2, metroData[i], metroData[j], 'metro');
+				}
+
+			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "ITA"){
 					createRelation(2, metroData[i], metroData[j], 'metro');
 				}
 
@@ -243,6 +336,13 @@ function CreateMetroRelation(){
 
 				if(metroData[j].MetroStop_id === "PON"){
 					createRelation(1, metroData[i], metroData[j], 'metro');
+				}
+
+			}
+			for(j=0; j<metroData.length; j++){
+
+				if(metroData[j].MetroStop_id === "JFK"){
+					createRelation(2, metroData[i], metroData[j], 'metro');
 				}
 
 			}
