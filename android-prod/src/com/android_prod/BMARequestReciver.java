@@ -24,11 +24,11 @@ import android.util.Log;
  */
 public  class BMARequestReciver extends BroadcastReceiver {
 
-private String bike;
-private String bus;
-private String Train;
-private String Borne;
-private String metro;
+private static String bike="";
+private static  String bus="";
+private static String Train="";
+private static String Borne="";
+private static String metro="";
 private static boolean waitMap= false;
 private static boolean internaGarde=false;
 
@@ -48,15 +48,12 @@ private static boolean internaGarde=false;
 			    Borne= intent.getStringExtra("borneData");
 			    Train= intent.getStringExtra("trainData");
 			    internaGarde=true;
-			    Log.i("DATA READY", "END WAIT DATA");
 			    display();
 						
 			}
 
 			// When map is ready
 			public void isReady(){
-				
-			Log.i("MAP READY", "END WAIT MAP");
 			waitMap=true;
 			display();
 			}
@@ -67,9 +64,9 @@ private static boolean internaGarde=false;
 				Log.i(" READY", "D"+internaGarde+"M"+waitMap);
 					// to garde to be sure allez data can be acces
 				if(waitMap && internaGarde){
-					Log.i("READY", "NICE");
 				MapViewClass.majData(bike, bus, metro, Borne, Train);
 				internaGarde=false;
+				waitMap=false;
 				}
 			}
 	    

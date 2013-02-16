@@ -133,6 +133,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
             sent.putExtra("bike", ""+bikeSlid.isChecked());
             sent.putExtra("metro", ""+metroSlid.isChecked());
             sent.putExtra("train", ""+trainSlid.isChecked());
+            broadcastReceiver.isReady();
             startService(sent);
             
           
@@ -259,20 +260,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         super.onCreate(savedInstanceState);
  
          broadcastReceiver = new BMARequestReciver();
-         
-       /** {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				Log.i("PUTIN", "MERDE");
-				majData(intent.getStringExtra("bikeData"),intent.getStringExtra("busData"),intent.getStringExtra("metroData"),intent.getStringExtra("borneData"));
-			}
-        };*/
       this.registerReceiver(broadcastReceiver, new IntentFilter(HttpRequestClass.BROADCAST_ACTION));
         setContentView(R.layout.map_view);
-        
-        
-     
-     
 
         // Initiate the mcontext variable
         mcontext = this;
@@ -283,8 +272,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         String lng    = intent.getStringExtra("longitude");
         String lat    = intent.getStringExtra("latitude");
 
-      
-    
 
         // Location listner
         lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -296,8 +283,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) 
         	lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, (LocationListener) this);
 
-       
-       
 
         // We get the layout elements
         mapView     = (MapView) findViewById(R.id.mapview);
@@ -361,20 +346,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         GeoPoint point2 = new GeoPoint(myLat, myLng);
 
         mapController.setCenter(point2);
-        
-        
-	
+// Map is ready for display
         broadcastReceiver.isReady();
-
-	        
-        
 
     }
 
-    
-    
-    /**/
-   
     /** ************************************************* */
 
     /** ************ Is route display method ************ */
@@ -402,11 +378,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         switch (item.getItemId()) {
         case R.id.menu_search :
 
-            // behaviour of reserch menu
-           // return true;
-
-       // case R.id.menu_settings : // not usfull
-            // Change activity to settings menu
         case R.id.userLevel :
         {
             
@@ -443,12 +414,6 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
              	        	dialog.cancel();
         	        		 
         	        	 }
-         	            	
-         	            	
-         	          
-         	        
-         	        
-        	        
         	         
         	        }
         	    });
@@ -533,8 +498,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            	}
         	            
         	            }
-        	    
-        	        
+        	     	        
         	        }
         	    });
         	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -656,8 +620,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     		     
                // TODO Auto-generated catch block
                e.printStackTrace();
-           }
-    	 
+           } 
         
       }
      
@@ -738,9 +701,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
        
         
         itemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(mcontext, overlayItemArray, myOnItemGestureListener);
-       
 
-       
     	
         // Add the overlays into the map
         mapView.getOverlays().add(itemizedIconOverlay);
@@ -803,12 +764,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     	
     	 // And the String into Json
         try {
-            bikeData = new JSONObject(bike);
+        	bikeData = new JSONObject(bike);
             metroArray = new JSONArray(metro);
             busArray = new JSONArray(bus);
             borneArray = new JSONArray(borne);
             trainArray = new JSONArray(train);
-           
+          
         } catch (JSONException e) {
             Log.i("ERROR JSON" , e.toString());
         }
@@ -847,9 +808,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
          // remplissage
          stop=new String[stopList.size()];
          stopList.keySet().toArray(stop);
-         
-        // for(int i=0;i<stop.length;i++)
-        // Log.i("Test","stop"+stop[i]);
+        
          // Create the adapter and set it to the AutoCompleteTextView 
          ArrayAdapter<String> adapterDep = 
                 new ArrayAdapter<String>(mcontext,R.id.content,stop );
@@ -862,9 +821,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
                  new ArrayAdapter<String>(mcontext,R.id.content,stop );
          adapterArr.setDropDownViewResource(R.id.content);
          arr.setThreshold(1);
-       //  Arr.setAdapter(adapterArr);
-
-         
+       //  Arr.setAdapter(adapterArr);  
        
     }
 
@@ -872,12 +829,8 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
    private static ArrayList<GeoPoint>  GeoRoad = new ArrayList<GeoPoint>();
     
     public static void drawRoad(JSONArray roadArray){
-    	
-   
 
 	try {
-		
-
 	
 		JSONObject tmpRela;
 		
@@ -887,13 +840,9 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 			   Log.i("NODEStart"+i, tmpRela.getString("Start_Stop_id"));
 			   Log.i("End_node"+i,tmpRela.getString("End_Stop_id"));
 			 GeoRoad.add(roadtrip.get(tmpRela.getString("Start_Stop_id")));
-			 GeoRoad.add(roadtrip.get(tmpRela.getString("End_Stop_id")));
-			   
+			 GeoRoad.add(roadtrip.get(tmpRela.getString("End_Stop_id"))); 
 			   
 		   }
-	
-		
-	
         PathOverlay myPath = new PathOverlay(Color.RED, mcontext);
         for(int i=0; i<GeoRoad.size(); i++)
             myPath.addPoint(GeoRoad.get(i));
