@@ -51,6 +51,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.osmdroid.bonuspack.routing.MapQuestRoadManager;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
@@ -232,6 +236,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 	// Get the string array
    private  static String[] stop;
    static RelativeLayout rl;
+   private static  RoadManager roadManager = new MapQuestRoadManager();
    
     
    
@@ -850,11 +855,16 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 			 GeoRoad.add(roadtrip.get(tmpRela.getString("End_Stop_id"))); 
 			   
 		   }
-        PathOverlay myPath = new PathOverlay(Color.RED, mcontext);
+		   
+		   Road road = roadManager.getRoad(GeoRoad);
+	        PathOverlay roadOverlay = RoadManager.buildRoadOverlay(road, mapView.getContext());
+      /*  PathOverlay myPath = new PathOverlay(Color.RED, mcontext);
         for(int i=0; i<GeoRoad.size(); i++)
             myPath.addPoint(GeoRoad.get(i));
+        */
+     
       
-       mapView.getOverlays().add(myPath);
+       mapView.getOverlays().add(roadOverlay);
        mapView.invalidate();
 		
 	} catch (JSONException e) {
