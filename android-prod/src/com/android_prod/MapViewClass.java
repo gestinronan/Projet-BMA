@@ -187,7 +187,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
     // Map Variable
     private MapController mapController;
-    private static  MapView       mapView;
+    public static  MapView       mapView;
 
     // Layout element
     ImageButton   locateMe;
@@ -207,7 +207,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
     private static  Drawable                         bikeMarker;
     // to have <Name, Type:id>
     private static  Map<String,PersonnalPairValue<String, String> > stopList=new HashMap<String,PersonnalPairValue<String, String>>();
-    private static Map<String,GeoPoint> roadtrip= new HashMap<String, GeoPoint>();
+    public static Map<String,GeoPoint> roadtrip= new HashMap<String, GeoPoint>();
     private ArrayList<OverlayItem>           busOverlayItemArray;
     private ItemizedIconOverlay<OverlayItem> busItemizedIconOverlay;
     private Drawable                         busMarker;
@@ -236,7 +236,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 	// Get the string array
    private  static String[] stop;
    static RelativeLayout rl;
-   private static  RoadManager roadManager = new MapQuestRoadManager();
+   public static  RoadManager roadManager = new OSRMRoadManager();
    
     
    
@@ -837,40 +837,12 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
        
     }
 
-    /** ************************************************* */
-   private static ArrayList<GeoPoint>  GeoRoad = new ArrayList<GeoPoint>();
+ 
     
-    public static void drawRoad(JSONArray roadArray){
-
-	try {
-	
-		JSONObject tmpRela;
-		
-		   for (int i = 0; i < roadArray.length(); i++) {
-			   tmpRela=roadArray.getJSONObject(i);
-			   
-			   Log.i("NODEStart"+i, tmpRela.getString("Start_Stop_id"));
-			   Log.i("End_node"+i,tmpRela.getString("End_Stop_id"));
-			 GeoRoad.add(roadtrip.get(tmpRela.getString("Start_Stop_id")));
-			 GeoRoad.add(roadtrip.get(tmpRela.getString("End_Stop_id"))); 
-			   
-		   }
-		   
-		   Road road = roadManager.getRoad(GeoRoad);
-	        PathOverlay roadOverlay = RoadManager.buildRoadOverlay(road, mapView.getContext());
-      /*  PathOverlay myPath = new PathOverlay(Color.RED, mcontext);
-        for(int i=0; i<GeoRoad.size(); i++)
-            myPath.addPoint(GeoRoad.get(i));
-        */
-     
-      
+    public static void drawRoad(PathOverlay roadOverlay){
        mapView.getOverlays().add(roadOverlay);
        mapView.invalidate();
-		
-	} catch (JSONException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+
 
     }
    

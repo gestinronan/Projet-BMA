@@ -1,12 +1,17 @@
 package com.android_prod;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.PathOverlay;
+
+import working.RoadGetter;
 
 
 import android.content.BroadcastReceiver;
@@ -25,7 +30,8 @@ public class RoadRequestReciver extends BroadcastReceiver {
 	
 	JSONArray  roadArray;
 	
-
+	   /** ************************************************* */
+	   private static ArrayList<GeoPoint>  GeoRoad = new ArrayList<GeoPoint>();
 	@Override
 	public void onReceive(Context mcontext, Intent road) {
 		
@@ -35,9 +41,33 @@ public class RoadRequestReciver extends BroadcastReceiver {
 			 try {
 				 JSONObject test = new JSONObject(road.getStringExtra("road"));
 				roadArray = test.getJSONArray("relations");
+					
+					JSONObject tmpRela;
+					
+					   for (int i = 0; i < roadArray.length(); i++) {
+						   tmpRela=roadArray.getJSONObject(i);
+						  
+						 GeoRoad.add(MapViewClass.roadtrip.get(tmpRela.getString("Start_Stop_id")));
+						 GeoRoad.add(MapViewClass.roadtrip.get(tmpRela.getString("End_Stop_id"))); 
+						   
+					   }
+
+					   
+					  // Road road1 = MapViewClass.roadManager.getRoad(GeoRoad);
+					   RoadGetter testroad = new RoadGetter();
+					   Object [] param = new Object[1];
+					   param[0] = GeoRoad;
+					   // appel asycnhrone de creation des route 
+					    testroad.execute(param);
+					   Road road1;
+	
+						road1 = (Road) testroad.get();
 				
-				MapViewClass.drawRoad(roadArray);
-			} catch (JSONException e) {
+					
+				        PathOverlay roadOverlay = RoadManager.buildRoadOverlay(road1, MapViewClass.mapView.getContext());
+				
+				MapViewClass.drawRoad(roadOverlay);
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
