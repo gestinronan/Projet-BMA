@@ -1,6 +1,7 @@
 package com.android_prod;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,6 +10,8 @@ import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.PathOverlay;
+
+import working.RoadGetter;
 
 
 import android.content.BroadcastReceiver;
@@ -50,11 +53,21 @@ public class RoadRequestReciver extends BroadcastReceiver {
 					   }
 
 					   
-					   Road road1 = MapViewClass.roadManager.getRoad(GeoRoad);
+					  // Road road1 = MapViewClass.roadManager.getRoad(GeoRoad);
+					   RoadGetter testroad = new RoadGetter();
+					   Object [] param = new Object[1];
+					   param[0] = GeoRoad;
+					   // appel asycnhrone de creation des route 
+					    testroad.execute(param);
+					   Road road1;
+	
+						road1 = (Road) testroad.get();
+				
+					
 				        PathOverlay roadOverlay = RoadManager.buildRoadOverlay(road1, MapViewClass.mapView.getContext());
 				
 				MapViewClass.drawRoad(roadOverlay);
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
