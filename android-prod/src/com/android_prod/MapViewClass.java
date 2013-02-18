@@ -51,6 +51,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.osmdroid.bonuspack.routing.MapQuestRoadManager;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
@@ -232,6 +236,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 	// Get the string array
    private  static String[] stop;
    static RelativeLayout rl;
+   private static  RoadManager roadManager = new MapQuestRoadManager();
    
     
    
@@ -445,6 +450,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            if(CheCked.get(CheCked.keyAt(0)) == true){
         	            	if(!mapView.getOverlays().contains(busItemizedIconOverlay))
         	            	{
+        	            		Log.i("LAYER LEVEL DEBEUG  bus true display false", statesLayers[0]+"");
         	            		 // Call the method that create a item array
         	                    displayPoint(busArray, "","Bus:", busMarker,busOverlayItemArray,busItemizedIconOverlay);
         	                    mapView.invalidate(); // refresh map
@@ -452,8 +458,10 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            	}
         	            }else
         	            {
+        	            	
         	            	if(mapView.getOverlays().contains(busItemizedIconOverlay))
         	            	{
+        	            		Log.i("LAYER LEVEL DEBEUG bus false  display true", statesLayers[0]+"");
         	            		mapView.getOverlays().remove(busItemizedIconOverlay);
         	            		 mapView.invalidate(); // refresh mapp
         	            	}
@@ -464,6 +472,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            {
         	            	if(!mapView.getOverlays().contains(metroItemizedIconOverlay))
         	            	{
+        	            		Log.i("LAYER LEVEL DEBEUG bike true display false", statesLayers[1]+"");
         	            		 // Call the method that create a item array
         	                    displayPoint(metroArray, "Metro","Metro:", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
         	                    mapView.invalidate(); // refresh map
@@ -473,6 +482,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            {
         	            	if(mapView.getOverlays().contains(metroItemizedIconOverlay))
         	            	{
+        	            		Log.i("LAYER LEVEL DEBEUG bike false display true", statesLayers[1]+"");
         	            		mapView.getOverlays().remove(metroItemizedIconOverlay);
         	            		 mapView.invalidate(); // refresh mapp
         	            	}
@@ -484,6 +494,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            	
         	            	if(!mapView.getOverlays().contains(bikeItemizedIconOverlay))
         	            	{
+        	            		Log.i("LAYER LEVEL DEBEUG metro true display false", statesLayers[2]+"");
         	            		 // Call the method that create a item array
         	                    displayBikePoint(bikeData);
         	                    mapView.invalidate(); // refresh map
@@ -493,6 +504,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
         	            {
         	            	if(mapView.getOverlays().contains(bikeItemizedIconOverlay))
         	            	{
+        	            		Log.i("LAYER LEVEL DEBEUG metro false display true", statesLayers[2]+"");
         	            		mapView.getOverlays().remove(bikeItemizedIconOverlay);
         	            		 mapView.invalidate(); // refresh mapp
         	            	}
@@ -843,11 +855,16 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 			 GeoRoad.add(roadtrip.get(tmpRela.getString("End_Stop_id"))); 
 			   
 		   }
-        PathOverlay myPath = new PathOverlay(Color.RED, mcontext);
+		   
+		   Road road = roadManager.getRoad(GeoRoad);
+	        PathOverlay roadOverlay = RoadManager.buildRoadOverlay(road, mapView.getContext());
+      /*  PathOverlay myPath = new PathOverlay(Color.RED, mcontext);
         for(int i=0; i<GeoRoad.size(); i++)
             myPath.addPoint(GeoRoad.get(i));
+        */
+     
       
-       mapView.getOverlays().add(myPath);
+       mapView.getOverlays().add(roadOverlay);
        mapView.invalidate();
 		
 	} catch (JSONException e) {
