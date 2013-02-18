@@ -359,7 +359,6 @@ function CreateMetroRelation(){
 
 function createRelation(time, pointA, pointB, type){
 
-  console.log('Create the relation');
   db.insertRelationship(pointA.NodeId, pointB.NodeId, type, {
     time: time
   }, function(err, relationship){

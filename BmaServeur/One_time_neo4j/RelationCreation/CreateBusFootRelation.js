@@ -218,6 +218,7 @@ function getFootDistance(pointA, pointB){
 */
 
 function createRelation(dist, time, pointA, pointB, type){
+  
 
   console.log('Create the relation');
   db.insertRelationship(pointA.NodeId, pointB.NodeId, type, {
