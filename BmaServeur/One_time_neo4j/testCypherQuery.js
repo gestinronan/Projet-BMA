@@ -28,18 +28,59 @@ var nodeParameter = new Array();
 
 /** Cypher query which will be executed 
  	
-	START d=node(47), e=node(98)
+	START d=node(47), e=node(1457)
 	MATCH p = allShortestPaths( d-[*..15]->e )
 	RETURN p;
 */
-
-db.cypherQuery("START d=node(47), e=node(98) " +
-			   "MATCH p = allShortestPaths( d-[*..50]->e ) " +
+/*
+START a=node(1), b=node(1456)
+> MATCH p = a-[r*1..50]->b
+> WITH p, relationships(p) as rcoll
+> RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime
+> LIMIT 3; */
+/*
+db.cypherQuery("START d=node(1), e=node(1452) " +
+			   "MATCH p = ShortestPath( d-[*..15]->e ) " +
                "RETURN p", function(err,result){
 			   	// Case of error 
 			   	if(err || !result){
 			   		console.log("An error Occured :: " + err);
 			   		throw err;
+			   	}
+
+			   	// Else Display the data into the console
+			   	else {
+
+			   		console.log(result.data);
+			   		// Read the data
+			   		nodes = result.data[0].nodes;
+			   		relations = result.data[0].relationships;
+
+			   		// Call the method to get the relation parameters
+			   		readRelationship(relations);
+			   	
+			   	}
+
+}); */
+
+
+/**
+* Get all relation ship of a node
+*/
+/*db.readIncomingRelationshipsOfNode(1452, function(err, relationships){
+    if(err) throw err;
+
+    console.log(relationships); // delivers an array of relationship objects.
+}); */
+
+db.cypherQuery("START d=node(1), e=node(1457) " +
+			   "MATCH p=d-[]-e " +
+               "RETURN p", function(err,result){
+			   	// Case of error 
+			   	if(err || !result){
+			   		console.log(result);
+			   		console.log("An error Occured :: " + err);
+			   		//throw err;
 			   	}
 
 			   	// Else Display the data into the console
@@ -56,6 +97,32 @@ db.cypherQuery("START d=node(47), e=node(98) " +
 			   	}
 
 });
+
+/*db.cypherQuery("START d=node(20), e=node(56) " +
+			   "MATCH p=d-[*]->e" +
+               "RETURN p", function(err,result){
+			   	// Case of error 
+			   	if(err || !result){
+			   		console.log(result);
+			   		console.log("An error Occured :: " + err);
+			   		//throw err;
+			   	}
+
+			   	// Else Display the data into the console
+			   	else {
+
+			   		console.log(result.data);
+			   		// Read the data
+			   		nodes = result.data[0].nodes;
+			   		relations = result.data[0].relationships;
+
+			   		// Call the method to get the relation parameters
+			   		readRelationship(relations);
+			   	
+			   	}
+
+}); */
+
 
 /**
 * This function read relation ship
@@ -88,7 +155,7 @@ function readRelationship(relations){
 				if(x == relations.length -1){
 					for(j=0; j<relationParameter.length; j++)	
 						console.log(relationParameter[j]);
-					//readNode(nodes);
+					readNode(nodes);
 				}
 				x ++ ;
 			}
