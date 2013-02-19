@@ -30,7 +30,7 @@ var $ = require('jquery');
 var fs = require('fs');
 
 // Path to GTFS file containing the borne electrique file
-var pathToData = "../Data_BorneElectrique/borne_vehicule_electrique.txt";
+var pathToData = "../../Data_BorneElectrique/borne_vehicule_electrique.txt";
 
 // Global Variable
 var allTextLines = null;
