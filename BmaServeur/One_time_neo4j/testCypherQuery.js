@@ -88,13 +88,13 @@ db.cypherQuery("START a=node(1), b=node(5) " +
 			   	// Else Display the data into the console
 			   	else {
 
-			   		//console.log(result.data);
+			   		console.log(result.data);
 			   		// Read the data
 			   		nodes = result.data[0].nodes;
 			   		relations = result.data[0].relationships;
 
 			   		// Call the method to get the relation parameters
-			   		readRelationship(relations);
+			   		//readRelationship(relations);
 			   	
 			   	}
 
