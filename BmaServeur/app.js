@@ -707,7 +707,7 @@ function getShortestPath(depart, arrive, res){
 	*/
 
 	db.cypherQuery('START d=node(' + depart + '), e=node(' + arrive + ') '+
-				   'MATCH p = allShortestPaths( d-[*..30]->e ) ' +
+				   'MATCH p = shortestPath( d-[*..30]->e ) ' +
 				   'RETURN p', function(err, data){
 
 				   	// Case an error occured querying the graph
@@ -720,6 +720,8 @@ function getShortestPath(depart, arrive, res){
 
 				   		// Once we get the result from the cypher query against the graph we parse the data
 				   		// And call a method which will parse and extract all the data
+
+				   		console.log(data.data);
 				   		readCypherData(res, data.data[0].nodes, data.data[0].relationships);
 				   		
 				   	}
