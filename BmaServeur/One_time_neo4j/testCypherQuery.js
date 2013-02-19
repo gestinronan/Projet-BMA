@@ -73,7 +73,7 @@ START a=node(1), b=node(1456)
     console.log(relationships); // delivers an array of relationship objects.
 }); */
 
-db.cypherQuery("START a=node(1), b=node(87) " +
+db.cypherQuery("START a=node(1), b=node(5) " +
 			   "MATCH p = a-[r*1..20]->b " +
 			   "WITH p, relationships(p) as rcoll " +
                "RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime " + 
