@@ -38,7 +38,7 @@ START a=node(1), b=node(1456)
 > WITH p, relationships(p) as rcoll
 > RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime
 > LIMIT 3; */
-/*
+
 db.cypherQuery("START d=node(1), e=node(1452) " +
 			   "MATCH p = ShortestPath( d-[*..15]->e ) " +
                "RETURN p", function(err,result){
@@ -61,7 +61,7 @@ db.cypherQuery("START d=node(1), e=node(1452) " +
 			   	
 			   	}
 
-}); */
+}); 
 
 
 /**
@@ -73,9 +73,11 @@ db.cypherQuery("START d=node(1), e=node(1452) " +
     console.log(relationships); // delivers an array of relationship objects.
 }); */
 
-db.cypherQuery("START d=node(1), e=node(1457) " +
-			   "MATCH p=d-[]-e " +
-               "RETURN p", function(err,result){
+/*db.cypherQuery("START a=node(1), b=node(1456) " +
+			   "MATCH p = a-[r*1..15]->b " +
+			   "WITH p, relationships(p) as rcoll " +
+               "RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime " + 
+               "LIMIT 3" , function(err,result){
 			   	// Case of error 
 			   	if(err || !result){
 			   		console.log(result);
@@ -96,7 +98,7 @@ db.cypherQuery("START d=node(1), e=node(1457) " +
 			   	
 			   	}
 
-});
+});*/
 
 /*db.cypherQuery("START d=node(20), e=node(56) " +
 			   "MATCH p=d-[*]->e" +
