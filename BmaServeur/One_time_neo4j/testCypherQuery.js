@@ -39,7 +39,7 @@ START a=node(1), b=node(1456)
 > RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime
 > LIMIT 3; */
 
-/*db.cypherQuery("START d=node(1), e=node(87) " +
+db.cypherQuery("START d=node(1), e=node(87) " +
 			   "MATCH p = ShortestPath( d-[*..15]->e ) " +
                "RETURN p", function(err,result){
 			   	// Case of error 
@@ -62,7 +62,7 @@ START a=node(1), b=node(1456)
 			   	}
 
 }); 
-*/
+
 
 /**
 * Get all relation ship of a node
@@ -73,7 +73,7 @@ START a=node(1), b=node(1456)
     console.log(relationships); // delivers an array of relationship objects.
 }); */
 
-db.cypherQuery("START a=node(1), b=node(5) " +
+/*db.cypherQuery("START a=node(1), b=node(5) " +
 			   "MATCH p = a-[r*1..5]->b " +
 			   "WITH p, relationships(p) as rcoll " +
                "RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime " + 
@@ -98,7 +98,7 @@ db.cypherQuery("START a=node(1), b=node(5) " +
 			   	
 			   	}
 
-});
+});*/
 
 /*db.cypherQuery("START d=node(20), e=node(56) " +
 			   "MATCH p=d-[*]->e" +
