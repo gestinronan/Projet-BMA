@@ -338,7 +338,7 @@ app.post('/test/testgraphe', function(req, res){
                        				   	if(err || !result){
                        				   		console.log('An error occured when querying the graph');
                        				   	}
-			   							
+			   							console(data.data);
 			   							// Result of the query
 			   							readCypherData(res, data.data[0].nodes, data.data[0].relationships);
 								});
@@ -469,6 +469,7 @@ app.get('/android/data/bike', function(req, res){
 	
 	// Url to get the bike data
 	var url = "http://data.keolis-rennes.com/json/?version=2.0&key=" + key_star + "&cmd=getbikestations";
+	console.log("Requête GET de l'application android concernant :: Bike");
 	
 	// Make an ajax request to the Keolis API
 	getData(url, req, res, "android/data/bike");
@@ -478,35 +479,39 @@ app.get('/android/data/bike', function(req, res){
 // This send the bus data to the android app
 app.get('/android/data/bus', function(req, res){
 	
+	console.log("Requête GET de l'application android concernant :: Bus");
 	// Get the data from the BusStops table
 	connection.query('SELECT Stop_id, Stop_name, Stop_lat, Stop_lon, Line_short_name FROM BusStops', function(err, result){
 		
 		var jString = JSON.stringify(result);
-		
+		console.log("Données de :: Bus envoyés");
 		res.send(jString);
 	});
 });
 
 app.get('/android/data/metro', function(req, res){
 
+	console.log("Requête GET de l'application android concernant :: Métro");
 	// Database query
 	connection.query('SELECT * FROM MetroStops', function(err, result){
 		
 		// Send the data
 		var jString = JSON.stringify(result);
-		
+		console.log("Données de :: Metro envoyés");
 		res.send(jString);
 	})
 });
 
 // This send the train data to the android app
 app.get('/android/data/train', function(req, res){
+
+	console.log("Requête GET de l'application android concernant :: Train");
 	// Database query
 	connection.query('SELECT * FROM TerStops', function(err, result){
 		
 		// Send the data
 		var jString = JSON.stringify(result);
-		
+		console.log('Données de :: Train envoyés');
 		res.send(jString);
 	})
 });
@@ -514,12 +519,14 @@ app.get('/android/data/train', function(req, res){
 // This send the BorneElectrique data to the android app
 app.get('/android/data/borneelec', function(req, res){
 
+	console.log("Requête GET de l'application android concernant :: Borne electrique");
+
 	// Database Query
 	connection.query('SELECT * FROM test.BorneElec', function(err, data){
 
 		// send the data
-
 		var string = JSON.stringify(data);
+		console.log('Données de :: Borne electrique envoyés');
 		res.send(string);
 		})
 });
@@ -551,9 +558,7 @@ app.post('/android/data/getroutes', function(req, res){
 	var idDepart = tempDepart[1]; 	// Get the ID 
 	var idArrive = tempArrive[1]; 	// Get the ID
     
-    // DEBUG
-    console.log("depart :: " + idDepart);
-    console.log("arrive :: " + idArrive);
+   	console.log("Demande de d'itinéraire entre l'arret de :: " + departType + " (" + idDepart + ") et l'arret de :: " + arriveType + " (" + idArrive + ")");
 
 	// Declare variable for the sql table to query
 	var departTable = null;
@@ -662,7 +667,7 @@ function getData(url, req, res, type){
 				var station = data.opendata.answer.data.station;
 				
 				var jString = JSON.stringify(data);
-		
+				console.log('Données de :: Bike envoyés');
 				res.send(jString);
 				
 			}
@@ -721,7 +726,8 @@ function getShortestPath(depart, arrive, res){
 				   		// Once we get the result from the cypher query against the graph we parse the data
 				   		// And call a method which will parse and extract all the data
 
-				   		console.log(data.data);
+				   		console.log("Chemin trouvé!!");
+
 				   		readCypherData(res, data.data[0].nodes, data.data[0].relationships);
 				   		
 				   	}
@@ -764,14 +770,11 @@ function readRelationship(res, nodes, relations){
 			if(err || !result){
 				console.log('An error occured getting relationship parameters :: ' + err );
 			} else {
-				console.log(result);
-				relationParameter[x] = result; // Store the data
 				
+				relationParameter[x] = result; // Store the data
 				// If it's done, we call the next function which will read all the nodes
 				if(x == relations.length - 1){
-					
 					readNode(res, nodes, relations);
-					
 				}
 				x ++ ;
 			}
@@ -820,7 +823,6 @@ function readNode(res, nodes, relations){
 					var j=0;
 					for(z=0; z<relationParameter.length; z++){
 
-						console.log("node: " + nodes[j]);
 
 						// Get the start node ID
 						var Start_Stop_id = nodeParameter[j].data.idStop;
@@ -837,15 +839,10 @@ function readNode(res, nodes, relations){
 
 							// Creates a JSON String
 							var jsonData = {relations:relationParameter};
-							console.log(relationParameter);
+							console.log("Données brutes envoyés :: " + relationParameter);
 							res.send(jsonData);
 						}
-
 					}
-
-
-
-
 				}
 				y++;
 			}
