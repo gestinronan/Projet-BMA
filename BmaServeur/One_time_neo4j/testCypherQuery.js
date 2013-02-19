@@ -61,8 +61,8 @@ START a=node(1), b=node(1456)
 			   	
 			   	}
 
-}); */
-
+}); 
+*/
 
 /**
 * Get all relation ship of a node
@@ -74,7 +74,7 @@ START a=node(1), b=node(1456)
 }); */
 
 db.cypherQuery("START a=node(1), b=node(5) " +
-			   "MATCH p = a-[r*1..20]->b " +
+			   "MATCH p = a-[r*1..5]->b " +
 			   "WITH p, relationships(p) as rcoll " +
                "RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime " + 
                "LIMIT 3" , function(err,result){
@@ -90,8 +90,8 @@ db.cypherQuery("START a=node(1), b=node(5) " +
 
 			   		console.log(result.data);
 			   		// Read the data
-			   		nodes = result.data[0].nodes;
-			   		relations = result.data[0].relationships;
+			   		//nodes = result.data[0].nodes;
+			   		//relations = result.data[0].relationships;
 
 			   		// Call the method to get the relation parameters
 			   		//readRelationship(relations);
