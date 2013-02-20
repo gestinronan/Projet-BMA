@@ -727,6 +727,7 @@ function getShortestPath(depart, arrive, res){
 				   		// And call a method which will parse and extract all the data
 
 				   		console.log("Chemin trouvé!!");
+				   		console.log("Data :: " + data.data);
 
 				   		readCypherData(res, data.data[0].nodes, data.data[0].relationships);
 				   		
@@ -824,10 +825,13 @@ function readNode(res, nodes, relations){
 					for(z=0; z<relationParameter.length; z++){
 
 
+						// Make sure there are data
 						// Get the start node ID
 						var Start_Stop_id = nodeParameter[j].data.idStop;
 						j++;
-						var End_Stop_id = nodeParameter[j].data.idStop;
+						// Make sure there are data
+						if(nodeParameter[j].data != undefined)
+							var End_Stop_id = nodeParameter[j].data.idStop;
 						j++;
 
 						// Edit the json response
