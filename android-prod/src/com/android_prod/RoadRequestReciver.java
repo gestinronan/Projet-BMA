@@ -65,7 +65,7 @@ public class RoadRequestReciver extends BroadcastReceiver {
 				
 					
 				        PathOverlay roadOverlay = RoadManager.buildRoadOverlay(road1, MapViewClass.mapView.getContext());
-				
+				        
 				MapViewClass.drawRoad(roadOverlay);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
