@@ -800,20 +800,20 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
          //metro
          if(mapView.getOverlays().contains(metroItemizedIconOverlay))
          mapView.getOverlays().remove(metroItemizedIconOverlay);
-         displayPoint(metroArray, "Metro","Metro:", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
+         displayPoint(metroArray, "Metro","Metro", metroMarker,metroOverlayItemArray,metroItemizedIconOverlay);
          mapView.invalidate();
          
          //borne
          if(mapView.getOverlays().contains(borneItemizedIconOverlay))
          mapView.getOverlays().remove(borneItemizedIconOverlay);
-         displayPoint(borneArray, "Borne","Borne:", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
+         displayPoint(borneArray, "Borne","Borne", borneMarker,borneOverlayItemArray,borneItemizedIconOverlay);
          mapView.invalidate();
          
          
          //Train
          if(mapView.getOverlays().contains(trainItemizedIconOverlay))
          mapView.getOverlays().remove(trainItemizedIconOverlay);
-         displayPoint(trainArray, "","Train:" ,trainMarker,trainOverlayItemArray,trainItemizedIconOverlay);
+         displayPoint(trainArray, "","Train" ,trainMarker,trainOverlayItemArray,trainItemizedIconOverlay);
          mapView.invalidate();
          
          
