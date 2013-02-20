@@ -590,7 +590,7 @@ app.post('/android/data/getroutes', function(req, res){
 	} else if(arriveType == 'Metro'){
 		arriveTable = 'test.MetroStops';
 		arriveColumns = 'MetroStop_id';
-		idArrive = "\'" + idDepart + "\'";
+		idArrive = "\'" + idArrive + "\'";
 	}
 
 	// Once we have the parameters, We get nodes Id from the sql db
