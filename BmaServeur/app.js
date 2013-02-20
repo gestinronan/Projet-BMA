@@ -791,6 +791,10 @@ function readNode(res, nodes, relations){
 	var j =0;
 	var y =0;
 
+	console.log("nodes:: " + nodes);
+	console.log("nodes lenght :: " + nodes.length);
+	console.log("relations parameters :: " + relations.length);
+
 	// Parse all the nodes
 	for(j=0; j<nodes.length; j ++){
 
