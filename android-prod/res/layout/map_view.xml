@@ -76,6 +76,7 @@
                 android1:layout_alignLeft="@+id/arrival"
                 android1:layout_below="@+id/arrival"
                 android1:layout_marginTop="30dp"
+                android1:textColor="#FFFFFF"
                 android1:text="Bus" />
 
             <Switch
@@ -85,6 +86,7 @@
                 android1:layout_alignLeft="@+id/switch1"
                 android1:layout_below="@+id/switch1"
                 android1:layout_marginTop="21dp"
+                android1:textColor="#FFFFFF"
                 android1:text="Vélo" />
 
             <Switch
@@ -94,6 +96,7 @@
                 android1:layout_alignRight="@+id/switch2"
                 android1:layout_below="@+id/switch2"
                 android1:layout_marginTop="19dp"
+                android1:textColor="#FFFFFF"
                 android1:text="Metro" />
             
                     <Switch
@@ -103,6 +106,7 @@
                 android1:layout_alignRight="@+id/switch3"
                 android1:layout_below="@+id/switch3"
                 android1:layout_marginTop="19dp"
+                android1:textColor="#FFFFFF"
                 android1:text="Train" />
 
             <RadioGroup
@@ -118,18 +122,21 @@
                     android1:layout_width="wrap_content"
                     android1:layout_height="wrap_content"
                     android1:checked="true"
+                    android1:textColor="#FFFFFF"
                     android1:text="Le plus court" />
 
                 <RadioButton
                     android1:id="@+id/radio1"
                     android1:layout_width="wrap_content"
                     android1:layout_height="wrap_content"
+                    android1:textColor="#FFFFFF"
                     android1:text="Le plus rapide" />
 
                 <RadioButton
                     android1:id="@+id/radio2"
                     android1:layout_width="wrap_content"
                     android1:layout_height="wrap_content"
+                    android1:textColor="#FFFFFF"
                     android1:text="Sportif" />
             </RadioGroup>
 
@@ -139,6 +146,7 @@
                 android1:layout_height="wrap_content"
                 android1:layout_below="@+id/radioGroup1"
                 android1:layout_toRightOf="@+id/arrival"
+                android1:textColor="#FFFFFF"
                 android1:text="Valider" />
 
             <ImageButton
