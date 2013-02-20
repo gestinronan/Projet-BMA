@@ -39,8 +39,8 @@ START a=node(1), b=node(1456)
 > RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime
 > LIMIT 3; */
 
-db.cypherQuery("START d=node(1), e=node(87) " +
-			   "MATCH p = ShortestPath( d-[*..15]->e ) " +
+db.cypherQuery("START d=node(1), e=node(90) " +
+			   "MATCH p = ShortestPath( d-[*..25]->e ) " +
                "RETURN p", function(err,result){
 			   	// Case of error 
 			   	if(err || !result){
