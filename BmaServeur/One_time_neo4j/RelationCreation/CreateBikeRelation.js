@@ -69,8 +69,8 @@ function getBikeDistance(pointA, pointB){
       //console.log(data);
 
       // Once we have the distance and the time between A and B
-      var dist = data.route_summary.total_distance // Distance in meters
-      var time = data.route_summary.total_time; // Estimated times in seconds
+      var dist = data.route_summary.total_distance / 1000; // Distance in meters
+      var time = data.route_summary.total_time / 60; // Estimated times in seconds
 
       console.log(data.route_summary.total_distance);
       console.log(data.route_summary.total_time);

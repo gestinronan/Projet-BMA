@@ -32,7 +32,7 @@ var $ = require('jquery');
 var fs = require('fs');
 
 // Path to GTFS file containing the bus stops value (stops.txt)
-var pathToData = "../gtfsData_STAR/stop_times.txt";
+var pathToData = "../../gtfsData_STAR/stop_times.txt";
 
 
 var stream = fs.createReadStream(pathToData, {encoding: 'utf8'});
