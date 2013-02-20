@@ -823,21 +823,26 @@ function readNode(res, nodes, relations){
 					
 					var j=0;
 					for(z=0; z<relationParameter.length; z++){
-
-
+    
+                        // DEBUG
+                        console.log('nodeParameter :: ' + nodeParameter[j] + '(' + j + ') for z = ' + z);
+                        console.log('nodeParameter lenght :: ' + nodeParameter.length);
+                        
 						// Make sure there are data
 						// Get the start node ID
-						var Start_Stop_id = nodeParameter[j].data.idStop;
+                        var Start_Stop_id = nodeParameter[j].data.idStop;
 						j++;
-						// Make sure there are data
-						if(nodeParameter[j].data != undefined)
+						
+                        
+                        // Make sure there are data
+						if(nodeParameter[j] != 'undefined'){
 							var End_Stop_id = nodeParameter[j].data.idStop;
-						j++;
+						    j++;
 
-						// Edit the json response
-						relationParameter[z].Start_Stop_id = Start_Stop_id;
-						relationParameter[z].End_Stop_id = End_Stop_id;
-
+						    // Edit the json response
+						    relationParameter[z].Start_Stop_id = Start_Stop_id;
+						    relationParameter[z].End_Stop_id = End_Stop_id;
+                        }
 						// When it's done 
 						if(z == relationParameter.length -1){
 
