@@ -54,15 +54,15 @@ public class RoadRequestReciver extends BroadcastReceiver {
 			 ArrayList<GeoPoint>  GeoRoad = new ArrayList<GeoPoint>();
 				tmpRela=roadArray.getJSONObject(i);
 				
-				// DEBUG
-				System.out.println(tmpRela);
+				Log.i("START ID", tmpRela.getString("Start_Stop_id"));
+				Log.i("STOP ID",tmpRela.getString("End_Stop_id"));
 				
 				GeoRoad.add(MapViewClass.roadtrip.get(tmpRela.getString("Start_Stop_id")));			// Get the start point
 				GeoRoad.add(MapViewClass.roadtrip.get(tmpRela.getString("End_Stop_id"))); 			// Get the endpoint
 				
 				// Set the road color depending of the type
 			if(tmpRela.getString("type").equals("Bike")){
-				MapViewClass.roadManager.addRequestOption("routeType=bicycle");
+			//	MapViewClass.roadManager.addRequestOption("routeType=shortest");
 				RoadGetter testroad = new RoadGetter();
 				Object [] param = new Object[1];
 				param[0] = GeoRoad;
@@ -78,9 +78,9 @@ public class RoadRequestReciver extends BroadcastReceiver {
 					PathOverlay	roadOverlay =RoadManager.buildRoadOverlay(road1, MapViewClass.mapView.getContext());
 					roadOverlay.setColor(Color.GREEN);
 					roadList.add(roadOverlay);	
-				} else if(tmpRela.getString("type").equals("Metro")){
+				} else if(tmpRela.getString("type").equals("metro")){
 					
-					MapViewClass.roadManager.addRequestOption("routeType=shortest");
+				//	MapViewClass.roadManager.addRequestOption("routeType=shortest");
 					RoadGetter testroad = new RoadGetter();
 					Object [] param = new Object[1];
 					param[0] = GeoRoad;
@@ -96,7 +96,7 @@ public class RoadRequestReciver extends BroadcastReceiver {
 					roadList.add(roadOverlay);
 				} else if(tmpRela.getString("type").equals("Foot")){
 					
-					MapViewClass.roadManager.addRequestOption("routeType=pedestrian");
+				//	MapViewClass.roadManager.addRequestOption("routeType=shortest");
 					RoadGetter testroad = new RoadGetter();
 					Object [] param = new Object[1];
 					param[0] = GeoRoad;
@@ -112,7 +112,7 @@ public class RoadRequestReciver extends BroadcastReceiver {
 					roadList.add(roadOverlay);
 				} else if(tmpRela.getString("type").equals("Bus")){
 					
-					MapViewClass.roadManager.addRequestOption("routeType=bicycle");
+				//	MapViewClass.roadManager.addRequestOption("routeType=shortest");
 					RoadGetter testroad = new RoadGetter();
 					Object [] param = new Object[1];
 					param[0] = GeoRoad;
