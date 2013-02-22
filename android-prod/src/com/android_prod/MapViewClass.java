@@ -846,10 +846,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 			
 			PathOverlay temp = roadList.get(i);
 			mapView.getOverlays().add(temp); // Add the route to the overlay
+			
 		}
 
-		
 		mapView.invalidate();
+		
 
 
 	}
