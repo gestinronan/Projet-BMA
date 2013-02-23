@@ -128,6 +128,7 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 
 
 			//sent information
+			mapView.getOverlays().clear();
 
 			Intent sent=new Intent(TrajetServerRequest.BROADCAST_ACTION_SEND);
 			sent.putExtra("Dep", stopList.get(dep.getText().toString()).getType()+":"+stopList.get(dep.getText().toString()).getId());
@@ -845,10 +846,11 @@ public class MapViewClass<Overlay> extends Activity implements LocationListener 
 			
 			PathOverlay temp = roadList.get(i);
 			mapView.getOverlays().add(temp); // Add the route to the overlay
+			
 		}
 
-		
 		mapView.invalidate();
+		
 
 
 	}
