@@ -1,4 +1,4 @@
-/******************
+/*****************
 * filename: TESTGraphQuery.js
 * date: 08/01/13
 * author: Guillaume Le Floch
@@ -39,7 +39,7 @@ START a=node(1), b=node(1456)
 > RETURN p, reduce(totalTime=0, x in rcoll: totalTime + x.time) AS totalTime order by totalTime
 > LIMIT 3; */
 
-db.cypherQuery("START d=node(1), e=node(90) " +
+db.cypherQuery("START d=node(73), e=node(1463) " +
 			   "MATCH p = ShortestPath( d-[*..25]->e ) " +
                "RETURN p", function(err,result){
 			   	// Case of error 

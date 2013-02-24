@@ -728,9 +728,17 @@ function getShortestPath(depart, arrive, res){
 
 				   		console.log("Chemin trouvé!!");
 				   		console.log("Data :: " + data.data);
+                        
+                        // Case there is no data
+                        if(data.data != null){
+				   		    readCypherData(res, data.data[0].nodes, data.data[0].relationships);
+                          //  console.log('nodes :: ' + data.data[0].nodes);
+                           // console.log('relations :: ' + data.data[0].relationships);
+                        
+                        } else{
+                            res.send('{no Data availble}');
+                        } 
 
-				   		readCypherData(res, data.data[0].nodes, data.data[0].relationships);
-				   		
 				   	}
 				   });
 
@@ -763,7 +771,9 @@ function readRelationship(res, nodes, relations){
 
 		// Extract the ID
 		var idRelation = temp[temp.length -1 ];
-
+        
+        // DEBUG
+        //console.log('idRelation :: ' + idRelation + '(' + i + ')');
 		// Read the relation 
 		db.readRelationship(idRelation, function(err, result){
 
@@ -773,8 +783,16 @@ function readRelationship(res, nodes, relations){
 			} else {
 				
 				relationParameter[x] = result; // Store the data
+
+                //console.log("Relation Parametre :: " + relationParameter[x].id);
 				// If it's done, we call the next function which will read all the nodes
 				if(x == relations.length - 1){
+
+                    // reverse relation array
+                    var arrayTemp = new Array();
+                    arrayTemp = relationParameter.reverse();
+
+                
 					readNode(res, nodes, relations);
 				}
 				x ++ ;
@@ -791,9 +809,9 @@ function readNode(res, nodes, relations){
 	var j =0;
 	var y =0;
 
-	console.log("nodes:: " + nodes);
-	console.log("nodes lenght :: " + nodes.length);
-	console.log("relations parameters :: " + relations.length);
+	//console.log("nodes:: " + nodes);
+	//console.log("nodes lenght :: " + nodes.length);
+	//console.log("relations parameters :: " + relations.length);
 
 	// Parse all the nodes
 	for(j=0; j<nodes.length; j ++){
@@ -803,6 +821,8 @@ function readNode(res, nodes, relations){
 
 		// Extracr the ID
 		var idNode = temp[temp.length - 1];
+        
+        //console.log("nodeId :: " + idNode);
 
 		// Read the node
 		db.readNode(idNode, function(err, result){
@@ -811,7 +831,7 @@ function readNode(res, nodes, relations){
 			if(err || !result){
 				console.log('An error occured getting node paramaters :: ' + err);
 			} else {
-
+                //console.log(y);
 				nodeParameter[y] = result;
 
 				// If it's done, we display the result
@@ -825,35 +845,50 @@ function readNode(res, nodes, relations){
 
 					// Edit the relations array to add each sql node id in it
 					
-					var j=0;
+					var x=0;
 					for(z=0; z<relationParameter.length; z++){
     
                         // DEBUG
-                        console.log('nodeParameter :: ' + nodeParameter[j] + '(' + j + ') for z = ' + z);
-                        console.log('nodeParameter lenght :: ' + nodeParameter.length);
+                        //console.log('nodeParameter :: ' + nodeParameter[j] + '(' + j + ') for z = ' + z);
+                        //console.log('nodeParameter lenght :: ' + nodeParameter.length);
                         
 						// Make sure there are data
 						// Get the start node ID
-                        var Start_Stop_id = nodeParameter[j].data.idStop;
-						j++;
-						
-                        
-                        // Make sure there are data
-						if(nodeParameter[j] != 'undefined'){
-							var End_Stop_id = nodeParameter[j].data.idStop;
-						    j++;
+                        var Start_Stop_id = nodeParameter[x].data.idStop;
+	    				var End_Stop_id = nodeParameter[x+1].data.idStop;
 
-						    // Edit the json response
-						    relationParameter[z].Start_Stop_id = Start_Stop_id;
-						    relationParameter[z].End_Stop_id = End_Stop_id;
-                        }
+                        // DEBUG
+                      //  console.log('generating data :: relationParameter :: ' + z + '  :: nodeParameter :: ' + x );  
+                        x++;
+					    // Edit the json response
+                        relationParameter[z].Start_Stop_id = Start_Stop_id;
+					    relationParameter[z].End_Stop_id = End_Stop_id;
+                        
 						// When it's done 
 						if(z == relationParameter.length -1){
+                            
+                      //      console.log('avant reverse :: ' + relationParameter);
+                      //      console.log('in iff');
+                        
+                            // Reverse the array
+                            //relationParameter.reverse();
+                            var temp = new Array();
 
+                            for(k=0; k < relationParameter.length; k++){
+                                temp[relationParameter.length - k-1] = relationParameter[k];
+                            }
+                    //        console.log(temp);
+                  //          console.log(relationParameter);
 							// Creates a JSON String
 							var jsonData = {relations:relationParameter};
-							console.log("Données brutes envoyés :: " + relationParameter);
-							res.send(jsonData);
+							//console.log("Données brutes envoyés :: " + relationParameter);
+							// Display data
+                            for(i=0; i<relationParameter.length; i++){
+                                console.log('Parametre relation (' + i + ') :: ' + relationParameter[i].start_node_id); 
+                                console.log('Parametre relation (' + i + ') :: ' + relationParameter[i].end_node_id);
+                            }
+                            // Send the data
+                            res.send(jsonData);
 						}
 					}
 				}
